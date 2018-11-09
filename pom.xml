@@ -7,7 +7,6 @@
     <groupId>fr.mrmicky</groupId>
     <artifactId>ultimateparty</artifactId>
     <version>1.2.2</version>
-    <packaging>jar</packaging>
 
     <name>UltimateParty</name>
 
