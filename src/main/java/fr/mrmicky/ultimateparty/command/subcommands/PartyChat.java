@@ -76,11 +76,11 @@ public class PartyChat extends PartyCommand {
     @Override
     public List<String> onTabComplete(ProxiedPlayer p, String[] args, Party party) {
         List<String> members = new ArrayList<>();
-        party.getPlayers().forEach(ps -> {
+        for (ProxiedPlayer ps : party.getPlayers()) {
             if (ps != p && ps.getName().toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
                 members.add(ps.getName());
             }
-        });
+        }
         return members;
     }
 }

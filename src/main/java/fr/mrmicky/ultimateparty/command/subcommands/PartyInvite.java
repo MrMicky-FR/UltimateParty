@@ -91,11 +91,11 @@ public class PartyInvite extends PartyCommand {
         }
 
         List<String> members = new ArrayList<>();
-        p.getServer().getInfo().getPlayers().forEach(ps -> {
+        for (ProxiedPlayer ps : p.getServer().getInfo().getPlayers()) {
             if (ps != p && ps.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
                 members.add(ps.getName());
             }
-        });
+        }
         return members;
     }
 }

@@ -47,11 +47,11 @@ public class PartyAccept extends PartyCommand {
         }
 
         List<String> invits = new ArrayList<>();
-        m.getPartyManager().getPartys().forEach(pa -> {
+        for (Party pa : m.getPartyManager().getPartys()) {
             if (pa.getLeader().getName().toLowerCase().startsWith(args[0].toLowerCase()) && pa.isInvited(p)) {
                 invits.add(pa.getLeader().getName());
             }
-        });
+        }
         return invits;
     }
 }

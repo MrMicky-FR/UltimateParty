@@ -34,8 +34,7 @@ public class PartyListener implements Listener {
                 party.disband();
             } else {
                 party.removePlayer(p);
-                party.getPlayers()
-                        .forEach(ps -> ps.sendMessage(Message.PARTY_LEFT_BROADCAST.getAsComponenent(p.getName())));
+                party.getPlayers().forEach(ps -> ps.sendMessage(Message.PARTY_LEFT_BROADCAST.getAsComponenent(p.getName())));
             }
         }
     }

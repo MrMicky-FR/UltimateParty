@@ -10,7 +10,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 public class ChatCensor {
 
 	private static final Pattern PATTERN_URL = Pattern.compile(
-			"(?i)[a-zA-Z0-9\\-\\.]+\\s?(\\.|dot|\\(dot\\)|\\(\\.\\)|-|;|:|\\(\\)|,)\\s?(com|org|net|cz|co|uk|sk|biz|mobi|xxx|eu|me|gg)\\b");
+			"(?i)[a-zA-Z0-9\\-.]+\\s?(\\.|dot|\\(dot\\)|\\(\\.\\)|-|;|:|\\(\\)|,)\\s?(com|org|net|cz|co|uk|sk|biz|mobi|xxx|eu|me|gg)\\b");
 
 	private String msg;
 	private ProxiedPlayer p;

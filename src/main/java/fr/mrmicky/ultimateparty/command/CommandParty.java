@@ -107,7 +107,7 @@ public class CommandParty extends Command implements TabExecutor {
             p.sendMessage(Message.PARTY_FORMAT_LEADER.getAsComponenent(party.getLeader().getName()));
 
             if (party.isLeader(p)) {
-                party.getPlayers().forEach(ps -> {
+                for (ProxiedPlayer ps : party.getPlayers()) {
                     if (ps != party.getLeader()) {
                         p.sendMessage(new MessageBuilder(Message.PARTY_FORMAT_WHEN_LEADER.getMessage(ps.getName()))
                                 .click(Message.KICK_BUTTON.getMessage(), false,
@@ -118,7 +118,7 @@ public class CommandParty extends Command implements TabExecutor {
                                         Message.LEAD_BUTTON_HOVER.getMessage(ps.getName()))
                                 .build());
                     }
-                });
+                }
 
                 p.sendMessage(new TextComponent(" "));
                 p.sendMessage(new MessageBuilder(Message.MENU_PARTY_LEADER.getMessage())
@@ -132,11 +132,11 @@ public class CommandParty extends Command implements TabExecutor {
                                 Message.OPTIONS_BUTTON_HOVER.getMessage())
                         .build());
             } else {
-                party.getPlayers().forEach(ps -> {
+                for (ProxiedPlayer ps : party.getPlayers()) {
                     if (ps != party.getLeader()) {
                         p.sendMessage(Message.PARTY_FORMAT.getAsComponenent(ps.getName()));
                     }
-                });
+                }
                 p.sendMessage(new TextComponent(""));
                 p.sendMessage(new MessageBuilder(Message.MENU_PARTY_MEMBER.getMessage())
                         .click(Message.JOIN_BUTTON.getMessage(), true, m.getCommand() + " tp",
@@ -159,11 +159,11 @@ public class CommandParty extends Command implements TabExecutor {
         if (sender instanceof ProxiedPlayer) {
             if (args.length == 1) {
                 List<String> matches = new ArrayList<>();
-                commands.forEach(cmd -> {
+                for (PartyCommand cmd : commands) {
                     if (cmd.getName().startsWith(args[0].toLowerCase())) {
                         matches.add(cmd.getName());
                     }
-                });
+                }
                 return matches;
             } else if (args.length > 1) {
                 PartyCommand cmd = getCommand(args[0]);

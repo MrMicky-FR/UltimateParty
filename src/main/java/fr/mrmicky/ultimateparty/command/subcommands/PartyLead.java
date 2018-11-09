@@ -40,11 +40,11 @@ public class PartyLead extends PartyCommand {
         }
 
         List<String> members = new ArrayList<>();
-        party.getPlayers().forEach(ps -> {
+        for (ProxiedPlayer ps : party.getPlayers()) {
             if (ps != p && ps.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
                 members.add(ps.getName());
             }
-        });
+        }
         return members;
     }
 }

@@ -25,8 +25,7 @@ public class PartyKick extends PartyCommand {
             if (p2 != null && party.getPlayers().contains(p2) && p != p2) {
                 p2.sendMessage(Message.PLAYER_KICK.getAsComponenent(p.getName()));
                 party.removePlayer(p2);
-                party.getPlayers().forEach(ps -> ps
-                        .sendMessage(Message.PLAYER_KICK_BROADCAST.getAsComponenent(p2.getName(), p.getName())));
+                party.getPlayers().forEach(ps -> ps.sendMessage(Message.PLAYER_KICK_BROADCAST.getAsComponenent(p2.getName(), p.getName())));
             } else {
                 p.sendMessage(Message.PLAYER_NO_IN_PARTY.getAsComponenent());
             }
@@ -42,11 +41,11 @@ public class PartyKick extends PartyCommand {
         }
 
         List<String> members = new ArrayList<>();
-        party.getPlayers().forEach(ps -> {
+        for (ProxiedPlayer ps : party.getPlayers()) {
             if (ps != p && ps.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
                 members.add(ps.getName());
             }
-        });
+        }
         return members;
     }
 }

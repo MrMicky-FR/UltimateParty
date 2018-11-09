@@ -19,11 +19,11 @@ public class PartyList extends PartyCommand {
             p.sendMessage(Message.PARTY_LIST.getAsComponenent());
             p.sendMessage(Message.PARTY_LIST_FORMAT_LEADER.getAsComponenent(party.getLeader().getName(),
                     party.getLeader().getServer().getInfo().getName()));
-            party.getPlayers().forEach(ps -> {
+            for (ProxiedPlayer ps : party.getPlayers()) {
                 if (!party.isLeader(ps)) {
                     p.sendMessage(Message.PARTY_LIST_FORMAT.getAsComponenent(ps.getName(), ps.getServer().getInfo().getName()));
                 }
-            });
+            }
         } else {
             p.sendMessage(Message.NO_PARTY.getAsComponenent());
         }

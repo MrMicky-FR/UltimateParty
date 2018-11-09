@@ -134,7 +134,7 @@ public final class UltimateParty extends Plugin {
             try {
                 return ChatColor.translateAlternateColorCodes('&', displayNameProvider.getDisplayName(p));
             } catch (Exception e) {
-                getLogger().log(Level.SEVERE, "An error occured while getting displayname for " + p.getName(), e);
+                getLogger().log(Level.SEVERE, "An error occurred while getting displayname for " + p.getName(), e);
             }
         }
         return p.getName();
@@ -158,7 +158,7 @@ public final class UltimateParty extends Plugin {
                 connector.connect(p, server);
                 return;
             } catch (Exception e) {
-                getLogger().log(Level.SEVERE, "An error occured while connecting " + p.getName(), e);
+                getLogger().log(Level.SEVERE, "An error occurred while connecting " + p.getName(), e);
             }
         }
 

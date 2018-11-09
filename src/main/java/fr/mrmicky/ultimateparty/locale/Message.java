@@ -19,7 +19,7 @@ public enum Message {
 
     NO_PLAYER("§cYou must indicate a player", true),
 
-    UNKNOW_SUBCOMMAND("§cUnknow subcommanb, do /party", true),
+    UNKNOW_SUBCOMMAND("§cUnknown subcommand, do /party", true),
     ALREADY_CONNECT("§cYou are already connected to that server.", true),
 
     PLAYER_NOT_FOUND("§cThis player cannot be found.", true),
@@ -153,7 +153,7 @@ public enum Message {
     protected String message;
     private boolean prefix;
 
-    private Message(String message, boolean prefix) {
+    Message(String message, boolean prefix) {
         this.message = message;
         this.prefix = prefix;
     }
