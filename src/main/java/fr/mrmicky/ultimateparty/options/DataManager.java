@@ -8,6 +8,7 @@ import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 
 public class DataManager {
 
@@ -53,7 +54,7 @@ public class DataManager {
             try {
                 ConfigurationProvider.getProvider(YamlConfiguration.class).save(save, file);
             } catch (IOException e) {
-                e.printStackTrace();
+                m.getLogger().log(Level.SEVERE, "Could not save the messages", e);
             }
         };
 

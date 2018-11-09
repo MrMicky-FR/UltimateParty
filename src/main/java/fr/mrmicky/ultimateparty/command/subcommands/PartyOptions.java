@@ -19,7 +19,7 @@ public class PartyOptions extends PartyCommand {
 
     @Override
     public void execute(ProxiedPlayer p, String[] args, Party party) {
-        if (args.length < 2) {
+        if (args == null || args.length < 2) {
             p.sendMessage(Message.SPACER_TOP.getAsComponenent());
             for (PartyOption option : PartyOption.values()) {
                 boolean b = m.getDataManager().getOption(p, option);
@@ -34,17 +34,19 @@ public class PartyOptions extends PartyCommand {
             p.sendMessage(Message.SPACER_BOTTOM.getAsComponenent());
         } else {
             PartyOption option;
-            boolean b;
+            boolean b = Boolean.parseBoolean(args[1]);
             try {
                 option = PartyOption.valueOf(args[0]);
-                b = Boolean.parseBoolean(args[1]);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return;
+            } catch (IllegalArgumentException e) {
+                option = null;
             }
-            m.getDataManager().setOption(p, option, b);
-            m.getDataManager().saveDatas();
-            execute(p, new String[0], party);
+
+            if (option != null) {
+                m.getDataManager().setOption(p, option, b);
+                m.getDataManager().saveDatas();
+            }
+
+            execute(p, null, party);
         }
     }
 

@@ -32,8 +32,7 @@ public class PowerfulPermsProvider implements PartyNameProvider {
             String suffix = suffixFuture.get();
             return (prefix != null ? prefix : "") + p.getName() + (suffix != null ? suffix : "");
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return p.getName();
     }
 }

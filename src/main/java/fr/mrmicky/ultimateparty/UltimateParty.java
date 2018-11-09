@@ -90,21 +90,17 @@ public final class UltimateParty extends Plugin {
             if (!getDataFolder().exists()) {
                 getDataFolder().mkdir();
             }
-            File config = new File(getDataFolder().getPath(), "config.yml");
-            if (!config.exists()) {
-                try {
-                    config.createNewFile();
-                    try (InputStream is = getResourceAsStream("config.yml");
-                         OutputStream os = new FileOutputStream(config)) {
-                        ByteStreams.copy(is, os);
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException("Unable to create configuration file", e);
+            File configFile = new File(getDataFolder().getPath(), "config.yml");
+            if (!configFile.exists()) {
+                configFile.createNewFile();
+                try (InputStream is = getResourceAsStream("config.yml");
+                     OutputStream os = new FileOutputStream(configFile)) {
+                    ByteStreams.copy(is, os);
                 }
             }
-            this.config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
+            config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(configFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            getLogger().log(Level.SEVERE, "Could not load the configuration", e);
         }
     }
 
