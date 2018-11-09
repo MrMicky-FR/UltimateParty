@@ -1,0 +1,47 @@
+#Configuration of UltimateParty by MrMicky
+CheckUpdates: true
+
+Commands:
+  Command: "p"
+  #If true, players will need the permission ultimateparty.use to use party commands
+  Permission: false
+  Aliases:
+  - "party"
+
+#Automatically create partys
+AutoParty: false
+
+# Time in seconds to accept a invitation to join a party 
+InvitationDelay: 60
+
+ChatPrefix:
+  Enable: true
+  Prefix:
+  - "@Party"
+  - "!Party"
+
+Chat:
+  Log: false
+  WorldsBlacklist:
+  - fuck
+  - shit
+  - bitch
+  PreventUrl: true
+
+DisableServers:
+- "Login"
+- "Login2"
+
+DisableAutoJoinServers:
+- "Lobby"
+- "Lobby2"
+
+MaxPartySize:
+  Default: 5
+  Groups:
+    'MVP':
+      Permission: "party.group.mvp"
+      Size: 10
+    'VIP':
+      Permission: "party.group.vip"
+      Size: 8

@@ -1,0 +1,6 @@
+name: UltimateParty
+version: ${project.version}
+author: MrMicky
+description: The ultimate party plugin for BungeeCord !
+main: fr.mrmicky.ultimateparty.UltimateParty
+softdepend: [LuckPerms, PowerfulPerms, BungeePerms, PlayerBalancer, MultiLobby]
