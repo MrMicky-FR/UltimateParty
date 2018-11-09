@@ -8,23 +8,23 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class BungeePermsProvider implements PartyNameProvider {
 
-	private PermissionsManager permissionManager;
+    private PermissionsManager permissionManager;
 
-	public BungeePermsProvider() {
-		permissionManager = BungeePerms.getInstance().getPermissionsManager();
-	}
-	
-	@Override
-	public String getName() {
-		return "BungeePerms";
-	}
+    public BungeePermsProvider() {
+        permissionManager = BungeePerms.getInstance().getPermissionsManager();
+    }
 
-	@Override
-	public String getDisplayName(ProxiedPlayer p) {
-		User user = permissionManager.getUser(p.getUniqueId());
-		String prefix = user.getPrefix();
-		String suffix = user.getSuffix();
+    @Override
+    public String getName() {
+        return "BungeePerms";
+    }
 
-		return (prefix != null ? prefix : "") + p.getName() + (suffix != null ? suffix : "");
-	}
+    @Override
+    public String getDisplayName(ProxiedPlayer p) {
+        User user = permissionManager.getUser(p.getUniqueId());
+        String prefix = user.getPrefix();
+        String suffix = user.getSuffix();
+
+        return (prefix != null ? prefix : "") + p.getName() + (suffix != null ? suffix : "");
+    }
 }

@@ -27,8 +27,7 @@ public class PartyAccept extends PartyCommand {
             if (party2 != null && party2.isInvited(p)) {
                 if (!party2.isFull()) {
                     party2.addPlayer(p);
-                    party2.getPlayers()
-                            .forEach(ps -> ps.sendMessage(Message.PLAYER_JOIN.getAsComponenent(p.getName())));
+                    party2.getPlayers().forEach(ps -> ps.sendMessage(Message.PLAYER_JOIN.getAsComponenent(p.getName())));
                 } else {
                     p.sendMessage(Message.PARTY_FULL.getAsComponenent());
                 }

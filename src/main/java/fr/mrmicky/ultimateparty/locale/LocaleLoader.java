@@ -1,6 +1,7 @@
 package fr.mrmicky.ultimateparty.locale;
 
 import fr.mrmicky.ultimateparty.UltimateParty;
+import fr.mrmicky.ultimateparty.utils.ChatUtils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -48,7 +49,7 @@ public class LocaleLoader {
             for (Message msg : Message.values()) {
                 String message = lang.getString(msg.toString().toLowerCase().replace('_', '-'));
                 if (message != null && !message.isEmpty()) {
-                    msg.setMessage(ChatColor.translateAlternateColorCodes('&', message));
+                    msg.setMessage(ChatUtils.color(message));
                 } else {
                     // message is missing, so we add it
                     lang.set(msg.toString().toLowerCase().replace('_', '-'), msg.message.replace(ChatColor.COLOR_CHAR, '&'));

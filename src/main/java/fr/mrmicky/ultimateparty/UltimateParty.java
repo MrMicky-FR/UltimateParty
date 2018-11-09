@@ -8,9 +8,8 @@ import fr.mrmicky.ultimateparty.displayname.PartyNameProvider;
 import fr.mrmicky.ultimateparty.locale.LocaleLoader;
 import fr.mrmicky.ultimateparty.locale.Message;
 import fr.mrmicky.ultimateparty.options.DataManager;
+import fr.mrmicky.ultimateparty.utils.ChatUtils;
 import fr.mrmicky.ultimateparty.utils.Checker;
-import fr.mrmicky.ultimateparty.utils.PartyUtils;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -132,7 +131,7 @@ public final class UltimateParty extends Plugin {
     public String getDisplayName(ProxiedPlayer p) {
         if (displayNameProvider != null) {
             try {
-                return ChatColor.translateAlternateColorCodes('&', displayNameProvider.getDisplayName(p));
+                return ChatUtils.color(displayNameProvider.getDisplayName(p));
             } catch (Exception e) {
                 getLogger().log(Level.SEVERE, "An error occurred while getting displayname for " + p.getName(), e);
             }
@@ -181,7 +180,7 @@ public final class UltimateParty extends Plugin {
     }
 
     public boolean isServerEnable(ProxiedPlayer p) {
-        return !PartyUtils.containsIgnoreCase(disableServers, p.getServer().getInfo().getName());
+        return !ChatUtils.containsIgnoreCase(disableServers, p.getServer().getInfo().getName());
     }
 
     public List<String> getDisableAutoJoin() {

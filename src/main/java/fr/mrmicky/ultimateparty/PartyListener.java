@@ -2,7 +2,7 @@ package fr.mrmicky.ultimateparty;
 
 import fr.mrmicky.ultimateparty.command.subcommands.PartyChat;
 import fr.mrmicky.ultimateparty.locale.Message;
-import fr.mrmicky.ultimateparty.utils.PartyUtils;
+import fr.mrmicky.ultimateparty.utils.ChatUtils;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
@@ -45,7 +45,7 @@ public class PartyListener implements Listener {
         Party party = m.getPartyManager().getParty(p);
         String server = p.getServer().getInfo().getName();
         if (party != null && party.isLeader(p) && m.isServerEnable(p)
-                && !PartyUtils.containsIgnoreCase(m.getDisableAutoJoin(), server)) {
+                && !ChatUtils.containsIgnoreCase(m.getDisableAutoJoin(), server)) {
             for (ProxiedPlayer ps : party.getPlayers()) {
                 if (ps.getServer() != p.getServer() && m.isServerEnable(ps)) {
                     m.connect(ps, p.getServer().getInfo());
