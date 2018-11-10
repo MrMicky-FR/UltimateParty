@@ -23,7 +23,7 @@ public class PartyOptions extends PartyCommand {
             p.sendMessage(Message.SPACER_TOP.getAsComponenent());
             for (PartyOption option : PartyOption.values()) {
                 boolean b = m.getDataManager().getOption(p, option);
-                ChatColor color = b ? ChatColor.RED : ChatColor.RED;
+                ChatColor color = b ? ChatColor.GREEN : ChatColor.RED;
                 p.sendMessage(new MessageBuilder(
                         Message.OPTION_FORMAT.getMessage(color + option.getMessage().getMessage()))
                         .click(b ? Message.OPTION_DISABLE_BUTTON.getMessage() : Message.OPTION_ENABLE_BUTTON.getMessage(), true,
@@ -36,7 +36,7 @@ public class PartyOptions extends PartyCommand {
             PartyOption option;
             boolean b = Boolean.parseBoolean(args[1]);
             try {
-                option = PartyOption.valueOf(args[0]);
+                option = PartyOption.valueOf(args[0].toUpperCase());
             } catch (IllegalArgumentException e) {
                 option = null;
             }

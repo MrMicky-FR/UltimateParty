@@ -70,13 +70,8 @@ public class PartyListener implements Listener {
                 }
 
                 // Removing chat prefix
-                msg = msg.substring(s.length());
+                msg = msg.substring(s.length()).trim();
                 e.setCancelled(true);
-
-                // Removing spaces before message
-                while (msg.startsWith(" ")) {
-                    msg = msg.substring(1);
-                }
 
                 PartyChat.sendMessage(p, party, msg, m);
             }

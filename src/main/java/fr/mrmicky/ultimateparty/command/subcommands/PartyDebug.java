@@ -21,7 +21,8 @@ public class PartyDebug extends PartyCommand {
 
     private void send(ProxiedPlayer p) {
         String ver = m.getDescription().getVersion();
-        p.sendMessage(TextComponent.fromLegacyText(ChatUtils.color("&bUltimateParty &7v &b" + ver + "&7. ID:&b %%__USER__%% &7, NONCE:&b %%__NONCE__%%")));
+        p.sendMessage(TextComponent.fromLegacyText(ChatUtils.color("&bUltimateParty &7v&b" + ver + "&7.")));
+        p.sendMessage(TextComponent.fromLegacyText(ChatUtils.color("&7ID:&b %%__USER__%%" + "/" + "%%__NONCE__%%")));
         p.sendMessage(TextComponent.fromLegacyText(ChatUtils.color("&7Download: &bhttps://www.spigotmc.org/resources/ultimateparty.51548/")));
     }
 

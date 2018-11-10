@@ -27,7 +27,8 @@ import java.util.logging.Level;
 
 public final class UltimateParty extends Plugin {
 
-    public static final String RESSOURCE_ID = "%%__RESOURCE__%%";
+    //public static final String USER_ID = "12345";
+    //public static final String NONCE_ID = "Test123";
     public static final String USER_ID = "%%__USER__%%";
     public static final String NONCE_ID = "%%__NONCE__%%";
 
