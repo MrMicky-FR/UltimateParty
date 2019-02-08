@@ -75,7 +75,7 @@ public class PartyInvite extends PartyCommand {
     private void sendInvitation(ProxiedPlayer p, Party party) {
         String name = party.getLeader().getName();
         party.invite(p);
-        BaseComponent[] msg = new MessageBuilder(Message.INVITATION_RECEIVE.getMessage(name, PartyManager.getInvitationDelay()))
+        BaseComponent[] msg = new MessageBuilder(Message.INVITATION_RECEIVE.getMessage(name, getPartyManager().getInvitationDelay()))
                 .click(Message.INVITATION_ACCEPT_BUTTON.getMessage(), true, m.getCommand() + " accept " + name,
                         Message.INVITATION_ACCEPT_BUTTON_HOVER.getMessage())
                 .click(Message.INVITATION_DENY_BUTTON.getMessage(), true, m.getCommand() + " deny " + name,
