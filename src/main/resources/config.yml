@@ -1,14 +1,15 @@
-#Configuration of UltimateParty by MrMicky
+# Configuration of UltimateParty by MrMicky
+# Download link: https://www.spigotmc.org/resources/ultimateparty.51548/
 CheckUpdates: true
 
 Commands:
   Command: "p"
-  #If true, players will need the permission ultimateparty.use to use party commands
+  # If true, players will need the permission ultimateparty.use to use party commands
   Permission: false
   Aliases:
-  - "party"
+    - "party"
 
-#Automatically create partys
+# Automatically create partys
 AutoParty: false
 
 # Time in seconds to accept a invitation to join a party 
@@ -17,24 +18,24 @@ InvitationDelay: 60
 ChatPrefix:
   Enable: true
   Prefix:
-  - "@Party"
-  - "!Party"
+    - "@Party"
+    - "!Party"
 
 Chat:
   Log: false
   WorldsBlacklist:
-  - fuck
-  - shit
-  - bitch
+    - fuck
+    - shit
+    - bitch
   PreventUrl: true
 
 DisableServers:
-- "Login"
-- "Login2"
+  - "Login"
+  - "Login2"
 
 DisableAutoJoinServers:
-- "Lobby"
-- "Lobby2"
+  - "Lobby"
+  - "Lobby2"
 
 MaxPartySize:
   Default: 5
