@@ -43,7 +43,7 @@ public class PartyOptions extends PartyCommand {
 
             if (option != null) {
                 m.getDataManager().setOption(p, option, b);
-                m.getDataManager().saveDatas();
+                m.getDataManager().saveData();
             }
 
             execute(p, null, party);

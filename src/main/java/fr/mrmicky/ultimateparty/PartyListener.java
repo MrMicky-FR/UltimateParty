@@ -28,6 +28,7 @@ public class PartyListener implements Listener {
     public void onQuit(PlayerDisconnectEvent e) {
         ProxiedPlayer p = e.getPlayer();
         Party party = m.getPartyManager().getParty(p);
+
         if (party != null) {
             if (party.isLeader(p)) {
                 party.getPlayers().forEach(ps -> ps.sendMessage(Message.PARTY_DISBAND.getAsComponenent(p.getName())));
@@ -44,6 +45,7 @@ public class PartyListener implements Listener {
         ProxiedPlayer p = e.getPlayer();
         Party party = m.getPartyManager().getParty(p);
         String server = p.getServer().getInfo().getName();
+
         if (party != null && party.isLeader(p) && m.isServerEnable(p)
                 && !ChatUtils.containsIgnoreCase(m.getDisableAutoJoin(), server)) {
             for (ProxiedPlayer ps : party.getPlayers()) {
@@ -56,10 +58,15 @@ public class PartyListener implements Listener {
 
     @EventHandler
     public void onChat(ChatEvent e) {
+        if (!(e.getSender() instanceof ProxiedPlayer)) {
+            return;
+        }
+
+        ProxiedPlayer p = (ProxiedPlayer) e.getSender();
         String msg = e.getMessage();
+
         for (String s : chatPrefixes) {
-            if (msg.toLowerCase().startsWith(s.toLowerCase()) && e.getSender() instanceof ProxiedPlayer) {
-                ProxiedPlayer p = (ProxiedPlayer) e.getSender();
+            if (msg.toLowerCase().startsWith(s.toLowerCase())) {
                 Party party = m.getPartyManager().getParty(p);
                 if (!m.isServerEnable(p)) {
                     p.sendMessage(Message.DISABLE_SERVER_SELF.getAsComponenent());
@@ -80,16 +87,20 @@ public class PartyListener implements Listener {
 
     @EventHandler
     public void onTabComplete(TabCompleteEvent e) {
+        if (!(e.getSender() instanceof ProxiedPlayer)) {
+            return;
+        }
+
+        ProxiedPlayer p = (ProxiedPlayer) e.getSender();
         String msg = e.getCursor().toLowerCase();
-        String args[] = msg.split(" ");
+        String[] args = msg.split(" ");
 
         if (args.length == 0) {
             return;
         }
 
         for (String s : chatPrefixes) {
-            if (msg.toLowerCase().startsWith(s.toLowerCase()) && e.getSender() instanceof ProxiedPlayer) {
-                ProxiedPlayer p = (ProxiedPlayer) e.getSender();
+            if (msg.toLowerCase().startsWith(s.toLowerCase())) {
                 Party party = m.getPartyManager().getParty(p);
                 if (party != null) {
                     for (ProxiedPlayer ps : party.getPlayers()) {

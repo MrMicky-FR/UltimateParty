@@ -52,14 +52,15 @@ public final class UltimateParty extends Plugin {
         reloadConfig();
 
         command = config.getString("Commands.Command");
-        dataManager = new DataManager(this, new File(getDataFolder().getPath(), "data.yml"));
+        dataManager = new DataManager(this);
 
-        getProxy().getPluginManager().registerCommand(this,
-                commandParty = new CommandParty(command, config.getBoolean("Commands.Permission"),
-                        config.getStringList("Commands.Aliases").toArray(new String[0]), this));
+        String[] aliases = config.getStringList("Commands.Aliases").toArray(new String[0]);
+        commandParty = new CommandParty(command, config.getBoolean("Commands.Permission"), aliases, this);
+
+        getProxy().getPluginManager().registerCommand(this, commandParty);
         getProxy().getPluginManager().registerListener(this, new PartyListener(this));
 
-        partyManager = new PartyManager();
+        partyManager = new PartyManager(this);
 
         PartyNameProvider.loadProvider(this);
         PartyConnector.loadConnector(this);
@@ -71,7 +72,7 @@ public final class UltimateParty extends Plugin {
     @Override
     public void onDisable() {
         if (dataManager != null) {
-            dataManager.saveDatas(false);
+            dataManager.saveDataSync();
         }
     }
 
@@ -87,6 +88,7 @@ public final class UltimateParty extends Plugin {
             if (!getDataFolder().exists()) {
                 getDataFolder().mkdir();
             }
+
             File configFile = new File(getDataFolder().getPath(), "config.yml");
             if (!configFile.exists()) {
                 configFile.createNewFile();

@@ -64,7 +64,7 @@ public class Party {
             invitations.add(p.getUniqueId());
 
             ProxyServer.getInstance().getScheduler().schedule(UltimateParty.getInstance(),
-                    () -> invitations.remove(p.getUniqueId()), PartyManager.getInvitationDelay(), TimeUnit.SECONDS);
+                    () -> invitations.remove(p.getUniqueId()), pm.getInvitationDelay(), TimeUnit.SECONDS);
         }
     }
 

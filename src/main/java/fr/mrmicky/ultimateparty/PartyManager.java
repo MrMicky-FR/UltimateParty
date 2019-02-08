@@ -1,8 +1,9 @@
 package fr.mrmicky.ultimateparty;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,11 +11,14 @@ public final class PartyManager {
 
     private Set<Party> partys = new HashSet<>();
 
-    protected PartyManager() {
+    private UltimateParty m;
+
+    public PartyManager(UltimateParty m) {
+        this.m = m;
     }
 
     public Set<Party> getPartys() {
-        return Collections.unmodifiableSet(partys);
+        return ImmutableSet.copyOf(partys);
         // Partys list should not be modify directly with the api
     }
 
@@ -39,19 +43,14 @@ public final class PartyManager {
     }
 
     public Party createParty(ProxiedPlayer leader) {
-        if (hasParty(leader)) {
-            throw new IllegalStateException("This player is already in a party.");
-        }
-
-        if (leader == null) {
-            throw new IllegalArgumentException("Leader cannot be null");
-        }
+        Preconditions.checkArgument(leader != null, "leader");
+        Preconditions.checkState(!hasParty(leader), leader.getName() + " is already in a party");
 
         return new Party(this, leader);
     }
 
-    public static int getInvitationDelay() {
-        int delay = UltimateParty.getInstance().getConfig().getInt("InvitationDelay");
+    public int getInvitationDelay() {
+        int delay = m.getConfig().getInt("InvitationDelay");
 
         return delay > 0 ? delay : 60;
     }

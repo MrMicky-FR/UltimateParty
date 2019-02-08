@@ -17,9 +17,10 @@ public class DataManager {
     private File file;
     private Configuration save;
 
-    public DataManager(UltimateParty m, File file) {
-        this.file = file;
+    public DataManager(UltimateParty m) {
         this.m = m;
+
+        file = new File(m.getDataFolder(), "data.yml");
 
         try {
             if (!file.exists()) {
@@ -27,41 +28,28 @@ public class DataManager {
             }
 
             save = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
-
         } catch (IOException e) {
             throw new RuntimeException("Can't load data file", e);
         }
     }
 
     public void setOption(ProxiedPlayer p, PartyOption option, boolean enable) {
-        save.set(p.getUniqueId().toString() + "." + option.toString().toLowerCase(), enable);
+        save.set(p.getUniqueId().toString() + '.' + option.toString().toLowerCase(), enable);
     }
 
     public boolean getOption(ProxiedPlayer p, PartyOption option) {
-        if (save.contains(p.getUniqueId().toString() + "." + option.toString().toLowerCase())) {
-            return save.getBoolean(p.getUniqueId().toString() + "." + option.toString().toLowerCase());
-        }
-
-        return option.getDefaultValue();
+        return save.getBoolean(p.getUniqueId().toString() + '.' + option.toString().toLowerCase(), option.getDefaultValue());
     }
 
-    public void saveDatas() {
-        saveDatas(true);
+    public void saveData() {
+        m.getProxy().getScheduler().runAsync(m, this::saveDataSync);
     }
 
-    public void saveDatas(boolean async) {
-        Runnable runnable = () -> {
-            try {
-                ConfigurationProvider.getProvider(YamlConfiguration.class).save(save, file);
-            } catch (IOException e) {
-                m.getLogger().log(Level.SEVERE, "Could not save the messages", e);
-            }
-        };
-
-        if (async) {
-            m.getProxy().getScheduler().runAsync(m, runnable);
-        } else {
-            runnable.run();
+    public void saveDataSync() {
+        try {
+            ConfigurationProvider.getProvider(YamlConfiguration.class).save(save, file);
+        } catch (IOException e) {
+            m.getLogger().log(Level.SEVERE, "Could not save the messages", e);
         }
     }
 }

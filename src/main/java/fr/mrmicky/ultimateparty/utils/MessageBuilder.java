@@ -1,11 +1,7 @@
 package fr.mrmicky.ultimateparty.utils;
 
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.chat.ComponentBuilder.FormatRetention;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +32,7 @@ public class MessageBuilder {
             for (int j = 0; j < chars.length; j++) {
                 char c = chars[j];
                 if (c == '{' && chars[j + 2] == '-' && chars[j + 3] == '}') {
-                    int k = chars[j + 1] - '0';
+                    int k = Character.getNumericValue(chars[j + 1]);
                     String[] str = msg.split("\\{" + k + "-\\}");
                     MessageContainer mc = messages.get(k);
                     builder.append("", FormatRetention.NONE).append(TextComponent.fromLegacyText(str[0]));
