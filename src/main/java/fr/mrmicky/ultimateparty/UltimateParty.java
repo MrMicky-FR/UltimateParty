@@ -17,11 +17,7 @@ import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -128,7 +124,8 @@ public final class UltimateParty extends Plugin {
     public String getDisplayName(ProxiedPlayer p) {
         if (displayNameProvider != null) {
             try {
-                return ChatUtils.color(displayNameProvider.getDisplayName(p));
+                String displayName = displayNameProvider.getDisplayName(p);
+                return displayName != null ? ChatUtils.color(displayName) : p.getName();
             } catch (Exception e) {
                 getLogger().log(Level.SEVERE, "An error occurred while getting displayname for " + p.getName(), e);
             }
