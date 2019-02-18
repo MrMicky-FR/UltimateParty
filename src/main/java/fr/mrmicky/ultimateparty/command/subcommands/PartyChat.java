@@ -14,16 +14,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 
 public class PartyChat extends PartyCommand {
 
-    private static final DateFormat LOG_FORMAT = new SimpleDateFormat("[yyyy/MM/dd HH:mm:ss] ");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("[yyyy/MM/dd HH:mm:ss]");
 
     public PartyChat() {
         super("chat");
@@ -61,14 +60,9 @@ public class PartyChat extends PartyCommand {
         try {
             File f = new File(m.getDataFolder(), "logs.txt");
 
-            if (!f.exists()) {
-                f.createNewFile();
-            }
-
             try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(f, true)))) {
-                pw.println(LOG_FORMAT.format(new Date()) + message);
+                pw.println(DATE_FORMATTER.format(LocalDateTime.now()) + ' ' + message);
             }
-
         } catch (IOException e) {
             m.getLogger().log(Level.SEVERE, "Could not save the log file", e);
         }
