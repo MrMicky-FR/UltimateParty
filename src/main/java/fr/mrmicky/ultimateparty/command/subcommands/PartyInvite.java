@@ -1,7 +1,6 @@
 package fr.mrmicky.ultimateparty.command.subcommands;
 
 import fr.mrmicky.ultimateparty.Party;
-import fr.mrmicky.ultimateparty.PartyManager;
 import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.locale.Message;
 import fr.mrmicky.ultimateparty.options.PartyOption;

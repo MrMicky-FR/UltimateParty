@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ChatUtils {
 
-    // Just a usefull method
+    // Just a useful method
     public static boolean containsIgnoreCase(List<String> list, String s) {
         for (String str : list) {
             if (str.equalsIgnoreCase(s)) {

@@ -129,7 +129,7 @@ public final class UltimateParty extends Plugin {
                 String displayName = displayNameProvider.getDisplayName(p);
                 return displayName != null ? ChatUtils.color(displayName) : p.getName();
             } catch (Exception e) {
-                getLogger().log(Level.SEVERE, "An error occurred while getting displayname for " + p.getName(), e);
+                getLogger().log(Level.SEVERE, "An error occurred while getting display name for " + p.getName(), e);
             }
         }
         return p.getName();
@@ -138,7 +138,7 @@ public final class UltimateParty extends Plugin {
     public void setDisplayNameProvider(PartyNameProvider displayNameProvider) {
         this.displayNameProvider = displayNameProvider;
         if (displayNameProvider != null) {
-            getLogger().info("Using " + displayNameProvider.getName() + " as DisplaynameProvider");
+            getLogger().info("Using " + displayNameProvider.getName() + " as DisplayNameProvider");
         }
     }
 

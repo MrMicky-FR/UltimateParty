@@ -11,10 +11,10 @@ import java.util.concurrent.ExecutionException;
 
 public class PowerfulPermsProvider implements PartyNameProvider {
 
-    private PermissionManager powerfullPerms;
+    private PermissionManager powerfulPermsPlugin;
 
     public PowerfulPermsProvider() {
-        powerfullPerms = ((PowerfulPermsPlugin) ProxyServer.getInstance().getPluginManager().getPlugin("PowerfulPerms"))
+        powerfulPermsPlugin = ((PowerfulPermsPlugin) ProxyServer.getInstance().getPluginManager().getPlugin("PowerfulPerms"))
                 .getPermissionManager();
     }
 
@@ -25,8 +25,8 @@ public class PowerfulPermsProvider implements PartyNameProvider {
 
     @Override
     public String getDisplayName(ProxiedPlayer p) {
-        ListenableFuture<String> prefixFuture = powerfullPerms.getPlayerPrefix(p.getUniqueId());
-        ListenableFuture<String> suffixFuture = powerfullPerms.getPlayerSuffix(p.getUniqueId());
+        ListenableFuture<String> prefixFuture = powerfulPermsPlugin.getPlayerPrefix(p.getUniqueId());
+        ListenableFuture<String> suffixFuture = powerfulPermsPlugin.getPlayerSuffix(p.getUniqueId());
         try {
             String prefix = prefixFuture.get();
             String suffix = suffixFuture.get();
