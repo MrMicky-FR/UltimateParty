@@ -12,22 +12,22 @@ import java.util.concurrent.TimeUnit;
 
 public class Party {
 
-    private PartyManager pm;
+    private final UltimateParty plugin;
 
     private ProxiedPlayer leader;
     private Set<ProxiedPlayer> players = new HashSet<>();
     private Set<UUID> invitations = new HashSet<>();
 
-    protected Party(PartyManager pm, ProxiedPlayer leader) {
-        this.pm = pm;
+    Party(UltimateParty plugin, ProxiedPlayer leader) {
+        this.plugin = plugin;
         this.leader = leader;
-        this.players.add(leader);
-        pm.getAllPartys().add(this);
+
+        players.add(leader);
     }
 
     public void disband() {
         players.clear();
-        pm.getAllPartys().remove(this);
+        plugin.getPartyManager().getAllPartys().remove(this);
     }
 
     public Set<ProxiedPlayer> getPlayers() {
@@ -64,7 +64,7 @@ public class Party {
             invitations.add(p.getUniqueId());
 
             ProxyServer.getInstance().getScheduler().schedule(UltimateParty.getInstance(),
-                    () -> invitations.remove(p.getUniqueId()), pm.getInvitationDelay(), TimeUnit.SECONDS);
+                    () -> invitations.remove(p.getUniqueId()), plugin.getPartyManager().getInvitationDelay(), TimeUnit.SECONDS);
         }
     }
 
@@ -89,7 +89,7 @@ public class Party {
             }
         }
 
-        return UltimateParty.getInstance().getConfig().getInt("MaxPartySize.Default");
+        return plugin.getConfig().getInt("MaxPartySize.Default");
     }
 
     @Override

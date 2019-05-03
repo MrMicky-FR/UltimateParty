@@ -7,8 +7,8 @@ public enum PartyOption {
     RECEIVE_INVITATIONS(true, Message.OPTION_PARTY_INVITATION),
     PUBLIC_PARTY(false, Message.OPTION_PUBLIC_PARTY);
 
-    private boolean defaultValue;
-    private Message msg;
+    private final boolean defaultValue;
+    private final Message msg;
 
     PartyOption(boolean defaultValue, Message msg) {
         this.defaultValue = defaultValue;

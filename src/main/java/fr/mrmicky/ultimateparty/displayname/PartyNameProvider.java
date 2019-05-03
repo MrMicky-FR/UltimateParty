@@ -14,7 +14,7 @@ public interface PartyNameProvider {
 
     String getName();
 
-    static void loadProvider(UltimateParty m) {
+    static void loadProvider(UltimateParty plugin) {
         PluginManager pm = ProxyServer.getInstance().getPluginManager();
 
         PartyNameProvider provider;
@@ -28,6 +28,6 @@ public interface PartyNameProvider {
             provider = null;
         }
 
-        m.setDisplayNameProvider(provider);
+        plugin.setDisplayNameProvider(provider);
     }
 }

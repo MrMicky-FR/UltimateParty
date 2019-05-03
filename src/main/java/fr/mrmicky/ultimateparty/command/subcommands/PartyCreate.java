@@ -18,7 +18,7 @@ public class PartyCreate extends PartyCommand {
         if (party == null) {
             getPartyManager().createParty(p);
             p.sendMessage(Message.PARTY_CREATE.getAsComponenent());
-            m.openMenu(p);
+            getPlugin().openMenu(p);
         } else {
             p.sendMessage(Message.ALREADY_IN_PARTY_SELF.getAsComponenent());
         }

@@ -13,7 +13,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ public class PartyChat extends PartyCommand {
     @Override
     public void execute(ProxiedPlayer p, String[] args, Party party) {
         if (party != null) {
-            sendMessage(p, party, String.join(" ", args), m);
+            sendMessage(p, party, String.join(" ", args), getPlugin());
         } else {
             p.sendMessage(Message.NO_PARTY.getAsComponenent());
         }
@@ -52,7 +51,7 @@ public class PartyChat extends PartyCommand {
         party.getPlayers().stream().filter(m::isServerEnable).forEach(ps -> ps.sendMessage(c));
 
         if (m.getConfig().getBoolean("Chat.Log")) {
-            log("(" + party.getLeader().getName() + "'s party" + ") " + p.getName() + ": " + msg, m);
+            log('(' + party.getLeader().getName() + "'s party" + ") " + p.getName() + ": " + msg, m);
         }
     }
 
@@ -60,8 +59,9 @@ public class PartyChat extends PartyCommand {
         try {
             File f = new File(m.getDataFolder(), "logs.txt");
 
-            try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(f, true)))) {
-                pw.println(DATE_FORMATTER.format(LocalDateTime.now()) + ' ' + message);
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(f, true))) {
+                writer.write(DATE_FORMATTER.format(LocalDateTime.now()) + ' ' + message);
+                writer.newLine();
             }
         } catch (IOException e) {
             m.getLogger().log(Level.SEVERE, "Could not save the log file", e);

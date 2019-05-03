@@ -16,23 +16,26 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CommandParty extends Command implements TabExecutor {
 
-    private UltimateParty m;
-    private List<PartyCommand> commands = new ArrayList<>();
+    private final Map<String, PartyCommand> commands = new HashMap<>();
+    private final UltimateParty plugin;
 
-    public CommandParty(String name, boolean permission, String[] aliases, UltimateParty m) {
+    public CommandParty(String name, boolean permission, String[] aliases, UltimateParty plugin) {
         super(name, permission ? "ultimateparty.use" : null, aliases);
-        this.m = m;
+        this.plugin = plugin;
+
         loadCommands();
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length >= 1 && args[0].equalsIgnoreCase("reload") && sender.hasPermission("ultimateparty.reload")) {
-            m.reloadConfig();
+            plugin.reloadConfig();
             sender.sendMessage(new ComponentBuilder("Config reloaded").color(ChatColor.GREEN).create());
             return;
         }
@@ -44,7 +47,7 @@ public class CommandParty extends Command implements TabExecutor {
 
         ProxiedPlayer p = (ProxiedPlayer) sender;
 
-        if (!m.isServerEnable(p)) {
+        if (!plugin.isServerEnable(p)) {
             p.sendMessage(Message.DISABLE_SERVER_SELF.getAsComponenent());
             return;
         }
@@ -54,7 +57,7 @@ public class CommandParty extends Command implements TabExecutor {
         } else {
             PartyCommand cmd = getCommand(args[0]);
             if (cmd != null) {
-                cmd.execute(p, Arrays.copyOfRange(args, 1, args.length), m.getPartyManager().getParty(p));
+                cmd.execute(p, Arrays.copyOfRange(args, 1, args.length), plugin.getPartyManager().getParty(p));
             } else {
                 p.sendMessage(Message.UNKNOW_SUBCOMMAND.getAsComponenent());
             }
@@ -62,12 +65,7 @@ public class CommandParty extends Command implements TabExecutor {
     }
 
     private PartyCommand getCommand(String cmd) {
-        for (PartyCommand c : commands) {
-            if (c.getName().equalsIgnoreCase(cmd)) {
-                return c;
-            }
-        }
-        return null;
+        return commands.get(cmd.toLowerCase());
     }
 
     private void loadCommands() {
@@ -88,19 +86,19 @@ public class CommandParty extends Command implements TabExecutor {
     }
 
     public void register(PartyCommand cmd) {
-        commands.add(cmd);
+        commands.put(cmd.getName(), cmd);
     }
 
     public void openMenu(ProxiedPlayer p) {
-        Party party = m.getPartyManager().getParty(p);
+        Party party = plugin.getPartyManager().getParty(p);
 
         p.sendMessage(Message.SPACER_TOP.getAsComponenent());
 
         if (party == null) {
             p.sendMessage(new MessageBuilder(Message.MENU_NO_PARTY.getMessage())
-                    .click(Message.CREATE_BUTTON.getMessage(), true, m.getCommand() + " create",
+                    .click(Message.CREATE_BUTTON.getMessage(), true, plugin.getCommand() + " create",
                             Message.CREATE_BUTTON_HOVER.getMessage())
-                    .click(Message.OPTIONS_BUTTON.getMessage(), true, m.getCommand() + " options",
+                    .click(Message.OPTIONS_BUTTON.getMessage(), true, plugin.getCommand() + " options",
                             Message.OPTIONS_BUTTON_HOVER.getMessage())
                     .build());
         } else {
@@ -111,10 +109,10 @@ public class CommandParty extends Command implements TabExecutor {
                     if (ps != party.getLeader()) {
                         p.sendMessage(new MessageBuilder(Message.PARTY_FORMAT_WHEN_LEADER.getMessage(ps.getName()))
                                 .click(Message.KICK_BUTTON.getMessage(), false,
-                                        m.getCommand() + " kick " + ps.getName(),
+                                        plugin.getCommand() + " kick " + ps.getName(),
                                         Message.KICK_BUTTON_HOVER.getMessage(ps.getName()))
                                 .click(Message.LEAD_BUTTON.getMessage(), false,
-                                        m.getCommand() + " lead " + ps.getName(),
+                                        plugin.getCommand() + " lead " + ps.getName(),
                                         Message.LEAD_BUTTON_HOVER.getMessage(ps.getName()))
                                 .build());
                     }
@@ -122,13 +120,13 @@ public class CommandParty extends Command implements TabExecutor {
 
                 p.sendMessage(new TextComponent(" "));
                 p.sendMessage(new MessageBuilder(Message.MENU_PARTY_LEADER.getMessage())
-                        .click(Message.INVITE_BUTTON.getMessage(), false, m.getCommand() + " invite ",
+                        .click(Message.INVITE_BUTTON.getMessage(), false, plugin.getCommand() + " invite ",
                                 Message.INVITE_BUTTON_HOVER.getMessage())
-                        .click(Message.CHAT_BUTTON.getMessage(), false, m.getCommand() + " chat ",
+                        .click(Message.CHAT_BUTTON.getMessage(), false, plugin.getCommand() + " chat ",
                                 Message.CHAT_BUTTON_HOVER.getMessage())
-                        .click(Message.DISBAND_BUTTON.getMessage(), false, m.getCommand() + " disband",
+                        .click(Message.DISBAND_BUTTON.getMessage(), false, plugin.getCommand() + " disband",
                                 Message.DISBAND_BUTTON_HOVER.getMessage())
-                        .click(Message.OPTIONS_BUTTON.getMessage(), true, m.getCommand() + " options",
+                        .click(Message.OPTIONS_BUTTON.getMessage(), true, plugin.getCommand() + " options",
                                 Message.OPTIONS_BUTTON_HOVER.getMessage())
                         .build());
             } else {
@@ -139,13 +137,13 @@ public class CommandParty extends Command implements TabExecutor {
                 }
                 p.sendMessage(new TextComponent(""));
                 p.sendMessage(new MessageBuilder(Message.MENU_PARTY_MEMBER.getMessage())
-                        .click(Message.JOIN_BUTTON.getMessage(), true, m.getCommand() + " tp",
+                        .click(Message.JOIN_BUTTON.getMessage(), true, plugin.getCommand() + " tp",
                                 Message.JOIN_BUTTON_HOVER.getMessage())
-                        .click(Message.CHAT_BUTTON.getMessage(), false, m.getCommand() + " chat ",
+                        .click(Message.CHAT_BUTTON.getMessage(), false, plugin.getCommand() + " chat ",
                                 Message.CHAT_BUTTON_HOVER.getMessage())
-                        .click(Message.LEAVE_BUTTON.getMessage(), false, m.getCommand() + " leave",
+                        .click(Message.LEAVE_BUTTON.getMessage(), false, plugin.getCommand() + " leave",
                                 Message.LEAVE_BUTTON_HOVER.getMessage())
-                        .click(Message.OPTIONS_BUTTON.getMessage(), true, m.getCommand() + " options",
+                        .click(Message.OPTIONS_BUTTON.getMessage(), true, plugin.getCommand() + " options",
                                 Message.OPTIONS_BUTTON_HOVER.getMessage())
                         .build());
             }
@@ -159,9 +157,9 @@ public class CommandParty extends Command implements TabExecutor {
         if (sender instanceof ProxiedPlayer) {
             if (args.length == 1) {
                 List<String> matches = new ArrayList<>();
-                for (PartyCommand cmd : commands) {
-                    if (cmd.getName().startsWith(args[0].toLowerCase())) {
-                        matches.add(cmd.getName());
+                for (String cmd : commands.keySet()) {
+                    if (cmd.startsWith(args[0].toLowerCase())) {
+                        matches.add(cmd);
                     }
                 }
                 return matches;
@@ -170,7 +168,7 @@ public class CommandParty extends Command implements TabExecutor {
                 if (cmd != null) {
                     ProxiedPlayer p = (ProxiedPlayer) sender;
                     String[] newArgs = Arrays.copyOfRange(args, 1, args.length);
-                    List<String> tab = cmd.onTabComplete(p, newArgs, m.getPartyManager().getParty(p));
+                    List<String> tab = cmd.onTabComplete(p, newArgs, plugin.getPartyManager().getParty(p));
 
                     if (tab != null) {
                         return tab;

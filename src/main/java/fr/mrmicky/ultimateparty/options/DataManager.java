@@ -12,15 +12,15 @@ import java.util.logging.Level;
 
 public class DataManager {
 
-    private UltimateParty m;
+    private final UltimateParty plugin;
 
     private File file;
     private Configuration save;
 
-    public DataManager(UltimateParty m) {
-        this.m = m;
+    public DataManager(UltimateParty plugin) {
+        this.plugin = plugin;
 
-        file = new File(m.getDataFolder(), "data.yml");
+        file = new File(plugin.getDataFolder(), "data.yml");
 
         try {
             if (!file.exists()) {
@@ -42,14 +42,14 @@ public class DataManager {
     }
 
     public void saveData() {
-        m.getProxy().getScheduler().runAsync(m, this::saveDataSync);
+        plugin.getProxy().getScheduler().runAsync(plugin, this::saveDataSync);
     }
 
     public void saveDataSync() {
         try {
             ConfigurationProvider.getProvider(YamlConfiguration.class).save(save, file);
         } catch (IOException e) {
-            m.getLogger().log(Level.SEVERE, "Could not save the messages", e);
+            plugin.getLogger().log(Level.SEVERE, "Could not save the messages", e);
         }
     }
 }

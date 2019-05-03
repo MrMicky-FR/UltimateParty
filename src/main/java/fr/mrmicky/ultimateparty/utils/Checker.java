@@ -9,18 +9,19 @@ import java.net.URLConnection;
 
 public class Checker {
 
-    private UltimateParty m;
+    private final UltimateParty plugin;
+
     private boolean valid = true;
     private String username = "";
 
-    public Checker(UltimateParty m) {
-        this.m = m;
+    public Checker(UltimateParty plugin) {
+        this.plugin = plugin;
         checkPluginYml();
         checkValid();
         loadUsername();
 
         if (valid) {
-            m.getProxy().getScheduler().runAsync(m, this::checkUpdate);
+            plugin.getProxy().getScheduler().runAsync(plugin, this::checkUpdate);
         }
     }
 
@@ -28,7 +29,7 @@ public class Checker {
         try {
             StringBuilder str = new StringBuilder();
 
-            URL url = new URL(String.format("https://mrmicky.fr/verify.php?plugin=%s&uid=%s&nonce=%s&version=%s", m.getDescription().getName(), UltimateParty.USER_ID, UltimateParty.NONCE_ID, m.getDescription().getVersion()));
+            URL url = new URL(String.format("https://mrmicky.fr/verify.php?plugin=%s&uid=%s&nonce=%s&version=%s", plugin.getDescription().getName(), UltimateParty.USER_ID, UltimateParty.NONCE_ID, plugin.getDescription().getVersion()));
 
             try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()))) {
                 String inputLine;
@@ -42,25 +43,25 @@ public class Checker {
 
             if (result.contains(UltimateParty.USER_ID) || result.contains("refused")) {
                 valid = false;
-                m.getLogger().severe(" ");
-                m.getLogger().severe("*** THIS PLUGIN ID IS BLACKLISTED ! Please contact MrMicky on SpigotMC ! ***");
+                plugin.getLogger().severe(" ");
+                plugin.getLogger().severe("*** THIS PLUGIN ID IS BLACKLISTED ! Please contact MrMicky on SpigotMC ! ***");
                 if (result.contains("id=") && result.contains("%")) {
-                    m.getLogger().severe("***  REASON: " + result.split("%")[1] + " ***");
+                    plugin.getLogger().severe("***  REASON: " + result.split("%")[1] + " ***");
                 }
-                m.getLogger().severe("*** THE PLUGIN WILL DISABLE NOW ***");
-                m.getLogger().severe(" ");
+                plugin.getLogger().severe("*** THE PLUGIN WILL DISABLE NOW ***");
+                plugin.getLogger().severe(" ");
             }
         } catch (Exception e) {
         }
     }
 
     private void checkPluginYml() {
-        if (!m.getDescription().getName().equals("UltimateParty") || !m.getDescription().getAuthor().equals("MrMicky")) {
+        if (!plugin.getDescription().getName().equals("UltimateParty") || !plugin.getDescription().getAuthor().equals("MrMicky")) {
             valid = false;
-            m.getLogger().severe(" ");
-            m.getLogger().severe("THE PLUGIN.YML HAS BEEN EDITED (NAME OR AUTHOR) ! PLEASE DOWNLOAD THE PLUGIN FROM SPIGOTMC AGAIN !");
-            m.getLogger().severe("***THE PLUGIN WILL DISABLE***");
-            m.getLogger().severe(" ");
+            plugin.getLogger().severe(" ");
+            plugin.getLogger().severe("THE PLUGIN.YML HAS BEEN EDITED (NAME OR AUTHOR) ! PLEASE DOWNLOAD THE PLUGIN FROM SPIGOTMC AGAIN !");
+            plugin.getLogger().severe("***THE PLUGIN WILL DISABLE***");
+            plugin.getLogger().severe(" ");
         }
     }
 
@@ -89,11 +90,11 @@ public class Checker {
         try {
             URL url = new URL("https://api.spigotmc.org/legacy/update.php?resource=51548");
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
-                String version = m.getDescription().getVersion();
+                String version = plugin.getDescription().getVersion();
                 String lastVersion = reader.readLine();
                 if (!version.equalsIgnoreCase(lastVersion)) {
-                    m.getLogger().warning("A new version is available ! Last version is " + lastVersion + " and you are on " + version);
-                    m.getLogger().warning("You can download it on: https://www.spigotmc.org/resources/ultimateparty.51548/");
+                    plugin.getLogger().warning("A new version is available ! Last version is " + lastVersion + " and you are on " + version);
+                    plugin.getLogger().warning("You can download it on: https://www.spigotmc.org/resources/ultimateparty.51548/");
                 }
             }
         } catch (Exception e) {

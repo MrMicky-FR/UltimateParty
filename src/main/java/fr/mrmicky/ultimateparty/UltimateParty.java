@@ -5,6 +5,7 @@ import fr.mrmicky.ultimateparty.command.CommandParty;
 import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.connection.PartyConnector;
 import fr.mrmicky.ultimateparty.displayname.PartyNameProvider;
+import fr.mrmicky.ultimateparty.listeners.PartyListener;
 import fr.mrmicky.ultimateparty.locale.LocaleLoader;
 import fr.mrmicky.ultimateparty.locale.Message;
 import fr.mrmicky.ultimateparty.options.DataManager;

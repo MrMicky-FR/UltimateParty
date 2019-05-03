@@ -14,7 +14,7 @@ public interface PartyConnector {
 
     String getName();
 
-    static void loadConnector(UltimateParty m) {
+    static void loadConnector(UltimateParty plugin) {
         PluginManager pm = ProxyServer.getInstance().getPluginManager();
 
         PartyConnector connector;
@@ -26,6 +26,6 @@ public interface PartyConnector {
             connector = null;
         }
 
-        m.setConnector(connector);
+        plugin.setConnector(connector);
     }
 }

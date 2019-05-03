@@ -1,5 +1,7 @@
-package fr.mrmicky.ultimateparty;
+package fr.mrmicky.ultimateparty.listeners;
 
+import fr.mrmicky.ultimateparty.Party;
+import fr.mrmicky.ultimateparty.UltimateParty;
 import fr.mrmicky.ultimateparty.command.subcommands.PartyChat;
 import fr.mrmicky.ultimateparty.locale.Message;
 import fr.mrmicky.ultimateparty.utils.ChatUtils;
@@ -16,18 +18,19 @@ import java.util.List;
 
 public class PartyListener implements Listener {
 
-    private UltimateParty m;
+    private final UltimateParty plugin;
     private List<String> chatPrefixes;
 
-    public PartyListener(UltimateParty m) {
-        this.m = m;
-        chatPrefixes = m.getConfig().getBoolean("ChatPrefix.Enable") ? m.getConfig().getStringList("ChatPrefix.Prefix") : Collections.emptyList();
+    public PartyListener(UltimateParty plugin) {
+        this.plugin = plugin;
+
+        chatPrefixes = plugin.getConfig().getBoolean("ChatPrefix.Enable") ? plugin.getConfig().getStringList("ChatPrefix.Prefix") : Collections.emptyList();
     }
 
     @EventHandler
     public void onQuit(PlayerDisconnectEvent e) {
         ProxiedPlayer p = e.getPlayer();
-        Party party = m.getPartyManager().getParty(p);
+        Party party = plugin.getPartyManager().getParty(p);
 
         if (party != null) {
             if (party.isLeader(p)) {
@@ -43,14 +46,14 @@ public class PartyListener implements Listener {
     @EventHandler
     public void onSwitch(ServerSwitchEvent e) {
         ProxiedPlayer p = e.getPlayer();
-        Party party = m.getPartyManager().getParty(p);
+        Party party = plugin.getPartyManager().getParty(p);
         String server = p.getServer().getInfo().getName();
 
-        if (party != null && party.isLeader(p) && m.isServerEnable(p)
-                && !ChatUtils.containsIgnoreCase(m.getDisableAutoJoin(), server)) {
+        if (party != null && party.isLeader(p) && plugin.isServerEnable(p)
+                && !ChatUtils.containsIgnoreCase(plugin.getDisableAutoJoin(), server)) {
             for (ProxiedPlayer ps : party.getPlayers()) {
-                if (ps.getServer() != p.getServer() && m.isServerEnable(ps)) {
-                    m.connect(ps, p.getServer().getInfo());
+                if (ps.getServer() != p.getServer() && plugin.isServerEnable(ps)) {
+                    plugin.connect(ps, p.getServer().getInfo());
                 }
             }
         }
@@ -67,8 +70,8 @@ public class PartyListener implements Listener {
 
         for (String s : chatPrefixes) {
             if (msg.toLowerCase().startsWith(s.toLowerCase())) {
-                Party party = m.getPartyManager().getParty(p);
-                if (!m.isServerEnable(p)) {
+                Party party = plugin.getPartyManager().getParty(p);
+                if (!plugin.isServerEnable(p)) {
                     p.sendMessage(Message.DISABLE_SERVER_SELF.getAsComponenent());
                     return;
                 } else if (party == null) {
@@ -80,7 +83,7 @@ public class PartyListener implements Listener {
                 msg = msg.substring(s.length()).trim();
                 e.setCancelled(true);
 
-                PartyChat.sendMessage(p, party, msg, m);
+                PartyChat.sendMessage(p, party, msg, plugin);
             }
         }
     }
@@ -101,7 +104,7 @@ public class PartyListener implements Listener {
 
         for (String s : chatPrefixes) {
             if (msg.toLowerCase().startsWith(s.toLowerCase())) {
-                Party party = m.getPartyManager().getParty(p);
+                Party party = plugin.getPartyManager().getParty(p);
                 if (party != null) {
                     for (ProxiedPlayer ps : party.getPlayers()) {
                         if (ps.getName().toLowerCase().startsWith(args[args.length - 1])) {

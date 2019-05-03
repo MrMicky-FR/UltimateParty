@@ -16,12 +16,12 @@ public class PartyTp extends PartyCommand {
     @Override
     public void execute(ProxiedPlayer p, String[] args, Party party) {
         if (party != null) {
-            if (!m.isServerEnable(party.getLeader())) {
+            if (!getPlugin().isServerEnable(party.getLeader())) {
                 p.sendMessage(Message.DISABLE_SERVER.getAsComponenent());
                 return;
             }
 
-            m.connect(p, party.getLeader().getServer().getInfo());
+            getPlugin().connect(p, party.getLeader().getServer().getInfo());
         } else {
             p.sendMessage(Message.NO_PARTY.getAsComponenent());
         }

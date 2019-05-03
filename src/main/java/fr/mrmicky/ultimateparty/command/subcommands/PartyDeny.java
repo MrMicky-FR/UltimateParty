@@ -39,7 +39,7 @@ public class PartyDeny extends PartyCommand {
 
         List<String> invitations = new ArrayList<>();
 
-        for (Party pa : m.getPartyManager().getPartys()) {
+        for (Party pa : getPlugin().getPartyManager().getPartys()) {
             if (pa.getLeader().getName().toLowerCase().startsWith(args[0].toLowerCase()) && pa.isInvited(p)) {
                 invitations.add(pa.getLeader().getName());
             }

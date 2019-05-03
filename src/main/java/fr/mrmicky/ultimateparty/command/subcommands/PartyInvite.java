@@ -20,7 +20,7 @@ public class PartyInvite extends PartyCommand {
     @Override
     public void execute(ProxiedPlayer p, String[] args, Party party) {
         if (party == null) {
-            if (m.getConfig().getBoolean("AutoParty")) {
+            if (getPlugin().getConfig().getBoolean("AutoParty")) {
                 party = getPartyManager().createParty(p);
                 p.sendMessage(Message.PARTY_CREATE.getAsComponenent());
             } else {
@@ -35,12 +35,12 @@ public class PartyInvite extends PartyCommand {
                 return;
             }
 
-            ProxiedPlayer p2 = m.getProxy().getPlayer(args[0]);
+            ProxiedPlayer p2 = getPlugin().getProxy().getPlayer(args[0]);
 
             if (p2 != null) {
                 if (!getPartyManager().hasParty(p2)) {
                     if (!party.isFull()) {
-                        if (!m.isServerEnable(p2)) {
+                        if (!getPlugin().isServerEnable(p2)) {
                             p.sendMessage(Message.DISABLE_SERVER.getAsComponenent());
                             return;
                         }
@@ -50,7 +50,7 @@ public class PartyInvite extends PartyCommand {
                             return;
                         }
 
-                        if (!m.getDataManager().getOption(p2, PartyOption.RECEIVE_INVITATIONS)) {
+                        if (!getPlugin().getDataManager().getOption(p2, PartyOption.RECEIVE_INVITATIONS)) {
                             p.sendMessage(Message.DISABLE_INVITATION.getAsComponenent());
                             return;
                         }
@@ -75,9 +75,9 @@ public class PartyInvite extends PartyCommand {
         String name = party.getLeader().getName();
         party.invite(p);
         BaseComponent[] msg = new MessageBuilder(Message.INVITATION_RECEIVE.getMessage(name, getPartyManager().getInvitationDelay()))
-                .click(Message.INVITATION_ACCEPT_BUTTON.getMessage(), true, m.getCommand() + " accept " + name,
+                .click(Message.INVITATION_ACCEPT_BUTTON.getMessage(), true, getPlugin().getCommand() + " accept " + name,
                         Message.INVITATION_ACCEPT_BUTTON_HOVER.getMessage())
-                .click(Message.INVITATION_DENY_BUTTON.getMessage(), true, m.getCommand() + " deny " + name,
+                .click(Message.INVITATION_DENY_BUTTON.getMessage(), true, getPlugin().getCommand() + " deny " + name,
                         Message.INVITATION_DENY_BUTTON_HOVER.getMessage())
                 .build();
         p.sendMessage(msg);

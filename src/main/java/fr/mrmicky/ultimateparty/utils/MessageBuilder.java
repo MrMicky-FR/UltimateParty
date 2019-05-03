@@ -1,24 +1,29 @@
 package fr.mrmicky.ultimateparty.utils;
 
-import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.ComponentBuilder.FormatRetention;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MessageBuilder {
 
-    private String msg;
-    private List<MessageContainer> messages = new ArrayList<>();
+    private final List<MessageContainer> messages = new ArrayList<>();
 
-    public MessageBuilder(String msg) {
-        this.msg = msg;
+    private String message;
+
+    public MessageBuilder(String message) {
+        this.message = message;
     }
 
     public MessageBuilder click(String msg, boolean runCommand, String clickValue, String hoverValue) {
-        messages.add(new MessageContainer(msg,
-                runCommand ? ClickEvent.Action.RUN_COMMAND : ClickEvent.Action.SUGGEST_COMMAND, clickValue,
-                hoverValue));
+        ClickEvent.Action clickAction = runCommand ? ClickEvent.Action.RUN_COMMAND : ClickEvent.Action.SUGGEST_COMMAND;
+
+        messages.add(new MessageContainer(msg, clickAction, clickValue, hoverValue));
         return this;
     }
 
@@ -27,31 +32,31 @@ public class MessageBuilder {
 
         for (int i = 0; i < messages.size(); i++) {
 
-            char[] chars = msg.toCharArray();
+            char[] chars = message.toCharArray();
 
             for (int j = 0; j < chars.length; j++) {
                 char c = chars[j];
                 if (c == '{' && chars[j + 2] == '-' && chars[j + 3] == '}') {
                     int k = Character.getNumericValue(chars[j + 1]);
-                    String[] str = msg.split("\\{" + k + "-\\}");
+                    String[] str = message.split("\\{" + k + "-\\}");
                     MessageContainer mc = messages.get(k);
                     builder.append("", FormatRetention.NONE).append(TextComponent.fromLegacyText(str[0]));
                     builder.append(mc.getMessage(), FormatRetention.NONE).event(mc.getClickEvent())
                             .event(mc.getHoverEvent());
-                    msg = msg.substring(str[0].length() + 4);
+                    message = message.substring(str[0].length() + 4);
                     break;
                 }
             }
         }
-        builder.append("", FormatRetention.NONE).append(TextComponent.fromLegacyText(msg));
-        return builder.create();
+
+        return builder.append("", FormatRetention.NONE).append(TextComponent.fromLegacyText(message)).create();
     }
 
     class MessageContainer {
 
-        private String message;
-        private ClickEvent clickEvent;
-        private HoverEvent hoverEvent;
+        private final String message;
+        private final ClickEvent clickEvent;
+        private final HoverEvent hoverEvent;
 
         public MessageContainer(String message, ClickEvent.Action clickAction, String clickCommand, String hover) {
             this.message = message;

@@ -21,7 +21,7 @@ public class PartyLead extends PartyCommand {
                 p.sendMessage(Message.NO_PLAYER.getAsComponenent());
                 return;
             }
-            ProxiedPlayer p2 = m.getProxy().getPlayer(args[0]);
+            ProxiedPlayer p2 = getPlugin().getProxy().getPlayer(args[0]);
             if (p2 != null && party.getPlayers().contains(p2) && p != p2) {
                 party.setLeader(p2);
                 party.getPlayers().forEach(ps -> ps.sendMessage(Message.NEW_LEADER.getAsComponenent(p2.getName())));

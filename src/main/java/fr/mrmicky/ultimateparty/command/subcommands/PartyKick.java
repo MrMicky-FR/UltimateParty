@@ -21,7 +21,7 @@ public class PartyKick extends PartyCommand {
                 p.sendMessage(Message.NO_PLAYER.getAsComponenent());
                 return;
             }
-            ProxiedPlayer p2 = m.getProxy().getPlayer(args[0]);
+            ProxiedPlayer p2 = getPlugin().getProxy().getPlayer(args[0]);
             if (p2 != null && party.getPlayers().contains(p2) && p != p2) {
                 p2.sendMessage(Message.PLAYER_KICK.getAsComponenent(p.getName()));
                 party.removePlayer(p2);

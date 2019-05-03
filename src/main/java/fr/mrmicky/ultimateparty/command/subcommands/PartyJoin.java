@@ -25,7 +25,7 @@ public class PartyJoin extends PartyCommand {
 			ProxiedPlayer p2 = ProxyServer.getInstance().getPlayer(args[0]);
 			Party party2 = getPartyManager().getParty(p2);
 			if (party2 != null) {
-				if (!m.getDataManager().getOption(party2.getLeader(), PartyOption.PUBLIC_PARTY)) {
+				if (!getPlugin().getDataManager().getOption(party2.getLeader(), PartyOption.PUBLIC_PARTY)) {
 					p.sendMessage(Message.PARTY_PRIVATE.getAsComponenent());
 					return;
 				}

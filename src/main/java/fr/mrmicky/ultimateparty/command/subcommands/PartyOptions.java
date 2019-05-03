@@ -22,12 +22,12 @@ public class PartyOptions extends PartyCommand {
         if (args == null || args.length < 2) {
             p.sendMessage(Message.SPACER_TOP.getAsComponenent());
             for (PartyOption option : PartyOption.values()) {
-                boolean b = m.getDataManager().getOption(p, option);
+                boolean b = getPlugin().getDataManager().getOption(p, option);
                 ChatColor color = b ? ChatColor.GREEN : ChatColor.RED;
                 p.sendMessage(new MessageBuilder(
                         Message.OPTION_FORMAT.getMessage(color + option.getMessage().getMessage()))
                         .click(b ? Message.OPTION_DISABLE_BUTTON.getMessage() : Message.OPTION_ENABLE_BUTTON.getMessage(), true,
-                                m.getCommand() + " options " + option.toString() + " " + !b, b ? Message.OPTION_DISABLE_BUTTON_HOVER.getMessage() : Message.OPTION_ENABLE_BUTTON_HOVER.getMessage())
+                                getPlugin().getCommand() + " options " + option.toString() + " " + !b, b ? Message.OPTION_DISABLE_BUTTON_HOVER.getMessage() : Message.OPTION_ENABLE_BUTTON_HOVER.getMessage())
                         .build());
             }
 
@@ -42,8 +42,8 @@ public class PartyOptions extends PartyCommand {
             }
 
             if (option != null) {
-                m.getDataManager().setOption(p, option, b);
-                m.getDataManager().saveData();
+                getPlugin().getDataManager().setOption(p, option, b);
+                getPlugin().getDataManager().saveData();
             }
 
             execute(p, null, party);

@@ -52,6 +52,7 @@
     </repositories>
 
     <dependencies>
+        <!-- BungeeCord -->
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
