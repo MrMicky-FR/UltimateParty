@@ -49,7 +49,7 @@ public class DataManager {
         try {
             ConfigurationProvider.getProvider(YamlConfiguration.class).save(save, file);
         } catch (IOException e) {
-            plugin.getLogger().log(Level.SEVERE, "Could not save the messages", e);
+            throw new RuntimeException("Can't save data file", e);
         }
     }
 }

@@ -9,16 +9,16 @@ import java.util.regex.Pattern;
 
 public class ChatCensor {
 
-    private static final Pattern PATTERN_URL = Pattern.compile(
-            "(?i)[a-zA-Z0-9\\-.]+\\s?(\\.|dot|\\(dot\\)|\\(\\.\\)|-|;|:|\\(\\)|,)\\s?(com|org|net|cz|co|uk|sk|biz|mobi|xxx|eu|me|gg)\\b");
+    private static final Pattern URL_PATTERN = Pattern.compile("(?i)[a-zA-Z0-9\\-.]+\\s?(\\.|dot|\\(dot\\)|\\(\\.\\)|-|;|:|\\(\\)|,)\\s?(com|org|net|cz|co|uk|sk|biz|mobi|xxx|eu|me|gg)\\b");
 
-    private String msg;
-    private ProxiedPlayer p;
+    private final ProxiedPlayer player;
+
+    private String message;
     private boolean cancel = false;
 
-    public ChatCensor(ProxiedPlayer p, String msg) {
-        this.p = p;
-        this.msg = msg;
+    public ChatCensor(ProxiedPlayer player, String message) {
+        this.player = player;
+        this.message = message;
 
         checkDomainsIp();
         checkSwear();
@@ -29,23 +29,23 @@ public class ChatCensor {
     }
 
     public String getNewMessage() {
-        return msg;
+        return message;
     }
 
     private void checkDomainsIp() {
         if (UltimateParty.getInstance().getConfig().getBoolean("PreventUrl")) {
-            if (PATTERN_URL.matcher(msg).find()) {
+            if (URL_PATTERN.matcher(message).find()) {
                 cancel = true;
-                p.sendMessage(Message.NO_URL_CHAT.getAsComponenent());
+                player.sendMessage(Message.NO_URL_CHAT.getAsComponenent());
             }
         }
     }
 
     private void checkSwear() {
-        for (String words : msg.split(" ")) {
+        for (String words : message.split(" ")) {
             for (String s : UltimateParty.getInstance().getConfig().getStringList("Chat.WorldsBlacklist")) {
                 if (!s.isEmpty() && words.toLowerCase().contains(s.toLowerCase())) {
-                    msg = censor(s);
+                    message = censor(s);
                 }
             }
         }
@@ -55,6 +55,6 @@ public class ChatCensor {
         char[] chars = new char[word.length()];
         Arrays.fill(chars, '*');
 
-        return Pattern.compile(word, Pattern.CASE_INSENSITIVE).matcher(msg).replaceAll(new String(chars));
+        return Pattern.compile(word, Pattern.CASE_INSENSITIVE).matcher(message).replaceAll(new String(chars));
     }
 }

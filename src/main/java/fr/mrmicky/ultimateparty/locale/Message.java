@@ -3,6 +3,7 @@ package fr.mrmicky.ultimateparty.locale;
 import fr.mrmicky.ultimateparty.utils.ChatUtils;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public enum Message {
 
@@ -15,7 +16,7 @@ public enum Message {
      * Errors
      */
     NO_PERMISSION("&cYou do not have permission to use this command!", true),
-    NO_CONSOLE("&cConsole can't use party commands", true),
+    //NO_CONSOLE("&cConsole can't use party commands", true),
 
     NO_PLAYER("&cYou must indicate a player", true),
 
@@ -149,13 +150,16 @@ public enum Message {
     OPTION_PARTY_INVITATION("Receive party invitations", false),
     OPTION_PUBLIC_PARTY("Anyone can join the party", false);
 
-
     protected String message;
     private boolean prefix;
 
     Message(String message, boolean prefix) {
         this.message = ChatUtils.color(message);
         this.prefix = prefix;
+    }
+
+    public static String getPrefix() {
+        return PREFIX.message;
     }
 
     public String getMessage(Object... objects) {
@@ -174,7 +178,13 @@ public enum Message {
         return TextComponent.fromLegacyText(getMessage(objects));
     }
 
-    public static String getPrefix() {
-        return PREFIX.message;
+    public void send(ProxiedPlayer p, Object... objects) {
+        p.sendMessage(getAsComponenent(objects));
+    }
+
+    public void send(Iterable<ProxiedPlayer> players, Object... objects) {
+        BaseComponent[] components = getAsComponenent(objects);
+
+        players.forEach(p -> p.sendMessage(components));
     }
 }

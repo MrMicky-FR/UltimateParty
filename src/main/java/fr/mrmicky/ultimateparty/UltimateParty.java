@@ -18,7 +18,11 @@ import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -41,6 +45,10 @@ public final class UltimateParty extends Plugin {
 
     private PartyNameProvider displayNameProvider;
     private PartyConnector connector;
+
+    public static UltimateParty getInstance() {
+        return instance;
+    }
 
     @Override
     public void onEnable() {
@@ -90,26 +98,21 @@ public final class UltimateParty extends Plugin {
                 getDataFolder().mkdir();
             }
 
-            File configFile = new File(getDataFolder().getPath(), "config.yml");
+            File configFile = new File(getDataFolder(), "config.yml");
             if (!configFile.exists()) {
-                configFile.createNewFile();
-                try (InputStream is = getResourceAsStream("config.yml");
-                     OutputStream os = new FileOutputStream(configFile)) {
-                    ByteStreams.copy(is, os);
+                try (InputStream in = getResourceAsStream("config.yml");
+                     OutputStream out = new FileOutputStream(configFile)) {
+                    ByteStreams.copy(in, out);
                 }
             }
             config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(configFile);
         } catch (IOException e) {
-            getLogger().log(Level.SEVERE, "Could not load the configuration", e);
+            throw new RuntimeException("Unable to load configuration file", e);
         }
     }
 
     public Configuration getConfig() {
         return config;
-    }
-
-    public static UltimateParty getInstance() {
-        return instance;
     }
 
     public PartyManager getPartyManager() {

@@ -14,20 +14,16 @@ public class Party {
 
     private final UltimateParty plugin;
 
-    private ProxiedPlayer leader;
-    private Set<ProxiedPlayer> players = new HashSet<>();
-    private Set<UUID> invitations = new HashSet<>();
+    private final Set<ProxiedPlayer> players = new HashSet<>();
+    private final Set<UUID> invitations = new HashSet<>();
 
-    Party(UltimateParty plugin, ProxiedPlayer leader) {
+    private ProxiedPlayer leader;
+
+    public Party(UltimateParty plugin, ProxiedPlayer leader) {
         this.plugin = plugin;
         this.leader = leader;
 
         players.add(leader);
-    }
-
-    public void disband() {
-        players.clear();
-        plugin.getPartyManager().getAllPartys().remove(this);
     }
 
     public Set<ProxiedPlayer> getPlayers() {
@@ -41,7 +37,7 @@ public class Party {
 
     public void removePlayer(ProxiedPlayer p) {
         if (isLeader(p)) {
-            disband();
+            plugin.getPartyManager().disbandParty(this);
         } else {
             players.remove(p);
         }
@@ -51,20 +47,18 @@ public class Party {
         return leader;
     }
 
+    public void setLeader(ProxiedPlayer p) {
+        leader = Objects.requireNonNull(p, "player");
+    }
+
     public boolean isLeader(ProxiedPlayer p) {
         return p == leader;
     }
 
-    public void setLeader(ProxiedPlayer p) {
-        leader = p;
-    }
-
-    public void invite(ProxiedPlayer p) {
-        if (!invitations.contains(p.getUniqueId())) {
-            invitations.add(p.getUniqueId());
-
-            ProxyServer.getInstance().getScheduler().schedule(UltimateParty.getInstance(),
-                    () -> invitations.remove(p.getUniqueId()), plugin.getPartyManager().getInvitationDelay(), TimeUnit.SECONDS);
+    public void createInvitation(ProxiedPlayer p) {
+        if (invitations.add(p.getUniqueId())) {
+            ProxyServer.getInstance().getScheduler().schedule(plugin, () ->
+                    invitations.remove(p.getUniqueId()), plugin.getPartyManager().getInvitationDelay(), TimeUnit.SECONDS);
         }
     }
 
@@ -81,7 +75,8 @@ public class Party {
     }
 
     public int getMaxSize() {
-        Configuration groups = UltimateParty.getInstance().getConfig().getSection("MaxPartySize.Groups");
+        Configuration groups = plugin.getConfig().getSection("MaxPartySize.Groups");
+
         for (String s : groups.getKeys()) {
             Configuration group = groups.getSection(s);
             if (leader.hasPermission(group.getString("Permission"))) {
@@ -108,7 +103,7 @@ public class Party {
         }
 
         Party party = (Party) o;
-        return Objects.equals(leader, party.leader) && Objects.equals(players, party.players);
+        return Objects.equals(leader, party.leader) && players.equals(party.players);
     }
 
     @Override

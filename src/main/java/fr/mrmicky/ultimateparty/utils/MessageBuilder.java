@@ -40,8 +40,8 @@ public class MessageBuilder {
                     int k = Character.getNumericValue(chars[j + 1]);
                     String[] str = message.split("\\{" + k + "-\\}");
                     MessageContainer mc = messages.get(k);
-                    builder.append("", FormatRetention.NONE).append(TextComponent.fromLegacyText(str[0]));
-                    builder.append(mc.getMessage(), FormatRetention.NONE).event(mc.getClickEvent())
+                    builder.append("", FormatRetention.NONE).append(TextComponent.fromLegacyText(str[0]))
+                            .append(mc.getMessage(), FormatRetention.NONE).event(mc.getClickEvent())
                             .event(mc.getHoverEvent());
                     message = message.substring(str[0].length() + 4);
                     break;

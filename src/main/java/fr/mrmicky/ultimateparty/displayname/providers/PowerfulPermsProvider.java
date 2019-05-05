@@ -6,16 +6,18 @@ import com.google.common.util.concurrent.ListenableFuture;
 import fr.mrmicky.ultimateparty.displayname.PartyNameProvider;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.concurrent.ExecutionException;
 
 public class PowerfulPermsProvider implements PartyNameProvider {
 
-    private PermissionManager powerfulPermsPlugin;
+    private final PermissionManager powerfulPermsPlugin;
 
     public PowerfulPermsProvider() {
-        powerfulPermsPlugin = ((PowerfulPermsPlugin) ProxyServer.getInstance().getPluginManager().getPlugin("PowerfulPerms"))
-                .getPermissionManager();
+        Plugin powerfullPerms = ProxyServer.getInstance().getPluginManager().getPlugin("PowerfulPerms");
+
+        powerfulPermsPlugin = ((PowerfulPermsPlugin) powerfullPerms).getPermissionManager();
     }
 
     @Override

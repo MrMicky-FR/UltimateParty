@@ -3,7 +3,6 @@ package fr.mrmicky.ultimateparty.command.subcommands;
 import fr.mrmicky.ultimateparty.Party;
 import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.utils.ChatUtils;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.List;
@@ -15,20 +14,19 @@ public class PartyDebug extends PartyCommand {
     }
 
     @Override
-    public void execute(ProxiedPlayer p, String[] args, Party party) {
-        send(p);
-    }
-
-    private void send(ProxiedPlayer p) {
-        String ver = getPlugin().getDescription().getVersion();
-        p.sendMessage(TextComponent.fromLegacyText(ChatUtils.color("&bUltimateParty &7v&b" + ver + "&7.")));
-        p.sendMessage(TextComponent.fromLegacyText(ChatUtils.color("&7ID:&b %%__USER__%%" + "/" + "%%__NONCE__%%")));
-        p.sendMessage(TextComponent.fromLegacyText(ChatUtils.color("&7Download:&b https://www.spigotmc.org/resources/ultimateparty.51548/")));
+    public void execute(ProxiedPlayer player, String[] args, Party party) {
+        send(player);
     }
 
     @Override
     public List<String> onTabComplete(ProxiedPlayer p, String[] args, Party party) {
         send(p);
         return null;
+    }
+
+    private void send(ProxiedPlayer p) {
+        p.sendMessage(ChatUtils.colorComponents("&bUltimateParty &7v&b" + getPlugin().getDescription().getVersion() + "&7by &bMrMicky&7."));
+        p.sendMessage(ChatUtils.colorComponents("&7ID:&b %%__USER__%%" + "/" + "%%__NONCE__%%"));
+        p.sendMessage(ChatUtils.colorComponents("&7Download:&b https://www.spigotmc.org/resources/ultimateparty.51548/"));
     }
 }

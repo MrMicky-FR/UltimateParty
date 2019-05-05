@@ -20,10 +20,6 @@ public final class PartyManager {
         return Collections.unmodifiableSet(partys);
     }
 
-    protected Set<Party> getAllPartys() {
-        return partys;
-    }
-
     public Party getParty(ProxiedPlayer p) {
         if (p != null) {
             for (Party party : partys) {
@@ -33,7 +29,6 @@ public final class PartyManager {
             }
         }
         return null;
-        // The player is not in a party
     }
 
     public boolean hasParty(ProxiedPlayer p) {
@@ -45,7 +40,17 @@ public final class PartyManager {
             throw new IllegalStateException(leader.getName() + " is already in a party");
         }
 
-        return new Party(plugin, leader);
+        Party party = new Party(plugin, leader);
+
+        partys.add(party);
+
+        return party;
+    }
+
+    public void disbandParty(Party party) {
+        if (partys.remove(party)) {
+            party.getPlayers().clear();
+        }
     }
 
     public int getInvitationDelay() {

@@ -9,19 +9,24 @@ import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 
 public class LocaleLoader {
+
+    private final UltimateParty plugin;
 
     private Configuration lang;
     private File file;
 
-    public LocaleLoader(UltimateParty m) {
-        file = new File(m.getDataFolder(), "messages.yml");
+    public LocaleLoader(UltimateParty plugin) {
+        this.plugin = plugin;
+
+        file = new File(plugin.getDataFolder(), "messages.yml");
 
         if (file.exists()) {
             loadMessages();
         } else {
-            m.getLogger().info("messages.yml not founded - Creating it...");
+            plugin.getLogger().info("messages.yml not founded - Creating it...");
             createFile();
         }
     }
@@ -37,7 +42,7 @@ public class LocaleLoader {
 
             ConfigurationProvider.getProvider(YamlConfiguration.class).save(lang, file);
         } catch (IOException e) {
-            throw new RuntimeException("Unable to create messages file", e);
+            plugin.getLogger().log(Level.SEVERE, "Unable to create messages file", e);
         }
     }
 
@@ -63,7 +68,7 @@ public class LocaleLoader {
                 ConfigurationProvider.getProvider(YamlConfiguration.class).save(lang, file);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Unable to load messages file", e);
+            plugin.getLogger().log(Level.SEVERE, "Unable to load messages file", e);
         }
     }
 }

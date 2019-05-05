@@ -5,8 +5,6 @@ import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.locale.Message;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.List;
-
 public class PartyTp extends PartyCommand {
 
     public PartyTp() {
@@ -14,21 +12,17 @@ public class PartyTp extends PartyCommand {
     }
 
     @Override
-    public void execute(ProxiedPlayer p, String[] args, Party party) {
-        if (party != null) {
-            if (!getPlugin().isServerEnable(party.getLeader())) {
-                p.sendMessage(Message.DISABLE_SERVER.getAsComponenent());
-                return;
-            }
-
-            getPlugin().connect(p, party.getLeader().getServer().getInfo());
-        } else {
-            p.sendMessage(Message.NO_PARTY.getAsComponenent());
+    public void execute(ProxiedPlayer player, String[] args, Party party) {
+        if (party == null) {
+            Message.NO_PARTY.send(player);
+            return;
         }
-    }
 
-    @Override
-    public List<String> onTabComplete(ProxiedPlayer p, String[] args, Party party) {
-        return null;
+        if (!getPlugin().isServerEnable(party.getLeader())) {
+            Message.DISABLE_SERVER.send(player);
+            return;
+        }
+
+        getPlugin().connect(player, party.getLeader().getServer().getInfo());
     }
 }

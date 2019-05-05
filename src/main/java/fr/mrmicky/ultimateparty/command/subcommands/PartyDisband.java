@@ -5,8 +5,6 @@ import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.locale.Message;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.List;
-
 public class PartyDisband extends PartyCommand {
 
     public PartyDisband() {
@@ -14,17 +12,16 @@ public class PartyDisband extends PartyCommand {
     }
 
     @Override
-    public void execute(ProxiedPlayer p, String[] args, Party party) {
-        if (party != null && party.isLeader(p)) {
-            party.getPlayers().forEach(ps -> ps.sendMessage(Message.PARTY_DISBAND.getAsComponenent(p.getName())));
-            party.disband();
-        } else {
-            p.sendMessage(Message.NO_PARTY.getAsComponenent());
-        }
-    }
+    public void execute(ProxiedPlayer player, String[] args, Party party1) {
+        Party party = getPlugin().getPartyManager().getParty(player);
 
-    @Override
-    public List<String> onTabComplete(ProxiedPlayer p, String[] args, Party party) {
-        return null;
+        if (party == null || !party.isLeader(player)) {
+            Message.NO_PARTY.send(player);
+            return;
+        }
+
+        Message.PARTY_DISBAND.send(party.getPlayers(), player.getName());
+
+        getPartyManager().disbandParty(party);
     }
 }

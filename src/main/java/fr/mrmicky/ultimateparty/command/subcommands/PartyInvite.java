@@ -4,12 +4,14 @@ import fr.mrmicky.ultimateparty.Party;
 import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.locale.Message;
 import fr.mrmicky.ultimateparty.options.PartyOption;
+import fr.mrmicky.ultimateparty.utils.ChatUtils;
 import fr.mrmicky.ultimateparty.utils.MessageBuilder;
+import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PartyInvite extends PartyCommand {
 
@@ -18,83 +20,83 @@ public class PartyInvite extends PartyCommand {
     }
 
     @Override
-    public void execute(ProxiedPlayer p, String[] args, Party party) {
+    public void execute(ProxiedPlayer player, String[] args, Party party) {
         if (party == null) {
             if (getPlugin().getConfig().getBoolean("AutoParty")) {
-                party = getPartyManager().createParty(p);
-                p.sendMessage(Message.PARTY_CREATE.getAsComponenent());
+                party = getPartyManager().createParty(player);
+                Message.PARTY_CREATE.send(player);
             } else {
-                p.sendMessage(Message.NO_LEADER.getAsComponenent());
+                Message.NO_LEADER.send(player);
                 return;
             }
         }
 
-        if (party.isLeader(p)) {
-            if (args.length == 0) {
-                p.sendMessage(Message.NO_PLAYER.getAsComponenent());
-                return;
-            }
-
-            ProxiedPlayer p2 = getPlugin().getProxy().getPlayer(args[0]);
-
-            if (p2 != null) {
-                if (!getPartyManager().hasParty(p2)) {
-                    if (!party.isFull()) {
-                        if (!getPlugin().isServerEnable(p2)) {
-                            p.sendMessage(Message.DISABLE_SERVER.getAsComponenent());
-                            return;
-                        }
-
-                        if (party.isInvited(p2)) {
-                            p.sendMessage(Message.INVITATION_ALREADY_SEND.getAsComponenent());
-                            return;
-                        }
-
-                        if (!getPlugin().getDataManager().getOption(p2, PartyOption.RECEIVE_INVITATIONS)) {
-                            p.sendMessage(Message.DISABLE_INVITATION.getAsComponenent());
-                            return;
-                        }
-
-                        sendInvitation(p2, party);
-                        p.sendMessage(Message.INVITATION_SEND.getAsComponenent(p2.getName()));
-                    } else {
-                        p.sendMessage(Message.PARTY_FULL_SELF.getAsComponenent());
-                    }
-                } else {
-                    p.sendMessage(Message.ALREADY_IN_PARTY.getAsComponenent());
-                }
-            } else {
-                p.sendMessage(Message.PLAYER_NOT_FOUND.getAsComponenent());
-            }
-        } else {
-            p.sendMessage(Message.NO_LEADER.getAsComponenent());
+        if (!party.isLeader(player)) {
+            Message.NO_LEADER.send(player);
+            return;
         }
+
+        if (args.length == 0) {
+            Message.NO_PLAYER.send(player);
+            return;
+        }
+
+        ProxiedPlayer p2 = getPlugin().getProxy().getPlayer(args[0]);
+
+        if (p2 == null) {
+            Message.PLAYER_NOT_FOUND.send(player);
+            return;
+        }
+
+        if (getPartyManager().hasParty(p2)) {
+            Message.ALREADY_IN_PARTY.send(player);
+            return;
+        }
+
+        if (party.isFull()) {
+            Message.PARTY_FULL_SELF.send(player);
+            return;
+        }
+
+        if (!getPlugin().isServerEnable(p2)) {
+            Message.DISABLE_SERVER.send(player);
+            return;
+        }
+
+        if (party.isInvited(p2)) {
+            Message.INVITATION_ALREADY_SEND.send(player);
+            return;
+        }
+
+        if (!getPlugin().getDataManager().getOption(p2, PartyOption.RECEIVE_INVITATIONS)) {
+            Message.DISABLE_INVITATION.send(player);
+            return;
+        }
+
+        sendInvitation(p2, party);
+
+        Message.INVITATION_SEND.send(player, p2.getName());
     }
 
     private void sendInvitation(ProxiedPlayer p, Party party) {
         String name = party.getLeader().getName();
-        party.invite(p);
+        party.createInvitation(p);
         BaseComponent[] msg = new MessageBuilder(Message.INVITATION_RECEIVE.getMessage(name, getPartyManager().getInvitationDelay()))
-                .click(Message.INVITATION_ACCEPT_BUTTON.getMessage(), true, getPlugin().getCommand() + " accept " + name,
-                        Message.INVITATION_ACCEPT_BUTTON_HOVER.getMessage())
-                .click(Message.INVITATION_DENY_BUTTON.getMessage(), true, getPlugin().getCommand() + " deny " + name,
-                        Message.INVITATION_DENY_BUTTON_HOVER.getMessage())
+                .click(Message.INVITATION_ACCEPT_BUTTON.getMessage(), true, getPlugin().getCommand() + " accept " + name, Message.INVITATION_ACCEPT_BUTTON_HOVER.getMessage())
+                .click(Message.INVITATION_DENY_BUTTON.getMessage(), true, getPlugin().getCommand() + " deny " + name, Message.INVITATION_DENY_BUTTON_HOVER.getMessage())
                 .build();
         p.sendMessage(msg);
     }
 
     @Override
-    public List<String> onTabComplete(ProxiedPlayer p, String[] args, Party party) {
+    public List<String> onTabComplete(ProxiedPlayer player, String[] args, Party party) {
         if (args.length != 1) {
             return null;
         }
 
-        List<String> members = new ArrayList<>();
-        for (ProxiedPlayer ps : p.getServer().getInfo().getPlayers()) {
-            if (ps != p && ps.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
-                members.add(ps.getName());
-            }
-        }
-        return members;
+        return player.getServer().getInfo().getPlayers().stream()
+                .filter(p -> !p.equals(player) && ChatUtils.startsWithIgnoreCase(p.getName(), args[0]))
+                .map(CommandSender::getName)
+                .collect(Collectors.toList());
     }
 }

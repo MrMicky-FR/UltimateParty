@@ -5,6 +5,7 @@ import fr.mrmicky.ultimateparty.UltimateParty;
 import fr.mrmicky.ultimateparty.command.subcommands.PartyChat;
 import fr.mrmicky.ultimateparty.locale.Message;
 import fr.mrmicky.ultimateparty.utils.ChatUtils;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
@@ -35,7 +36,7 @@ public class PartyListener implements Listener {
         if (party != null) {
             if (party.isLeader(p)) {
                 party.getPlayers().forEach(ps -> ps.sendMessage(Message.PARTY_DISBAND.getAsComponenent(p.getName())));
-                party.disband();
+                plugin.getPartyManager().disbandParty(party);
             } else {
                 party.removePlayer(p);
                 party.getPlayers().forEach(ps -> ps.sendMessage(Message.PARTY_LEFT_BROADCAST.getAsComponenent(p.getName())));
@@ -47,14 +48,19 @@ public class PartyListener implements Listener {
     public void onSwitch(ServerSwitchEvent e) {
         ProxiedPlayer p = e.getPlayer();
         Party party = plugin.getPartyManager().getParty(p);
-        String server = p.getServer().getInfo().getName();
+        ServerInfo server = p.getServer().getInfo();
 
-        if (party != null && party.isLeader(p) && plugin.isServerEnable(p)
-                && !ChatUtils.containsIgnoreCase(plugin.getDisableAutoJoin(), server)) {
-            for (ProxiedPlayer ps : party.getPlayers()) {
-                if (ps.getServer() != p.getServer() && plugin.isServerEnable(ps)) {
-                    plugin.connect(ps, p.getServer().getInfo());
-                }
+        if (party == null || !party.isLeader(p) || !plugin.isServerEnable(p)) {
+            return;
+        }
+
+        if (ChatUtils.containsIgnoreCase(plugin.getDisableAutoJoin(), server.getName())) {
+            return;
+        }
+
+        for (ProxiedPlayer ps : party.getPlayers()) {
+            if (!ps.getServer().equals(p.getServer()) && plugin.isServerEnable(ps)) {
+                plugin.connect(ps, server);
             }
         }
     }

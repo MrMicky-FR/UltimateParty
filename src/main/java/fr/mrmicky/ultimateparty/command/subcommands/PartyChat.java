@@ -6,6 +6,7 @@ import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.locale.Message;
 import fr.mrmicky.ultimateparty.utils.ChatCensor;
 import fr.mrmicky.ultimateparty.utils.MessageBuilder;
+import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -15,9 +16,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 public class PartyChat extends PartyCommand {
 
@@ -27,55 +28,54 @@ public class PartyChat extends PartyCommand {
         super("chat");
     }
 
-    @Override
-    public void execute(ProxiedPlayer p, String[] args, Party party) {
-        if (party != null) {
-            sendMessage(p, party, String.join(" ", args), getPlugin());
-        } else {
-            p.sendMessage(Message.NO_PARTY.getAsComponenent());
-        }
-    }
-
-    public static void sendMessage(ProxiedPlayer p, Party party, String msg, UltimateParty m) {
-        ChatCensor cc = new ChatCensor(p, msg);
+    public static void sendMessage(ProxiedPlayer player, Party party, String msg, UltimateParty plugin) {
+        ChatCensor cc = new ChatCensor(player, msg);
 
         if (cc.isCancel()) {
             return;
         }
 
         BaseComponent[] c = new MessageBuilder(Message.getPrefix() + "{0-}")
-                .click(Message.CHAT_FORMAT.getMessage(m.getDisplayName(p)) + cc.getNewMessage(), false,
-                        m.getCommand() + " chat ", Message.CHAT_BUTTON_HOVER.getMessage())
+                .click(Message.CHAT_FORMAT.getMessage(plugin.getDisplayName(player)) + cc.getNewMessage(), false, plugin.getCommand() + " chat ", Message.CHAT_BUTTON_HOVER.getMessage())
                 .build();
 
-        party.getPlayers().stream().filter(m::isServerEnable).forEach(ps -> ps.sendMessage(c));
+        party.getPlayers().stream().filter(plugin::isServerEnable).forEach(ps -> ps.sendMessage(c));
 
-        if (m.getConfig().getBoolean("Chat.Log")) {
-            log('(' + party.getLeader().getName() + "'s party" + ") " + p.getName() + ": " + msg, m);
+        if (plugin.getConfig().getBoolean("Chat.Log")) {
+            log('(' + party.getLeader().getName() + "'s party) " + player.getName() + ": " + msg, plugin);
         }
     }
 
-    private static void log(String message, UltimateParty m) {
+    private static void log(String message, UltimateParty plugin) {
         try {
-            File f = new File(m.getDataFolder(), "logs.txt");
+            File f = new File(plugin.getDataFolder(), "logs.txt");
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(f, true))) {
                 writer.write(DATE_FORMATTER.format(LocalDateTime.now()) + ' ' + message);
                 writer.newLine();
             }
         } catch (IOException e) {
-            m.getLogger().log(Level.SEVERE, "Could not save the log file", e);
+            plugin.getLogger().log(Level.SEVERE, "Could not save the log file", e);
         }
     }
 
     @Override
-    public List<String> onTabComplete(ProxiedPlayer p, String[] args, Party party) {
-        List<String> members = new ArrayList<>();
-        for (ProxiedPlayer ps : party.getPlayers()) {
-            if (ps != p && ps.getName().toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
-                members.add(ps.getName());
-            }
+    public void execute(ProxiedPlayer player, String[] args, Party party1) {
+        Party party = getPlugin().getPartyManager().getParty(player);
+
+        if (party == null) {
+            Message.NO_PARTY.send(player);
+            return;
         }
-        return members;
+
+        sendMessage(player, party, String.join(" ", args), getPlugin());
+    }
+
+    @Override
+    public List<String> onTabComplete(ProxiedPlayer player, String[] args, Party party) {
+        return party.getPlayers().stream()
+                .filter(p -> p != player && p.getName().toLowerCase().startsWith(args[args.length - 1].toLowerCase()))
+                .map(CommandSender::getName)
+                .collect(Collectors.toList());
     }
 }
