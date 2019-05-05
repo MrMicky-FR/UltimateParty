@@ -6,7 +6,7 @@
 
     <groupId>fr.mrmicky</groupId>
     <artifactId>ultimateparty</artifactId>
-    <version>1.2.4</version>
+    <version>1.2.5</version>
 
     <name>UltimateParty</name>
 
@@ -56,7 +56,7 @@
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
-            <version>1.13-SNAPSHOT</version>
+            <version>1.14-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!-- Permissions plugins -->
