@@ -148,7 +148,7 @@ public final class UltimateParty extends Plugin {
 
     public void connect(ProxiedPlayer p, ServerInfo server) {
         if (p.getServer().getInfo() == server) {
-            p.sendMessage(Message.ALREADY_CONNECT.getAsComponenent());
+            Message.ALREADY_CONNECT.send(p);
             return;
         }
 

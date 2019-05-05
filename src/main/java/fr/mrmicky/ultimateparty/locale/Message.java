@@ -150,7 +150,7 @@ public enum Message {
     OPTION_PARTY_INVITATION("Receive party invitations", false),
     OPTION_PUBLIC_PARTY("Anyone can join the party", false);
 
-    protected String message;
+    private String message;
     private boolean prefix;
 
     Message(String message, boolean prefix) {
@@ -158,11 +158,15 @@ public enum Message {
         this.prefix = prefix;
     }
 
-    public static String getPrefix() {
-        return PREFIX.message;
+    public String getMessage() {
+        return message;
     }
 
-    public String getMessage(Object... objects) {
+    void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getAsString(Object... objects) {
         String s = message;
         for (int i = 0; i < objects.length; i++) {
             s = s.replace("{" + i + "}", String.valueOf(objects[i]));
@@ -170,20 +174,16 @@ public enum Message {
         return (prefix ? PREFIX.message : "") + s;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public BaseComponent[] getAsComponenent(Object... objects) {
-        return TextComponent.fromLegacyText(getMessage(objects));
+    public BaseComponent[] getAsComponent(Object... objects) {
+        return TextComponent.fromLegacyText(getAsString(objects));
     }
 
     public void send(ProxiedPlayer p, Object... objects) {
-        p.sendMessage(getAsComponenent(objects));
+        p.sendMessage(getAsComponent(objects));
     }
 
     public void send(Iterable<ProxiedPlayer> players, Object... objects) {
-        BaseComponent[] components = getAsComponenent(objects);
+        BaseComponent[] components = getAsComponent(objects);
 
         players.forEach(p -> p.sendMessage(components));
     }

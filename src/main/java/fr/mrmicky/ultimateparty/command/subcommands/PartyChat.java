@@ -35,8 +35,8 @@ public class PartyChat extends PartyCommand {
             return;
         }
 
-        BaseComponent[] c = new MessageBuilder(Message.getPrefix() + "{0-}")
-                .click(Message.CHAT_FORMAT.getMessage(plugin.getDisplayName(player)) + cc.getNewMessage(), false, plugin.getCommand() + " chat ", Message.CHAT_BUTTON_HOVER.getMessage())
+        BaseComponent[] c = new MessageBuilder(Message.PREFIX.getMessage() + "{0-}")
+                .click(Message.CHAT_FORMAT.getAsString(plugin.getDisplayName(player)) + cc.getNewMessage(), false, plugin.getCommand() + " chat ", Message.CHAT_BUTTON_HOVER.getAsString())
                 .build();
 
         party.getPlayers().stream().filter(plugin::isServerEnable).forEach(ps -> ps.sendMessage(c));

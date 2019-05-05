@@ -36,7 +36,7 @@ public class ChatCensor {
         if (UltimateParty.getInstance().getConfig().getBoolean("PreventUrl")) {
             if (URL_PATTERN.matcher(message).find()) {
                 cancel = true;
-                player.sendMessage(Message.NO_URL_CHAT.getAsComponenent());
+                Message.NO_URL_CHAT.send(player);
             }
         }
     }

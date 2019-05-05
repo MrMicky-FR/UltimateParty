@@ -121,11 +121,11 @@ public class CommandParty extends Command implements TabExecutor {
         Message.SPACER_TOP.send(p);
 
         if (party == null) {
-            p.sendMessage(new MessageBuilder(Message.MENU_NO_PARTY.getMessage())
-                    .click(Message.CREATE_BUTTON.getMessage(), true, plugin.getCommand() + " create",
-                            Message.CREATE_BUTTON_HOVER.getMessage())
-                    .click(Message.OPTIONS_BUTTON.getMessage(), true, plugin.getCommand() + " options",
-                            Message.OPTIONS_BUTTON_HOVER.getMessage())
+            p.sendMessage(new MessageBuilder(Message.MENU_NO_PARTY.getAsString())
+                    .click(Message.CREATE_BUTTON.getAsString(), true, plugin.getCommand() + " create",
+                            Message.CREATE_BUTTON_HOVER.getAsString())
+                    .click(Message.OPTIONS_BUTTON.getAsString(), true, plugin.getCommand() + " options",
+                            Message.OPTIONS_BUTTON_HOVER.getAsString())
                     .build());
 
             Message.SPACER_BOTTOM.send(p);
@@ -141,41 +141,41 @@ public class CommandParty extends Command implements TabExecutor {
                     continue;
                 }
 
-                p.sendMessage(new MessageBuilder(Message.PARTY_FORMAT_WHEN_LEADER.getMessage(ps.getName()))
-                        .click(Message.KICK_BUTTON.getMessage(), false, plugin.getCommand() + " kick " + ps.getName(),
-                                Message.KICK_BUTTON_HOVER.getMessage(ps.getName()))
-                        .click(Message.LEAD_BUTTON.getMessage(), false, plugin.getCommand() + " lead " + ps.getName(),
-                                Message.LEAD_BUTTON_HOVER.getMessage(ps.getName()))
+                p.sendMessage(new MessageBuilder(Message.PARTY_FORMAT_WHEN_LEADER.getAsString(ps.getName()))
+                        .click(Message.KICK_BUTTON.getAsString(), false, plugin.getCommand() + " kick " + ps.getName(),
+                                Message.KICK_BUTTON_HOVER.getAsString(ps.getName()))
+                        .click(Message.LEAD_BUTTON.getAsString(), false, plugin.getCommand() + " lead " + ps.getName(),
+                                Message.LEAD_BUTTON_HOVER.getAsString(ps.getName()))
                         .build());
             }
 
             p.sendMessage(ChatUtils.SPACE);
-            p.sendMessage(new MessageBuilder(Message.MENU_PARTY_LEADER.getMessage())
-                    .click(Message.INVITE_BUTTON.getMessage(), false, plugin.getCommand() + " invite ",
-                            Message.INVITE_BUTTON_HOVER.getMessage())
-                    .click(Message.CHAT_BUTTON.getMessage(), false, plugin.getCommand() + " chat ",
-                            Message.CHAT_BUTTON_HOVER.getMessage())
-                    .click(Message.DISBAND_BUTTON.getMessage(), false, plugin.getCommand() + " disband",
-                            Message.DISBAND_BUTTON_HOVER.getMessage())
-                    .click(Message.OPTIONS_BUTTON.getMessage(), true, plugin.getCommand() + " options",
-                            Message.OPTIONS_BUTTON_HOVER.getMessage())
+            p.sendMessage(new MessageBuilder(Message.MENU_PARTY_LEADER.getAsString())
+                    .click(Message.INVITE_BUTTON.getAsString(), false, plugin.getCommand() + " invite ",
+                            Message.INVITE_BUTTON_HOVER.getAsString())
+                    .click(Message.CHAT_BUTTON.getAsString(), false, plugin.getCommand() + " chat ",
+                            Message.CHAT_BUTTON_HOVER.getAsString())
+                    .click(Message.DISBAND_BUTTON.getAsString(), false, plugin.getCommand() + " disband",
+                            Message.DISBAND_BUTTON_HOVER.getAsString())
+                    .click(Message.OPTIONS_BUTTON.getAsString(), true, plugin.getCommand() + " options",
+                            Message.OPTIONS_BUTTON_HOVER.getAsString())
                     .build());
         } else {
             for (ProxiedPlayer ps : party.getPlayers()) {
                 if (ps != party.getLeader()) {
-                    p.sendMessage(Message.PARTY_FORMAT.getAsComponenent(ps.getName()));
+                    Message.PARTY_FORMAT.send(p, ps.getName());
                 }
             }
             p.sendMessage(ChatUtils.SPACE);
-            p.sendMessage(new MessageBuilder(Message.MENU_PARTY_MEMBER.getMessage())
-                    .click(Message.JOIN_BUTTON.getMessage(), true, plugin.getCommand() + " tp",
-                            Message.JOIN_BUTTON_HOVER.getMessage())
-                    .click(Message.CHAT_BUTTON.getMessage(), false, plugin.getCommand() + " chat ",
-                            Message.CHAT_BUTTON_HOVER.getMessage())
-                    .click(Message.LEAVE_BUTTON.getMessage(), false, plugin.getCommand() + " leave",
-                            Message.LEAVE_BUTTON_HOVER.getMessage())
-                    .click(Message.OPTIONS_BUTTON.getMessage(), true, plugin.getCommand() + " options",
-                            Message.OPTIONS_BUTTON_HOVER.getMessage())
+            p.sendMessage(new MessageBuilder(Message.MENU_PARTY_MEMBER.getAsString())
+                    .click(Message.JOIN_BUTTON.getAsString(), true, plugin.getCommand() + " tp",
+                            Message.JOIN_BUTTON_HOVER.getAsString())
+                    .click(Message.CHAT_BUTTON.getAsString(), false, plugin.getCommand() + " chat ",
+                            Message.CHAT_BUTTON_HOVER.getAsString())
+                    .click(Message.LEAVE_BUTTON.getAsString(), false, plugin.getCommand() + " leave",
+                            Message.LEAVE_BUTTON_HOVER.getAsString())
+                    .click(Message.OPTIONS_BUTTON.getAsString(), true, plugin.getCommand() + " options",
+                            Message.OPTIONS_BUTTON_HOVER.getAsString())
                     .build());
         }
 

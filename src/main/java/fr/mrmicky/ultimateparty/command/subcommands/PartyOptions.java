@@ -10,7 +10,6 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,18 +22,19 @@ public class PartyOptions extends PartyCommand {
     @Override
     public void execute(ProxiedPlayer player, String[] args, Party party) {
         if (args == null || args.length < 2) {
-            player.sendMessage(Message.SPACER_TOP.getAsComponenent());
+            Message.SPACER_TOP.send(player);
+
             for (PartyOption option : PartyOption.values()) {
                 boolean b = getPlugin().getDataManager().getOption(player, option);
                 ChatColor color = b ? ChatColor.GREEN : ChatColor.RED;
                 player.sendMessage(new MessageBuilder(
-                        Message.OPTION_FORMAT.getMessage(color + option.getMessage().getMessage()))
-                        .click(b ? Message.OPTION_DISABLE_BUTTON.getMessage() : Message.OPTION_ENABLE_BUTTON.getMessage(), true,
-                                getPlugin().getCommand() + " options " + option.toString() + " " + !b, b ? Message.OPTION_DISABLE_BUTTON_HOVER.getMessage() : Message.OPTION_ENABLE_BUTTON_HOVER.getMessage())
+                        Message.OPTION_FORMAT.getAsString(color + option.getMessage().getAsString()))
+                        .click(b ? Message.OPTION_DISABLE_BUTTON.getAsString() : Message.OPTION_ENABLE_BUTTON.getAsString(), true,
+                                getPlugin().getCommand() + " options " + option.toString() + " " + !b, b ? Message.OPTION_DISABLE_BUTTON_HOVER.getAsString() : Message.OPTION_ENABLE_BUTTON_HOVER.getAsString())
                         .build());
             }
 
-            player.sendMessage(Message.SPACER_BOTTOM.getAsComponenent());
+            Message.SPACER_BOTTOM.send(player);
         } else {
             PartyOption option;
             boolean b = Boolean.parseBoolean(args[1]);

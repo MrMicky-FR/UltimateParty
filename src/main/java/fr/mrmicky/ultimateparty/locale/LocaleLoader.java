@@ -37,7 +37,7 @@ public class LocaleLoader {
             lang = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
 
             for (Message msg : Message.values()) {
-                lang.set(msg.toString().toLowerCase().replace('_', '-'), msg.message.replace(ChatColor.COLOR_CHAR, '&'));
+                lang.set(msg.toString().toLowerCase().replace('_', '-'), msg.getMessage().replace(ChatColor.COLOR_CHAR, '&'));
             }
 
             ConfigurationProvider.getProvider(YamlConfiguration.class).save(lang, file);
@@ -58,7 +58,7 @@ public class LocaleLoader {
                     msg.setMessage(ChatUtils.color(message));
                 } else {
                     // message is missing, so we add it
-                    lang.set(replace, msg.message.replace(ChatColor.COLOR_CHAR, '&'));
+                    lang.set(replace, msg.getMessage().replace(ChatColor.COLOR_CHAR, '&'));
                     save = true;
                 }
             }

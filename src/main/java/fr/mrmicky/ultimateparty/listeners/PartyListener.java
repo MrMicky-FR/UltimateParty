@@ -33,14 +33,16 @@ public class PartyListener implements Listener {
         ProxiedPlayer p = e.getPlayer();
         Party party = plugin.getPartyManager().getParty(p);
 
-        if (party != null) {
-            if (party.isLeader(p)) {
-                party.getPlayers().forEach(ps -> ps.sendMessage(Message.PARTY_DISBAND.getAsComponenent(p.getName())));
-                plugin.getPartyManager().disbandParty(party);
-            } else {
-                party.removePlayer(p);
-                party.getPlayers().forEach(ps -> ps.sendMessage(Message.PARTY_LEFT_BROADCAST.getAsComponenent(p.getName())));
-            }
+        if (party == null) {
+            return;
+        }
+
+        if (party.isLeader(p)) {
+            Message.PARTY_DISBAND.send(party.getPlayers(), p.getName());
+            plugin.getPartyManager().disbandParty(party);
+        } else {
+            Message.PARTY_LEFT_BROADCAST.send(party.getPlayers(), p.getName());
+            party.removePlayer(p);
         }
     }
 
@@ -78,10 +80,10 @@ public class PartyListener implements Listener {
             if (msg.toLowerCase().startsWith(s.toLowerCase())) {
                 Party party = plugin.getPartyManager().getParty(p);
                 if (!plugin.isServerEnable(p)) {
-                    p.sendMessage(Message.DISABLE_SERVER_SELF.getAsComponenent());
+                    Message.DISABLE_SERVER_SELF.send(p);
                     return;
                 } else if (party == null) {
-                    p.sendMessage(Message.NO_PARTY.getAsComponenent());
+                    Message.NO_PARTY.send(p);
                     return;
                 }
 
