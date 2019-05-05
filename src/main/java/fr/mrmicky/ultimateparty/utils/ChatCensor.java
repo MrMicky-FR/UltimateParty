@@ -20,7 +20,7 @@ public class ChatCensor {
         this.player = player;
         this.message = message;
 
-        checkDomainsIp();
+        checkUrl();
         checkSwear();
     }
 
@@ -32,8 +32,8 @@ public class ChatCensor {
         return message;
     }
 
-    private void checkDomainsIp() {
-        if (UltimateParty.getInstance().getConfig().getBoolean("PreventUrl")) {
+    private void checkUrl() {
+        if (UltimateParty.getInstance().getConfig().getBoolean("Chat.PreventUrl")) {
             if (URL_PATTERN.matcher(message).find()) {
                 cancel = true;
                 Message.NO_URL_CHAT.send(player);

@@ -27,7 +27,7 @@ Chat:
     - fuck
     - shit
     - bitch
-  PreventUrl: true
+  PreventUrl: false
 
 DisableServers:
   - "Login"

@@ -41,8 +41,8 @@ public class PartyListener implements Listener {
             Message.PARTY_DISBAND.send(party.getPlayers(), p.getName());
             plugin.getPartyManager().disbandParty(party);
         } else {
-            Message.PARTY_LEFT_BROADCAST.send(party.getPlayers(), p.getName());
             party.removePlayer(p);
+            Message.PARTY_LEFT_BROADCAST.send(party.getPlayers(), p.getName());
         }
     }
 
