@@ -23,25 +23,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 import java.util.logging.Level;
 
 public final class UltimateParty extends Plugin {
 
-    //public static final String USER_ID = "12345";
-    //public static final String NONCE_ID = "Test123";
+    //public static final String USER_ID = "";
+    //public static final String NONCE_ID = "";
     public static final String USER_ID = "%%__USER__%%";
     public static final String NONCE_ID = "%%__NONCE__%%";
 
     private static UltimateParty instance;
-    private PartyManager partyManager;
-    private Configuration config;
-    private String command;
-    private CommandParty commandParty;
-    private DataManager dataManager;
 
-    private List<String> disableServers;
-    private List<String> disableAutoJoin;
+    private Configuration config;
+    private CommandParty commandParty;
+    private PartyManager partyManager;
+    private DataManager dataManager;
 
     private PartyNameProvider displayNameProvider;
     private PartyConnector connector;
@@ -52,17 +48,16 @@ public final class UltimateParty extends Plugin {
 
     @Override
     public void onEnable() {
-        Checker c = new Checker(this);
-        if (!c.isValid()) {
+        Checker checker = new Checker(this);
+        if (!checker.isValid()) {
             return;
         }
 
         instance = this;
-        reloadConfig();
 
-        command = config.getString("Commands.Command");
-        dataManager = new DataManager(this);
+        loadConfig();
 
+        String command = config.getString("Commands.Command");
         String[] aliases = config.getStringList("Commands.Aliases").toArray(new String[0]);
         commandParty = new CommandParty(command, config.getBoolean("Commands.Permission"), aliases, this);
 
@@ -70,12 +65,14 @@ public final class UltimateParty extends Plugin {
         getProxy().getPluginManager().registerListener(this, new PartyListener(this));
 
         partyManager = new PartyManager(this);
+        dataManager = new DataManager(this);
 
         PartyNameProvider.loadProvider(this);
         PartyConnector.loadConnector(this);
 
-        getLogger().info("Thank you " + c.getUsername() + " for purchasing UltimateParty :)");
-        getLogger().info("The plugin has been successfully activated");
+        if (config.getBoolean("CheckUpdates")) {
+            getProxy().getScheduler().runAsync(this, checker::checkUpdate);
+        }
     }
 
     @Override
@@ -85,14 +82,7 @@ public final class UltimateParty extends Plugin {
         }
     }
 
-    public void reloadConfig() {
-        loadConfig();
-        new LocaleLoader(this);
-        disableServers = config.getStringList("DisableServers");
-        disableAutoJoin = config.getStringList("DisableAutoJoinServers");
-    }
-
-    private void loadConfig() {
+    public void loadConfig() {
         try {
             if (!getDataFolder().exists()) {
                 getDataFolder().mkdir();
@@ -109,6 +99,8 @@ public final class UltimateParty extends Plugin {
         } catch (IOException e) {
             throw new RuntimeException("Unable to load configuration file", e);
         }
+
+        new LocaleLoader(this);
     }
 
     public Configuration getConfig() {
@@ -121,10 +113,6 @@ public final class UltimateParty extends Plugin {
 
     public DataManager getDataManager() {
         return dataManager;
-    }
-
-    public String getCommand() {
-        return command;
     }
 
     public String getDisplayName(ProxiedPlayer p) {
@@ -180,10 +168,10 @@ public final class UltimateParty extends Plugin {
     }
 
     public boolean isServerEnable(ProxiedPlayer p) {
-        return !ChatUtils.containsIgnoreCase(disableServers, p.getServer().getInfo().getName());
+        return !ChatUtils.containsIgnoreCase(config.getStringList("DisableServers"), p.getServer().getInfo().getName());
     }
 
-    public List<String> getDisableAutoJoin() {
-        return disableAutoJoin;
+    public String getCommand() {
+        return commandParty.getName();
     }
 }

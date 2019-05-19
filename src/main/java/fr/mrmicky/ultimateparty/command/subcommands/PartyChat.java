@@ -5,6 +5,7 @@ import fr.mrmicky.ultimateparty.UltimateParty;
 import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.locale.Message;
 import fr.mrmicky.ultimateparty.utils.ChatCensor;
+import fr.mrmicky.ultimateparty.utils.ChatUtils;
 import fr.mrmicky.ultimateparty.utils.MessageBuilder;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -48,9 +49,9 @@ public class PartyChat extends PartyCommand {
 
     private static void log(String message, UltimateParty plugin) {
         try {
-            File f = new File(plugin.getDataFolder(), "logs.txt");
+            File logFile = new File(plugin.getDataFolder(), "logs.txt");
 
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(f, true))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(logFile, true))) {
                 writer.write(DATE_FORMATTER.format(LocalDateTime.now()) + ' ' + message);
                 writer.newLine();
             }
@@ -74,7 +75,7 @@ public class PartyChat extends PartyCommand {
     @Override
     public List<String> onTabComplete(ProxiedPlayer player, String[] args, Party party) {
         return party.getPlayers().stream()
-                .filter(p -> p != player && p.getName().toLowerCase().startsWith(args[args.length - 1].toLowerCase()))
+                .filter(p -> p != player && ChatUtils.startsWithIgnoreCase(p.getName(), args[args.length - 1]))
                 .map(CommandSender::getName)
                 .collect(Collectors.toList());
     }

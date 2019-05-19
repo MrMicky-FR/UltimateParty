@@ -47,8 +47,8 @@ public class CommandParty extends Command implements TabExecutor {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length >= 1 && args[0].equalsIgnoreCase("reload") && sender.hasPermission("ultimateparty.reload")) {
-            plugin.reloadConfig();
+        if (args.length > 0 && args[0].equalsIgnoreCase("reload") && sender.hasPermission("ultimateparty.reload")) {
+            plugin.loadConfig();
             sender.sendMessage(ChatUtils.coloredComponent("Config reloaded", ChatColor.GREEN));
             return;
         }

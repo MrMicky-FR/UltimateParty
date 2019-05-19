@@ -14,18 +14,12 @@ import net.md_5.bungee.api.event.TabCompleteEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
-import java.util.Collections;
-import java.util.List;
-
 public class PartyListener implements Listener {
 
     private final UltimateParty plugin;
-    private List<String> chatPrefixes;
 
     public PartyListener(UltimateParty plugin) {
         this.plugin = plugin;
-
-        chatPrefixes = plugin.getConfig().getBoolean("ChatPrefix.Enable") ? plugin.getConfig().getStringList("ChatPrefix.Prefix") : Collections.emptyList();
     }
 
     @EventHandler
@@ -56,7 +50,7 @@ public class PartyListener implements Listener {
             return;
         }
 
-        if (ChatUtils.containsIgnoreCase(plugin.getDisableAutoJoin(), server.getName())) {
+        if (ChatUtils.containsIgnoreCase(plugin.getConfig().getStringList("DisableAutoJoinServers"), server.getName())) {
             return;
         }
 
@@ -69,36 +63,38 @@ public class PartyListener implements Listener {
 
     @EventHandler
     public void onChat(ChatEvent e) {
-        if (!(e.getSender() instanceof ProxiedPlayer)) {
+        if (!(e.getSender() instanceof ProxiedPlayer) || !plugin.getConfig().getBoolean("ChatPrefix.Enable")) {
             return;
         }
 
         ProxiedPlayer p = (ProxiedPlayer) e.getSender();
         String msg = e.getMessage();
 
-        for (String s : chatPrefixes) {
-            if (msg.toLowerCase().startsWith(s.toLowerCase())) {
-                Party party = plugin.getPartyManager().getParty(p);
-                if (!plugin.isServerEnable(p)) {
-                    Message.DISABLE_SERVER_SELF.send(p);
-                    return;
-                } else if (party == null) {
-                    Message.NO_PARTY.send(p);
-                    return;
-                }
-
-                // Removing chat prefix
-                msg = msg.substring(s.length()).trim();
-                e.setCancelled(true);
-
-                PartyChat.sendMessage(p, party, msg, plugin);
+        for (String prefix : plugin.getConfig().getStringList("ChatPrefix.Prefix")) {
+            if (!ChatUtils.startsWithIgnoreCase(msg, prefix)) {
+                continue;
             }
+
+            Party party = plugin.getPartyManager().getParty(p);
+
+            if (party == null) {
+                Message.NO_PARTY.send(p);
+                return;
+            }
+
+            if (!plugin.isServerEnable(p)) {
+                Message.DISABLE_SERVER_SELF.send(p);
+                return;
+            }
+
+            e.setCancelled(true);
+            PartyChat.sendMessage(p, party, msg.substring(prefix.length()).trim(), plugin);
         }
     }
 
     @EventHandler
     public void onTabComplete(TabCompleteEvent e) {
-        if (!(e.getSender() instanceof ProxiedPlayer)) {
+        if (!(e.getSender() instanceof ProxiedPlayer) || !plugin.getConfig().getBoolean("ChatPrefix.Enable")) {
             return;
         }
 
@@ -110,18 +106,22 @@ public class PartyListener implements Listener {
             return;
         }
 
-        for (String s : chatPrefixes) {
-            if (msg.toLowerCase().startsWith(s.toLowerCase())) {
-                Party party = plugin.getPartyManager().getParty(p);
-                if (party != null) {
-                    for (ProxiedPlayer ps : party.getPlayers()) {
-                        if (ps.getName().toLowerCase().startsWith(args[args.length - 1])) {
-                            e.getSuggestions().add(ps.getName());
-                        }
-                    }
-                }
-                break;
+        for (String prefix : plugin.getConfig().getStringList("ChatPrefix.Prefix")) {
+            if (!ChatUtils.startsWithIgnoreCase(msg, prefix)) {
+                continue;
             }
+
+            Party party = plugin.getPartyManager().getParty(p);
+            if (party == null) {
+                continue;
+            }
+
+            String lastArg = args[args.length - 1];
+
+            party.getPlayers().stream()
+                    .filter(ps -> ChatUtils.startsWithIgnoreCase(ps.getName(), lastArg))
+                    .forEach(ps -> e.getSuggestions().add(ps.getName()));
+            break;
         }
     }
 }

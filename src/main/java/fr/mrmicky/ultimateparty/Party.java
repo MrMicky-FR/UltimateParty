@@ -19,9 +19,9 @@ public class Party {
 
     private ProxiedPlayer leader;
 
-    public Party(UltimateParty plugin, ProxiedPlayer leader) {
+    Party(ProxiedPlayer leader, UltimateParty plugin) {
+        this.leader = Objects.requireNonNull(leader, "leader");
         this.plugin = plugin;
-        this.leader = leader;
 
         players.add(leader);
     }
@@ -37,22 +37,22 @@ public class Party {
 
     public void removePlayer(ProxiedPlayer p) {
         if (isLeader(p)) {
-            plugin.getPartyManager().disbandParty(this);
-        } else {
-            players.remove(p);
+            throw new IllegalStateException("Cannot remove party leader");
         }
+
+        players.remove(p);
     }
 
     public ProxiedPlayer getLeader() {
         return leader;
     }
 
-    public void setLeader(ProxiedPlayer p) {
-        leader = Objects.requireNonNull(p, "player");
+    public void setLeader(ProxiedPlayer leader) {
+        this.leader = Objects.requireNonNull(leader, "leader");
     }
 
     public boolean isLeader(ProxiedPlayer p) {
-        return p == leader;
+        return leader.equals(p);
     }
 
     public void createInvitation(ProxiedPlayer p) {
@@ -89,7 +89,7 @@ public class Party {
 
     @Override
     public String toString() {
-        return "Party{leader=" + leader.getName() + "}";
+        return "Party{leader=" + leader + ", players=" + players.size() + ", invitations=" + invitations.size() + '}';
     }
 
     @Override

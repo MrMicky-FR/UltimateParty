@@ -8,13 +8,12 @@ import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
 
 public class DataManager {
 
     private final UltimateParty plugin;
+    private final File file;
 
-    private File file;
     private Configuration save;
 
     public DataManager(UltimateParty plugin) {

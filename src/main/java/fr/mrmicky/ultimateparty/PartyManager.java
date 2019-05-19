@@ -6,11 +6,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class PartyManager {
-
-    private final UltimateParty plugin;
+public class PartyManager {
 
     private final Set<Party> partys = new HashSet<>();
+
+    private final UltimateParty plugin;
 
     public PartyManager(UltimateParty plugin) {
         this.plugin = plugin;
@@ -40,7 +40,7 @@ public final class PartyManager {
             throw new IllegalStateException(leader.getName() + " is already in a party");
         }
 
-        Party party = new Party(plugin, leader);
+        Party party = new Party(leader, plugin);
 
         partys.add(party);
 
