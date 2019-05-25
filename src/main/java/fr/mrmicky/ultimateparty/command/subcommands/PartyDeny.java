@@ -41,8 +41,7 @@ public class PartyDeny extends PartyCommand {
             return null;
         }
 
-        return getPlugin().getPartyManager().getPartys()
-                .stream()
+        return getPlugin().getPartyManager().getPartys().stream()
                 .filter(p -> ChatUtils.startsWithIgnoreCase(p.getLeader().getName(), args[0]) && p.isInvited(player))
                 .map(p -> p.getLeader().getName())
                 .collect(Collectors.toList());
