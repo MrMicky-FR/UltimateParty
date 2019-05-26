@@ -14,9 +14,7 @@ public class PartyJoin extends PartyCommand {
     }
 
     @Override
-    public void execute(ProxiedPlayer player, String[] args, Party party1) {
-        Party party = getPlugin().getPartyManager().getParty(player);
-
+    public void execute(ProxiedPlayer player, String[] args, Party party) {
         if (party != null) {
             Message.ALREADY_IN_PARTY_SELF.send(player);
             return;

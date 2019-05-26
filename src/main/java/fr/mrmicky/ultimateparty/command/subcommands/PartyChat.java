@@ -30,14 +30,16 @@ public class PartyChat extends PartyCommand {
     }
 
     public static void sendMessage(ProxiedPlayer player, Party party, String msg, UltimateParty plugin) {
-        ChatCensor cc = new ChatCensor(player, msg);
+        ChatCensor censor = new ChatCensor(player, msg);
 
-        if (cc.isCancel()) {
+        if (censor.isCancel()) {
             return;
         }
 
+        String rawMessage = Message.CHAT_FORMAT.getAsString(plugin.getDisplayName(player)) + censor.getNewMessage();
+
         BaseComponent[] c = new MessageBuilder(Message.PREFIX.getMessage() + "{0-}")
-                .click(Message.CHAT_FORMAT.getAsString(plugin.getDisplayName(player)) + cc.getNewMessage(), false, plugin.getCommand() + " chat ", Message.CHAT_BUTTON_HOVER.getAsString())
+                .click(rawMessage, false, plugin.getCommand() + " chat ", Message.CHAT_BUTTON_HOVER.getAsString())
                 .build();
 
         party.getPlayers().stream().filter(plugin::isServerEnable).forEach(ps -> ps.sendMessage(c));
@@ -61,9 +63,7 @@ public class PartyChat extends PartyCommand {
     }
 
     @Override
-    public void execute(ProxiedPlayer player, String[] args, Party party1) {
-        Party party = getPlugin().getPartyManager().getParty(player);
-
+    public void execute(ProxiedPlayer player, String[] args, Party party) {
         if (party == null) {
             Message.NO_PARTY.send(player);
             return;

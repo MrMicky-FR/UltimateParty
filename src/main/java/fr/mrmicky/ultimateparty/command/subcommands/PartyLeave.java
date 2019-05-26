@@ -12,9 +12,7 @@ public class PartyLeave extends PartyCommand {
     }
 
     @Override
-    public void execute(ProxiedPlayer player, String[] args, Party party1) {
-        Party party = getPlugin().getPartyManager().getParty(player);
-
+    public void execute(ProxiedPlayer player, String[] args, Party party) {
         if (party == null) {
             Message.NO_PARTY.send(player);
             return;

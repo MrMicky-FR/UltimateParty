@@ -27,10 +27,12 @@ public class PartyOptions extends PartyCommand {
             for (PartyOption option : PartyOption.values()) {
                 boolean b = getPlugin().getDataManager().getOption(player, option);
                 ChatColor color = b ? ChatColor.GREEN : ChatColor.RED;
-                player.sendMessage(new MessageBuilder(
-                        Message.OPTION_FORMAT.getAsString(color + option.getMessage().getAsString()))
-                        .click(b ? Message.OPTION_DISABLE_BUTTON.getAsString() : Message.OPTION_ENABLE_BUTTON.getAsString(), true,
-                                getPlugin().getCommand() + " options " + option.toString() + " " + !b, b ? Message.OPTION_DISABLE_BUTTON_HOVER.getAsString() : Message.OPTION_ENABLE_BUTTON_HOVER.getAsString())
+                String rawMessage = Message.OPTION_FORMAT.getAsString(color + option.getMessage().getAsString());
+                String hoverMessage = (b ? Message.OPTION_DISABLE_BUTTON_HOVER : Message.OPTION_ENABLE_BUTTON_HOVER).getAsString();
+
+                player.sendMessage(new MessageBuilder(rawMessage)
+                        .click((b ? Message.OPTION_DISABLE_BUTTON : Message.OPTION_ENABLE_BUTTON).getAsString(), true,
+                                getPlugin().getCommand() + " options " + option + " " + !b, hoverMessage)
                         .build());
             }
 

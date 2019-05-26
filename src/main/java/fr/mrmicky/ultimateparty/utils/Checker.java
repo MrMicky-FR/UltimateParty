@@ -32,10 +32,12 @@ public class Checker {
     }
 
     public boolean isValid() {
+        String rawUrl = String.format("https://mrmicky.fr/verify.php?plugin=%s&uid=%s&nonce=%s&version=%s", plugin.getDescription().getName(), UltimateParty.USER_ID, UltimateParty.NONCE_ID, plugin.getDescription().getVersion());
+
         try {
             StringBuilder str = new StringBuilder();
 
-            URL url = new URL(String.format("https://mrmicky.fr/verify.php?plugin=%s&uid=%s&nonce=%s&version=%s", plugin.getDescription().getName(), UltimateParty.USER_ID, UltimateParty.NONCE_ID, plugin.getDescription().getVersion()));
+            URL url = new URL(rawUrl);
 
             try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()))) {
                 String inputLine;

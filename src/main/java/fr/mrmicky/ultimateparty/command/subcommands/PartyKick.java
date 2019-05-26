@@ -17,9 +17,7 @@ public class PartyKick extends PartyCommand {
     }
 
     @Override
-    public void execute(ProxiedPlayer player, String[] args, Party party1) {
-        Party party = getPlugin().getPartyManager().getParty(player);
-
+    public void execute(ProxiedPlayer player, String[] args, Party party) {
         if (party == null || !party.isLeader(player)) {
             Message.NO_LEADER.send(player);
             return;

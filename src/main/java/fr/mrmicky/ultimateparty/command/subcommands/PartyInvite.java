@@ -82,8 +82,10 @@ public class PartyInvite extends PartyCommand {
         String name = party.getLeader().getName();
         party.createInvitation(p);
         BaseComponent[] msg = new MessageBuilder(Message.INVITATION_RECEIVE.getAsString(name, getPartyManager().getInvitationDelay()))
-                .click(Message.INVITATION_ACCEPT_BUTTON.getAsString(), true, getPlugin().getCommand() + " accept " + name, Message.INVITATION_ACCEPT_BUTTON_HOVER.getAsString())
-                .click(Message.INVITATION_DENY_BUTTON.getAsString(), true, getPlugin().getCommand() + " deny " + name, Message.INVITATION_DENY_BUTTON_HOVER.getAsString())
+                .click(Message.INVITATION_ACCEPT_BUTTON.getAsString(), true,
+                        getPlugin().getCommand() + " accept " + name, Message.INVITATION_ACCEPT_BUTTON_HOVER.getAsString())
+                .click(Message.INVITATION_DENY_BUTTON.getAsString(), true,
+                        getPlugin().getCommand() + " deny " + name, Message.INVITATION_DENY_BUTTON_HOVER.getAsString())
                 .build();
         p.sendMessage(msg);
     }

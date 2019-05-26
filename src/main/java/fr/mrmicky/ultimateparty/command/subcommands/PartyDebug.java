@@ -19,8 +19,8 @@ public class PartyDebug extends PartyCommand {
     }
 
     @Override
-    public List<String> onTabComplete(ProxiedPlayer p, String[] args, Party party) {
-        send(p);
+    public List<String> onTabComplete(ProxiedPlayer player, String[] args, Party party) {
+        send(player);
         return null;
     }
 
