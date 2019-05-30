@@ -11,6 +11,7 @@ import fr.mrmicky.ultimateparty.locale.Message;
 import fr.mrmicky.ultimateparty.options.DataManager;
 import fr.mrmicky.ultimateparty.utils.ChatUtils;
 import fr.mrmicky.ultimateparty.utils.Checker;
+import fr.mrmicky.ultimateparty.utils.StringUtils;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -168,7 +169,7 @@ public final class UltimateParty extends Plugin {
     }
 
     public boolean isServerEnable(ProxiedPlayer p) {
-        return !ChatUtils.containsIgnoreCase(config.getStringList("DisableServers"), p.getServer().getInfo().getName());
+        return !StringUtils.containsIgnoreCase(config.getStringList("DisableServers"), p.getServer().getInfo().getName());
     }
 
     public String getCommand() {

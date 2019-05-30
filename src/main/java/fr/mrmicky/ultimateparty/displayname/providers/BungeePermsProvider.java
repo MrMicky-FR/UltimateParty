@@ -8,7 +8,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class BungeePermsProvider implements PartyNameProvider {
 
-    private PermissionsManager permissionManager;
+    private final PermissionsManager permissionManager;
 
     public BungeePermsProvider() {
         permissionManager = BungeePerms.getInstance().getPermissionsManager();

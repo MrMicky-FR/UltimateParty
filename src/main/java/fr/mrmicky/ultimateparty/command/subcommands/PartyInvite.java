@@ -4,8 +4,8 @@ import fr.mrmicky.ultimateparty.Party;
 import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.locale.Message;
 import fr.mrmicky.ultimateparty.options.PartyOption;
-import fr.mrmicky.ultimateparty.utils.ChatUtils;
 import fr.mrmicky.ultimateparty.utils.MessageBuilder;
+import fr.mrmicky.ultimateparty.utils.StringUtils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -97,7 +97,7 @@ public class PartyInvite extends PartyCommand {
         }
 
         return player.getServer().getInfo().getPlayers().stream()
-                .filter(p -> !p.equals(player) && ChatUtils.startsWithIgnoreCase(p.getName(), args[0]))
+                .filter(p -> !p.equals(player) && StringUtils.startsWithIgnoreCase(p.getName(), args[0]))
                 .map(CommandSender::getName)
                 .collect(Collectors.toList());
     }

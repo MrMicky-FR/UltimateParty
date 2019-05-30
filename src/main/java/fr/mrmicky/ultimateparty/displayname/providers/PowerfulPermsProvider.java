@@ -15,9 +15,9 @@ public class PowerfulPermsProvider implements PartyNameProvider {
     private final PermissionManager powerfulPermsPlugin;
 
     public PowerfulPermsProvider() {
-        Plugin powerfullPerms = ProxyServer.getInstance().getPluginManager().getPlugin("PowerfulPerms");
+        Plugin powerfulPerms = ProxyServer.getInstance().getPluginManager().getPlugin("PowerfulPerms");
 
-        powerfulPermsPlugin = ((PowerfulPermsPlugin) powerfullPerms).getPermissionManager();
+        powerfulPermsPlugin = ((PowerfulPermsPlugin) powerfulPerms).getPermissionManager();
     }
 
     @Override

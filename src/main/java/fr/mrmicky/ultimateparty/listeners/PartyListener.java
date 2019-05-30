@@ -4,7 +4,7 @@ import fr.mrmicky.ultimateparty.Party;
 import fr.mrmicky.ultimateparty.UltimateParty;
 import fr.mrmicky.ultimateparty.command.subcommands.PartyChat;
 import fr.mrmicky.ultimateparty.locale.Message;
-import fr.mrmicky.ultimateparty.utils.ChatUtils;
+import fr.mrmicky.ultimateparty.utils.StringUtils;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
@@ -50,7 +50,7 @@ public class PartyListener implements Listener {
             return;
         }
 
-        if (ChatUtils.containsIgnoreCase(plugin.getConfig().getStringList("DisableAutoJoinServers"), server.getName())) {
+        if (StringUtils.containsIgnoreCase(plugin.getConfig().getStringList("DisableAutoJoinServers"), server.getName())) {
             return;
         }
 
@@ -71,7 +71,7 @@ public class PartyListener implements Listener {
         String msg = e.getMessage();
 
         for (String prefix : plugin.getConfig().getStringList("ChatPrefix.Prefix")) {
-            if (!ChatUtils.startsWithIgnoreCase(msg, prefix)) {
+            if (!StringUtils.startsWithIgnoreCase(msg, prefix)) {
                 continue;
             }
 
@@ -99,7 +99,7 @@ public class PartyListener implements Listener {
         }
 
         ProxiedPlayer p = (ProxiedPlayer) e.getSender();
-        String msg = e.getCursor().toLowerCase();
+        String msg = e.getCursor();
         String[] args = msg.split(" ");
 
         if (args.length == 0) {
@@ -107,7 +107,7 @@ public class PartyListener implements Listener {
         }
 
         for (String prefix : plugin.getConfig().getStringList("ChatPrefix.Prefix")) {
-            if (!ChatUtils.startsWithIgnoreCase(msg, prefix)) {
+            if (!StringUtils.startsWithIgnoreCase(msg, prefix)) {
                 continue;
             }
 
@@ -119,7 +119,7 @@ public class PartyListener implements Listener {
             String lastArg = args[args.length - 1];
 
             party.getPlayers().stream()
-                    .filter(ps -> ChatUtils.startsWithIgnoreCase(ps.getName(), lastArg))
+                    .filter(ps -> StringUtils.startsWithIgnoreCase(ps.getName(), lastArg))
                     .forEach(ps -> e.getSuggestions().add(ps.getName()));
             break;
         }

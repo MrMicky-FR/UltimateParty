@@ -3,7 +3,7 @@ package fr.mrmicky.ultimateparty.command.subcommands;
 import fr.mrmicky.ultimateparty.Party;
 import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.locale.Message;
-import fr.mrmicky.ultimateparty.utils.ChatUtils;
+import fr.mrmicky.ultimateparty.utils.StringUtils;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -52,7 +52,7 @@ public class PartyAccept extends PartyCommand {
         }
 
         return getPlugin().getPartyManager().getPartys().stream()
-                .filter(p -> ChatUtils.startsWithIgnoreCase(p.getLeader().getName(), args[0]) && p.isInvited(player))
+                .filter(p -> StringUtils.startsWithIgnoreCase(p.getLeader().getName(), args[0]) && p.isInvited(player))
                 .map(p -> p.getLeader().getName())
                 .collect(Collectors.toList());
     }

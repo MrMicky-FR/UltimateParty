@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public class LuckPermsProvider implements PartyNameProvider {
 
-    private LuckPermsApi api;
+    private final LuckPermsApi api;
 
     public LuckPermsProvider() {
         api = LuckPerms.getApi();

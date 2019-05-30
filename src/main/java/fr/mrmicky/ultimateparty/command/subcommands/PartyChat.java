@@ -5,8 +5,8 @@ import fr.mrmicky.ultimateparty.UltimateParty;
 import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.locale.Message;
 import fr.mrmicky.ultimateparty.utils.ChatCensor;
-import fr.mrmicky.ultimateparty.utils.ChatUtils;
 import fr.mrmicky.ultimateparty.utils.MessageBuilder;
+import fr.mrmicky.ultimateparty.utils.StringUtils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -75,7 +75,7 @@ public class PartyChat extends PartyCommand {
     @Override
     public List<String> onTabComplete(ProxiedPlayer player, String[] args, Party party) {
         return party.getPlayers().stream()
-                .filter(p -> p != player && ChatUtils.startsWithIgnoreCase(p.getName(), args[args.length - 1]))
+                .filter(p -> p != player && StringUtils.startsWithIgnoreCase(p.getName(), args[args.length - 1]))
                 .map(CommandSender::getName)
                 .collect(Collectors.toList());
     }

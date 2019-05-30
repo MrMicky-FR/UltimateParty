@@ -3,7 +3,7 @@ package fr.mrmicky.ultimateparty.command.subcommands;
 import fr.mrmicky.ultimateparty.Party;
 import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.locale.Message;
-import fr.mrmicky.ultimateparty.utils.ChatUtils;
+import fr.mrmicky.ultimateparty.utils.StringUtils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -47,7 +47,7 @@ public class PartyLead extends PartyCommand {
         }
 
         return party.getPlayers().stream()
-                .filter(p -> !p.equals(player) && ChatUtils.startsWithIgnoreCase(p.getName(), args[0]))
+                .filter(p -> !p.equals(player) && StringUtils.startsWithIgnoreCase(p.getName(), args[0]))
                 .map(CommandSender::getName)
                 .collect(Collectors.toList());
     }

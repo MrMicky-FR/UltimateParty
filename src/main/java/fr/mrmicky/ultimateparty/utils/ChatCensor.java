@@ -42,9 +42,9 @@ public class ChatCensor {
     }
 
     private void checkSwear() {
-        for (String words : message.split(" ")) {
+        for (String word : message.split(" ")) {
             for (String s : UltimateParty.getInstance().getConfig().getStringList("Chat.WorldsBlacklist")) {
-                if (!s.isEmpty() && words.toLowerCase().contains(s.toLowerCase())) {
+                if (!s.isEmpty() && StringUtils.containsIgnoreCase(word, s)) {
                     message = censor(s);
                 }
             }

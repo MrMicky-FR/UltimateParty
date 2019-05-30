@@ -2,6 +2,7 @@ package fr.mrmicky.ultimateparty.locale;
 
 import fr.mrmicky.ultimateparty.UltimateParty;
 import fr.mrmicky.ultimateparty.utils.ChatUtils;
+import fr.mrmicky.ultimateparty.utils.StringUtils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -14,9 +15,9 @@ import java.util.logging.Level;
 public class LocaleLoader {
 
     private final UltimateParty plugin;
+    private final File file;
 
     private Configuration lang;
-    private File file;
 
     public LocaleLoader(UltimateParty plugin) {
         this.plugin = plugin;
@@ -26,18 +27,18 @@ public class LocaleLoader {
         if (file.exists()) {
             loadMessages();
         } else {
-            plugin.getLogger().info("messages.yml not founded - Creating it...");
             createFile();
         }
     }
 
     private void createFile() {
+        plugin.getLogger().info("Creating messages.yml ...");
+
         try {
-            file.createNewFile();
-            lang = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
+            lang = new Configuration();
 
             for (Message msg : Message.values()) {
-                lang.set(msg.toString().toLowerCase().replace('_', '-'), msg.getMessage().replace(ChatColor.COLOR_CHAR, '&'));
+                lang.set(StringUtils.formatEnum(msg.toString()), msg.getMessage().replace(ChatColor.COLOR_CHAR, '&'));
             }
 
             ConfigurationProvider.getProvider(YamlConfiguration.class).save(lang, file);
@@ -52,8 +53,9 @@ public class LocaleLoader {
             boolean save = false;
 
             for (Message msg : Message.values()) {
-                String replace = msg.toString().toLowerCase().replace('_', '-');
+                String replace = StringUtils.formatEnum(msg.toString());
                 String message = lang.getString(replace);
+
                 if (message != null && !message.isEmpty()) {
                     msg.setMessage(ChatUtils.color(message));
                 } else {

@@ -23,10 +23,10 @@ public class DataManager {
 
         try {
             if (!file.exists()) {
-                file.createNewFile();
+                save = new Configuration();
+            } else {
+                save = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
             }
-
-            save = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
         } catch (IOException e) {
             throw new RuntimeException("Can't load data file", e);
         }
