@@ -24,9 +24,9 @@ public class LuckPermsProvider implements PartyNameProvider {
     }
 
     @Override
-    public String getDisplayName(ProxiedPlayer p) {
-        api.getUser(p.getName());
-        Optional<User> user = api.getUserSafe(p.getUniqueId());
+    public String getDisplayName(ProxiedPlayer player) {
+        api.getUser(player.getName());
+        Optional<User> user = api.getUserSafe(player.getUniqueId());
         if (user.isPresent()) {
             Optional<Contexts> contexts = api.getContextForUser(user.get());
             if (contexts.isPresent()) {
@@ -34,9 +34,9 @@ public class LuckPermsProvider implements PartyNameProvider {
                 String prefix = metaData.getPrefix();
                 String suffix = metaData.getSuffix();
 
-                return (prefix != null ? prefix : "") + p.getName() + (suffix != null ? suffix : "");
+                return (prefix != null ? prefix : "") + player.getName() + (suffix != null ? suffix : "");
             }
         }
-        return p.getName();
+        return player.getName();
     }
 }

@@ -24,9 +24,9 @@ public class PartyDebug extends PartyCommand {
         return null;
     }
 
-    private void send(ProxiedPlayer p) {
-        p.sendMessage(ChatUtils.colorToComponents("&bUltimateParty &7v&b" + getPlugin().getDescription().getVersion() + "&7by &bMrMicky&7."));
-        p.sendMessage(ChatUtils.colorToComponents("&7ID:&b %%__USER__%%" + "/" + "%%__NONCE__%%"));
-        p.sendMessage(ChatUtils.colorToComponents("&7Download:&b https://www.spigotmc.org/resources/ultimateparty.51548/"));
+    private void send(ProxiedPlayer player) {
+        player.sendMessage(ChatUtils.colorToComponents("&bUltimateParty &7v&b" + getPlugin().getDescription().getVersion() + "&7by &bMrMicky&7."));
+        player.sendMessage(ChatUtils.colorToComponents("&7ID:&b %%__USER__%%" + "/" + "%%__NONCE__%%"));
+        player.sendMessage(ChatUtils.colorToComponents("&7Download:&b https://www.spigotmc.org/resources/ultimateparty.51548/"));
     }
 }

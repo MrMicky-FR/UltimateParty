@@ -26,13 +26,13 @@ public class PowerfulPermsProvider implements PartyNameProvider {
     }
 
     @Override
-    public String getDisplayName(ProxiedPlayer p) {
-        ListenableFuture<String> prefixFuture = powerfulPermsPlugin.getPlayerPrefix(p.getUniqueId());
-        ListenableFuture<String> suffixFuture = powerfulPermsPlugin.getPlayerSuffix(p.getUniqueId());
+    public String getDisplayName(ProxiedPlayer player) {
+        ListenableFuture<String> prefixFuture = powerfulPermsPlugin.getPlayerPrefix(player.getUniqueId());
+        ListenableFuture<String> suffixFuture = powerfulPermsPlugin.getPlayerSuffix(player.getUniqueId());
         try {
             String prefix = prefixFuture.get();
             String suffix = suffixFuture.get();
-            return (prefix != null ? prefix : "") + p.getName() + (suffix != null ? suffix : "");
+            return (prefix != null ? prefix : "") + player.getName() + (suffix != null ? suffix : "");
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }

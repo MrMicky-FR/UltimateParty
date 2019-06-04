@@ -10,7 +10,7 @@ import net.md_5.bungee.api.plugin.PluginManager;
 
 public interface PartyNameProvider {
 
-    String getDisplayName(ProxiedPlayer p);
+    String getDisplayName(ProxiedPlayer player);
 
     String getName();
 

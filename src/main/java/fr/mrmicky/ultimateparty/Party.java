@@ -30,17 +30,17 @@ public class Party {
         return players;
     }
 
-    public void addPlayer(ProxiedPlayer p) {
-        players.add(p);
-        invitations.remove(p.getUniqueId());
+    public void addPlayer(ProxiedPlayer player) {
+        players.add(player);
+        invitations.remove(player.getUniqueId());
     }
 
-    public void removePlayer(ProxiedPlayer p) {
-        if (isLeader(p)) {
+    public void removePlayer(ProxiedPlayer player) {
+        if (isLeader(player)) {
             throw new IllegalStateException("Cannot remove party leader");
         }
 
-        players.remove(p);
+        players.remove(player);
     }
 
     public ProxiedPlayer getLeader() {
@@ -51,23 +51,23 @@ public class Party {
         this.leader = Objects.requireNonNull(leader, "leader");
     }
 
-    public boolean isLeader(ProxiedPlayer p) {
-        return leader.equals(p);
+    public boolean isLeader(ProxiedPlayer player) {
+        return leader.equals(player);
     }
 
-    public void createInvitation(ProxiedPlayer p) {
-        if (invitations.add(p.getUniqueId())) {
+    public void createInvitation(ProxiedPlayer player) {
+        if (invitations.add(player.getUniqueId())) {
             ProxyServer.getInstance().getScheduler().schedule(plugin, () ->
-                    invitations.remove(p.getUniqueId()), plugin.getPartyManager().getInvitationDelay(), TimeUnit.SECONDS);
+                    invitations.remove(player.getUniqueId()), plugin.getPartyManager().getInvitationDelay(), TimeUnit.SECONDS);
         }
     }
 
-    public void removeInvitation(ProxiedPlayer p) {
-        invitations.remove(p.getUniqueId());
+    public void removeInvitation(ProxiedPlayer player) {
+        invitations.remove(player.getUniqueId());
     }
 
-    public boolean isInvited(ProxiedPlayer p) {
-        return invitations.contains(p.getUniqueId());
+    public boolean isInvited(ProxiedPlayer player) {
+        return invitations.contains(player.getUniqueId());
     }
 
     public boolean isFull() {

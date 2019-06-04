@@ -24,29 +24,29 @@ public class PartyListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerDisconnectEvent e) {
-        ProxiedPlayer p = e.getPlayer();
-        Party party = plugin.getPartyManager().getParty(p);
+        ProxiedPlayer player = e.getPlayer();
+        Party party = plugin.getPartyManager().getParty(player);
 
         if (party == null) {
             return;
         }
 
-        if (party.isLeader(p)) {
-            Message.PARTY_DISBAND.send(party.getPlayers(), p.getName());
+        if (party.isLeader(player)) {
+            Message.PARTY_DISBAND.send(party.getPlayers(), player.getName());
             plugin.getPartyManager().disbandParty(party);
         } else {
-            party.removePlayer(p);
-            Message.PARTY_LEFT_BROADCAST.send(party.getPlayers(), p.getName());
+            party.removePlayer(player);
+            Message.PARTY_LEFT_BROADCAST.send(party.getPlayers(), player.getName());
         }
     }
 
     @EventHandler
     public void onSwitch(ServerSwitchEvent e) {
-        ProxiedPlayer p = e.getPlayer();
-        Party party = plugin.getPartyManager().getParty(p);
-        ServerInfo server = p.getServer().getInfo();
+        ProxiedPlayer player = e.getPlayer();
+        Party party = plugin.getPartyManager().getParty(player);
+        ServerInfo server = player.getServer().getInfo();
 
-        if (party == null || !party.isLeader(p) || !plugin.isServerEnable(p)) {
+        if (party == null || !party.isLeader(player) || !plugin.isServerEnable(player)) {
             return;
         }
 
@@ -55,7 +55,7 @@ public class PartyListener implements Listener {
         }
 
         for (ProxiedPlayer ps : party.getPlayers()) {
-            if (!ps.getServer().equals(p.getServer()) && plugin.isServerEnable(ps)) {
+            if (!ps.getServer().equals(player.getServer()) && plugin.isServerEnable(ps)) {
                 plugin.connect(ps, server);
             }
         }
@@ -67,28 +67,28 @@ public class PartyListener implements Listener {
             return;
         }
 
-        ProxiedPlayer p = (ProxiedPlayer) e.getSender();
-        String msg = e.getMessage();
+        ProxiedPlayer player = (ProxiedPlayer) e.getSender();
+        String message = e.getMessage();
 
         for (String prefix : plugin.getConfig().getStringList("ChatPrefix.Prefix")) {
-            if (!StringUtils.startsWithIgnoreCase(msg, prefix)) {
+            if (!StringUtils.startsWithIgnoreCase(message, prefix)) {
                 continue;
             }
 
-            Party party = plugin.getPartyManager().getParty(p);
+            Party party = plugin.getPartyManager().getParty(player);
 
             if (party == null) {
-                Message.NO_PARTY.send(p);
+                Message.NO_PARTY.send(player);
                 return;
             }
 
-            if (!plugin.isServerEnable(p)) {
-                Message.DISABLE_SERVER_SELF.send(p);
+            if (!plugin.isServerEnable(player)) {
+                Message.DISABLE_SERVER_SELF.send(player);
                 return;
             }
 
             e.setCancelled(true);
-            PartyChat.sendMessage(p, party, msg.substring(prefix.length()).trim(), plugin);
+            PartyChat.sendMessage(player, party, message.substring(prefix.length()).trim(), plugin);
         }
     }
 
@@ -98,20 +98,20 @@ public class PartyListener implements Listener {
             return;
         }
 
-        ProxiedPlayer p = (ProxiedPlayer) e.getSender();
-        String msg = e.getCursor();
-        String[] args = msg.split(" ");
+        ProxiedPlayer player = (ProxiedPlayer) e.getSender();
+        String cursor = e.getCursor();
+        String[] args = cursor.split(" ");
 
         if (args.length == 0) {
             return;
         }
 
         for (String prefix : plugin.getConfig().getStringList("ChatPrefix.Prefix")) {
-            if (!StringUtils.startsWithIgnoreCase(msg, prefix)) {
+            if (!StringUtils.startsWithIgnoreCase(cursor, prefix)) {
                 continue;
             }
 
-            Party party = plugin.getPartyManager().getParty(p);
+            Party party = plugin.getPartyManager().getParty(player);
             if (party == null) {
                 continue;
             }

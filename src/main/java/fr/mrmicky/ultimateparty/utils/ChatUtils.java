@@ -25,4 +25,11 @@ public final class ChatUtils {
         component.setColor(color);
         return component;
     }
+
+    public static TextComponent addLegacyExtra(TextComponent component, String text) {
+        for (BaseComponent baseComponent : TextComponent.fromLegacyText(text)) {
+            component.addExtra(baseComponent);
+        }
+        return component;
+    }
 }

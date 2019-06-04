@@ -20,10 +20,10 @@ public class PartyManager {
         return Collections.unmodifiableSet(partys);
     }
 
-    public Party getParty(ProxiedPlayer p) {
-        if (p != null) {
+    public Party getParty(ProxiedPlayer player) {
+        if (player != null) {
             for (Party party : partys) {
-                if (party.getPlayers().contains(p)) {
+                if (party.getPlayers().contains(player)) {
                     return party;
                 }
             }
@@ -31,8 +31,8 @@ public class PartyManager {
         return null;
     }
 
-    public boolean hasParty(ProxiedPlayer p) {
-        return getParty(p) != null;
+    public boolean hasParty(ProxiedPlayer player) {
+        return getParty(player) != null;
     }
 
     public Party createParty(ProxiedPlayer leader) {

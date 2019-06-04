@@ -116,16 +116,16 @@ public final class UltimateParty extends Plugin {
         return dataManager;
     }
 
-    public String getDisplayName(ProxiedPlayer p) {
+    public String getDisplayName(ProxiedPlayer player) {
         if (displayNameProvider != null) {
             try {
-                String displayName = displayNameProvider.getDisplayName(p);
-                return displayName != null ? ChatUtils.color(displayName) : p.getName();
+                String displayName = displayNameProvider.getDisplayName(player);
+                return displayName != null ? ChatUtils.color(displayName) : player.getName();
             } catch (Exception e) {
-                getLogger().log(Level.SEVERE, "An error occurred while getting display name for " + p.getName(), e);
+                getLogger().log(Level.SEVERE, "An error occurred while getting display name for " + player.getName(), e);
             }
         }
-        return p.getName();
+        return player.getName();
     }
 
     public void setDisplayNameProvider(PartyNameProvider displayNameProvider) {
@@ -135,22 +135,22 @@ public final class UltimateParty extends Plugin {
         }
     }
 
-    public void connect(ProxiedPlayer p, ServerInfo server) {
-        if (p.getServer().getInfo() == server) {
-            Message.ALREADY_CONNECT.send(p);
+    public void connect(ProxiedPlayer player, ServerInfo server) {
+        if (player.getServer().getInfo() == server) {
+            Message.ALREADY_CONNECT.send(player);
             return;
         }
 
         if (connector != null) {
             try {
-                connector.connect(p, server);
+                connector.connect(player, server);
                 return;
             } catch (Exception e) {
-                getLogger().log(Level.SEVERE, "An error occurred while connecting " + p.getName(), e);
+                getLogger().log(Level.SEVERE, "An error occurred while connecting " + player.getName(), e);
             }
         }
 
-        p.connect(server);
+        player.connect(server);
     }
 
     public void setConnector(PartyConnector connector) {
@@ -164,12 +164,12 @@ public final class UltimateParty extends Plugin {
         commandParty.register(cmd);
     }
 
-    public void openMenu(ProxiedPlayer p) {
-        commandParty.openMenu(p);
+    public void openMenu(ProxiedPlayer player) {
+        commandParty.openMenu(player);
     }
 
-    public boolean isServerEnable(ProxiedPlayer p) {
-        return !StringUtils.containsIgnoreCase(config.getStringList("DisableServers"), p.getServer().getInfo().getName());
+    public boolean isServerEnable(ProxiedPlayer player) {
+        return !StringUtils.containsIgnoreCase(config.getStringList("DisableServers"), player.getServer().getInfo().getName());
     }
 
     public String getCommand() {

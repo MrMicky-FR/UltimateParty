@@ -178,8 +178,8 @@ public enum Message {
         return TextComponent.fromLegacyText(getAsString(objects));
     }
 
-    public void send(ProxiedPlayer p, Object... objects) {
-        p.sendMessage(getAsComponent(objects));
+    public void send(ProxiedPlayer player, Object... objects) {
+        player.sendMessage(getAsComponent(objects));
     }
 
     public void send(Iterable<ProxiedPlayer> players, Object... objects) {

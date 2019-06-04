@@ -20,11 +20,11 @@ public class BungeePermsProvider implements PartyNameProvider {
     }
 
     @Override
-    public String getDisplayName(ProxiedPlayer p) {
-        User user = permissionManager.getUser(p.getUniqueId());
+    public String getDisplayName(ProxiedPlayer player) {
+        User user = permissionManager.getUser(player.getUniqueId());
         String prefix = user.getPrefix();
         String suffix = user.getSuffix();
 
-        return (prefix != null ? prefix : "") + p.getName() + (suffix != null ? suffix : "");
+        return (prefix != null ? prefix : "") + player.getName() + (suffix != null ? suffix : "");
     }
 }
