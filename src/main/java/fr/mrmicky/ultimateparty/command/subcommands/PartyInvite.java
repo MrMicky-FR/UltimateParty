@@ -7,7 +7,7 @@ import fr.mrmicky.ultimateparty.options.PartyOption;
 import fr.mrmicky.ultimateparty.utils.MessageBuilder;
 import fr.mrmicky.ultimateparty.utils.StringUtils;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.List;
@@ -81,11 +81,11 @@ public class PartyInvite extends PartyCommand {
     private void sendInvitation(ProxiedPlayer p, Party party) {
         String name = party.getLeader().getName();
         party.createInvitation(p);
-        TextComponent component = new MessageBuilder(Message.INVITATION_RECEIVE.getAsString(name, getPartyManager().getInvitationDelay()))
+        BaseComponent[] components = new MessageBuilder(Message.INVITATION_RECEIVE.getAsString(name, getPartyManager().getInvitationDelay()))
                 .click(Message.INVITATION_ACCEPT_BUTTON, true, getPlugin().getCommand() + " accept " + name, Message.INVITATION_ACCEPT_BUTTON_HOVER)
                 .click(Message.INVITATION_DENY_BUTTON, true, getPlugin().getCommand() + " deny " + name, Message.INVITATION_DENY_BUTTON_HOVER)
                 .build();
-        p.sendMessage(component);
+        p.sendMessage(components);
     }
 
     @Override

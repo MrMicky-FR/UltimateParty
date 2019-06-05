@@ -8,7 +8,7 @@ import fr.mrmicky.ultimateparty.utils.ChatCensor;
 import fr.mrmicky.ultimateparty.utils.MessageBuilder;
 import fr.mrmicky.ultimateparty.utils.StringUtils;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.io.BufferedWriter;
@@ -38,11 +38,11 @@ public class PartyChat extends PartyCommand {
 
         String rawMessage = Message.CHAT_FORMAT.getAsString(plugin.getDisplayName(player)) + censor.getNewMessage();
 
-        TextComponent component = new MessageBuilder(Message.PREFIX.getMessage() + "{0-}")
+        BaseComponent[] components = new MessageBuilder(Message.PREFIX.getMessage() + "{0-}")
                 .click(rawMessage, false, plugin.getCommand() + " chat ", Message.CHAT_BUTTON_HOVER.getAsString())
                 .build();
 
-        party.getPlayers().stream().filter(plugin::isServerEnable).forEach(ps -> ps.sendMessage(component));
+        party.getPlayers().stream().filter(plugin::isServerEnable).forEach(ps -> ps.sendMessage(components));
 
         if (plugin.getConfig().getBoolean("Chat.Log")) {
             log('(' + party.getLeader().getName() + "'s party) " + player.getName() + ": " + msg, plugin);
