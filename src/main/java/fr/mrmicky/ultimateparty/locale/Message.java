@@ -25,6 +25,7 @@ public enum Message {
 
     PLAYER_NOT_FOUND("&cThis player cannot be found.", true),
     PLAYER_NO_IN_PARTY("&cThis player is not in the party", true),
+    PARTY_NO_LEAVE("&cThe leader can't leave the party.", true),
 
     ALREADY_IN_PARTY("&cThis player is already in a party.", true),
     ALREADY_IN_PARTY_SELF("&cYou are already in a party.", true),

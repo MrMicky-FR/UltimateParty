@@ -14,7 +14,7 @@ public class PartyDisband extends PartyCommand {
     @Override
     public void execute(ProxiedPlayer player, String[] args, Party party) {
         if (party == null || !party.isLeader(player)) {
-            Message.NO_PARTY.send(player);
+            Message.NO_LEADER.send(player);
             return;
         }
 

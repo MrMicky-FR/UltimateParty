@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class PartyChat extends PartyCommand {
 
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("[yyyy/MM/dd HH:mm:ss]");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
     public PartyChat() {
         super("chat");
@@ -54,7 +54,7 @@ public class PartyChat extends PartyCommand {
             File logFile = new File(plugin.getDataFolder(), "logs.txt");
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(logFile, true))) {
-                writer.write(DATE_FORMATTER.format(LocalDateTime.now()) + ' ' + message);
+                writer.write('[' + DATE_FORMATTER.format(LocalDateTime.now()) + "] " + message);
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -75,7 +75,7 @@ public class PartyChat extends PartyCommand {
     @Override
     public List<String> onTabComplete(ProxiedPlayer player, String[] args, Party party) {
         return party.getPlayers().stream()
-                .filter(p -> p != player && StringUtils.startsWithIgnoreCase(p.getName(), args[args.length - 1]))
+                .filter(p -> StringUtils.startsWithIgnoreCase(p.getName(), args[args.length - 1]))
                 .map(CommandSender::getName)
                 .collect(Collectors.toList());
     }

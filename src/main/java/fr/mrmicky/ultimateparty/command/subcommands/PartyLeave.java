@@ -19,7 +19,7 @@ public class PartyLeave extends PartyCommand {
         }
 
         if (party.isLeader(player)) {
-            Message.PARTY_DISBAND.send(party.getPlayers(), player.getName());
+            Message.PARTY_NO_LEAVE.send(party.getPlayers(), player.getName());
 
         } else {
             party.removePlayer(player);

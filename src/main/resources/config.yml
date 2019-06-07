@@ -9,7 +9,7 @@ Commands:
   Aliases:
     - "party"
 
-# Automatically create partys
+# Automatically create party
 AutoParty: false
 
 # Time in seconds to accept a invitation to join a party 
