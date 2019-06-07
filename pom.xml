@@ -6,7 +6,7 @@
 
     <groupId>fr.mrmicky</groupId>
     <artifactId>ultimateparty</artifactId>
-    <version>1.2.5</version>
+    <version>1.2.6</version>
 
     <name>UltimateParty</name>
 
@@ -94,4 +94,5 @@
             <systemPath>${basedir}/libs/PlayerBalancer.jar</systemPath>
         </dependency>
     </dependencies>
+
 </project>
