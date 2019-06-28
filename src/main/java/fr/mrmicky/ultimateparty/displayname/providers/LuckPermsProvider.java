@@ -8,8 +8,6 @@ import me.lucko.luckperms.api.User;
 import me.lucko.luckperms.api.caching.MetaData;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.Optional;
-
 public class LuckPermsProvider implements PartyNameProvider {
 
     private final LuckPermsApi api;
@@ -25,18 +23,18 @@ public class LuckPermsProvider implements PartyNameProvider {
 
     @Override
     public String getDisplayName(ProxiedPlayer player) {
-        api.getUser(player.getName());
-        Optional<User> user = api.getUserSafe(player.getUniqueId());
-        if (user.isPresent()) {
-            Optional<Contexts> contexts = api.getContextForUser(user.get());
-            if (contexts.isPresent()) {
-                MetaData metaData = user.get().getCachedData().getMetaData(contexts.get());
-                String prefix = metaData.getPrefix();
-                String suffix = metaData.getSuffix();
+        User user = api.getUser(player.getUniqueId());
 
-                return (prefix != null ? prefix : "") + player.getName() + (suffix != null ? suffix : "");
-            }
+        if (user != null) {
+            Contexts contexts = api.getContextManager().getApplicableContexts(player);
+
+            MetaData metaData = user.getCachedData().getMetaData(contexts);
+            String prefix = metaData.getPrefix();
+            String suffix = metaData.getSuffix();
+
+            return PartyNameProvider.addPrefixSuffix(player, prefix, suffix);
         }
+
         return player.getName();
     }
 }

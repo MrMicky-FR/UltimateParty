@@ -23,7 +23,7 @@ public class PartyListener implements Listener {
     }
 
     @EventHandler
-    public void onQuit(PlayerDisconnectEvent e) {
+    public void onPlayerDisconnect(PlayerDisconnectEvent e) {
         ProxiedPlayer player = e.getPlayer();
         Party party = plugin.getPartyManager().getParty(player);
 
@@ -41,7 +41,7 @@ public class PartyListener implements Listener {
     }
 
     @EventHandler
-    public void onSwitch(ServerSwitchEvent e) {
+    public void onServerSwitch(ServerSwitchEvent e) {
         ProxiedPlayer player = e.getPlayer();
         Party party = plugin.getPartyManager().getParty(player);
         ServerInfo server = player.getServer().getInfo();

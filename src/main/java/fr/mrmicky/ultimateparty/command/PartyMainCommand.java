@@ -19,12 +19,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class CommandParty extends Command implements TabExecutor {
+public class PartyMainCommand extends Command implements TabExecutor {
 
     private final Map<String, PartyCommand> commands = new HashMap<>();
     private final UltimateParty plugin;
 
-    public CommandParty(String name, boolean permission, String[] aliases, UltimateParty plugin) {
+    public PartyMainCommand(String name, boolean permission, String[] aliases, UltimateParty plugin) {
         super(name, permission ? "ultimateparty.use" : null, aliases);
 
         this.plugin = plugin;

@@ -1,5 +1,6 @@
 package fr.mrmicky.ultimateparty.displayname;
 
+import com.google.common.base.Strings;
 import fr.mrmicky.ultimateparty.UltimateParty;
 import fr.mrmicky.ultimateparty.displayname.providers.BungeePermsProvider;
 import fr.mrmicky.ultimateparty.displayname.providers.LuckPermsProvider;
@@ -29,5 +30,9 @@ public interface PartyNameProvider {
         }
 
         plugin.setDisplayNameProvider(provider);
+    }
+
+    static String addPrefixSuffix(ProxiedPlayer player, String prefix, String suffix) {
+        return Strings.nullToEmpty(prefix) + player.getName() + Strings.nullToEmpty(suffix);
     }
 }

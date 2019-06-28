@@ -1,7 +1,7 @@
 package fr.mrmicky.ultimateparty;
 
 import com.google.common.io.ByteStreams;
-import fr.mrmicky.ultimateparty.command.CommandParty;
+import fr.mrmicky.ultimateparty.command.PartyMainCommand;
 import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.connection.PartyConnector;
 import fr.mrmicky.ultimateparty.displayname.PartyNameProvider;
@@ -28,15 +28,13 @@ import java.util.logging.Level;
 
 public final class UltimateParty extends Plugin {
 
-    //public static final String USER_ID = "";
-    //public static final String NONCE_ID = "";
     public static final String USER_ID = "%%__USER__%%";
     public static final String NONCE_ID = "%%__NONCE__%%";
 
     private static UltimateParty instance;
 
     private Configuration config;
-    private CommandParty commandParty;
+    private PartyMainCommand commandParty;
     private PartyManager partyManager;
     private DataManager dataManager;
 
@@ -60,7 +58,7 @@ public final class UltimateParty extends Plugin {
 
         String command = config.getString("Commands.Command");
         String[] aliases = config.getStringList("Commands.Aliases").toArray(new String[0]);
-        commandParty = new CommandParty(command, config.getBoolean("Commands.Permission"), aliases, this);
+        commandParty = new PartyMainCommand(command, config.getBoolean("Commands.Permission"), aliases, this);
 
         getProxy().getPluginManager().registerCommand(this, commandParty);
         getProxy().getPluginManager().registerListener(this, new PartyListener(this));

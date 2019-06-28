@@ -25,6 +25,6 @@ public class BungeePermsProvider implements PartyNameProvider {
         String prefix = user.getPrefix();
         String suffix = user.getSuffix();
 
-        return (prefix != null ? prefix : "") + player.getName() + (suffix != null ? suffix : "");
+        return PartyNameProvider.addPrefixSuffix(player, prefix, suffix);
     }
 }
