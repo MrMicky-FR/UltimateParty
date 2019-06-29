@@ -96,7 +96,7 @@ public final class UltimateParty extends Plugin {
             }
             config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(configFile);
         } catch (IOException e) {
-            throw new RuntimeException("Unable to load configuration file", e);
+            throw new RuntimeException("Unable to load configuration", e);
         }
 
         new LocaleLoader(this);
