@@ -1,5 +1,6 @@
 package fr.mrmicky.ultimateparty.locale;
 
+import fr.mrmicky.ultimateparty.UltimateParty;
 import fr.mrmicky.ultimateparty.utils.ChatUtils;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -20,7 +21,7 @@ public enum Message {
 
     NO_PLAYER("&cYou must indicate a player", true),
 
-    UNKNOW_SUBCOMMAND("&cUnknown subcommand, do /party", true),
+    UNKNOWN_SUBCOMMAND("&cUnknown subcommand, do /party", true),
     ALREADY_CONNECT("&cYou are already connected to that server.", true),
 
     PLAYER_NOT_FOUND("&cThis player cannot be found.", true),
@@ -151,40 +152,42 @@ public enum Message {
     OPTION_PARTY_INVITATION("Receive party invitations", false),
     OPTION_PUBLIC_PARTY("Anyone can join the party", false);
 
-    private String message;
-    private boolean prefix;
+    private final String defaultMessage;
+    private final boolean prefix;
 
-    Message(String message, boolean prefix) {
-        this.message = ChatUtils.color(message);
+    Message(String defaultMessage, boolean prefix) {
+        this.defaultMessage = ChatUtils.color(defaultMessage);
         this.prefix = prefix;
     }
 
-    public String getMessage() {
-        return message;
+    public String getDefaultMessage() {
+        return defaultMessage;
     }
 
-    void setMessage(String message) {
-        this.message = message;
+    public boolean hasPrefix() {
+        return prefix;
     }
 
-    public String getAsString(Object... objects) {
-        String s = message;
-        for (int i = 0; i < objects.length; i++) {
-            s = s.replace("{" + i + "}", String.valueOf(objects[i]));
+    public String getAsString(Object... args) {
+        MessagesManager messagesManager = UltimateParty.getInstance().getMessagesManager();
+        String message = messagesManager.getMessage(this);
+
+        for (int i = 0; i < args.length; i++) {
+            message = message.replace("{" + i + "}", String.valueOf(args[i]));
         }
-        return (prefix ? PREFIX.message : "") + s;
+        return (prefix ? messagesManager.getMessage(PREFIX) : "") + message;
     }
 
-    public BaseComponent[] getAsComponent(Object... objects) {
-        return TextComponent.fromLegacyText(getAsString(objects));
+    public BaseComponent[] getAsComponent(Object... args) {
+        return TextComponent.fromLegacyText(getAsString(args));
     }
 
-    public void send(ProxiedPlayer player, Object... objects) {
-        player.sendMessage(getAsComponent(objects));
+    public void send(ProxiedPlayer player, Object... args) {
+        player.sendMessage(getAsComponent(args));
     }
 
-    public void send(Iterable<ProxiedPlayer> players, Object... objects) {
-        BaseComponent[] components = getAsComponent(objects);
+    public void send(Iterable<ProxiedPlayer> players, Object... args) {
+        BaseComponent[] components = getAsComponent(args);
 
         players.forEach(p -> p.sendMessage(components));
     }

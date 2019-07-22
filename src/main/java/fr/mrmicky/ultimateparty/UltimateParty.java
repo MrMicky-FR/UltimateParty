@@ -6,9 +6,9 @@ import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.connection.PartyConnector;
 import fr.mrmicky.ultimateparty.displayname.PartyNameProvider;
 import fr.mrmicky.ultimateparty.listeners.PartyListener;
-import fr.mrmicky.ultimateparty.locale.LocaleLoader;
+import fr.mrmicky.ultimateparty.locale.MessagesManager;
 import fr.mrmicky.ultimateparty.locale.Message;
-import fr.mrmicky.ultimateparty.options.DataManager;
+import fr.mrmicky.ultimateparty.options.StorageManager;
 import fr.mrmicky.ultimateparty.utils.ChatUtils;
 import fr.mrmicky.ultimateparty.utils.Checker;
 import fr.mrmicky.ultimateparty.utils.StringUtils;
@@ -36,7 +36,8 @@ public final class UltimateParty extends Plugin {
     private Configuration config;
     private PartyMainCommand commandParty;
     private PartyManager partyManager;
-    private DataManager dataManager;
+    private MessagesManager messagesManager;
+    private StorageManager dataManager;
 
     private PartyNameProvider displayNameProvider;
     private PartyConnector connector;
@@ -54,6 +55,8 @@ public final class UltimateParty extends Plugin {
 
         instance = this;
 
+        messagesManager = new MessagesManager(this);
+
         loadConfig();
 
         String command = config.getString("Commands.Command");
@@ -64,7 +67,7 @@ public final class UltimateParty extends Plugin {
         getProxy().getPluginManager().registerListener(this, new PartyListener(this));
 
         partyManager = new PartyManager(this);
-        dataManager = new DataManager(this);
+        dataManager = new StorageManager(this);
 
         PartyNameProvider.loadProvider(this);
         PartyConnector.loadConnector(this);
@@ -99,7 +102,7 @@ public final class UltimateParty extends Plugin {
             throw new RuntimeException("Unable to load configuration", e);
         }
 
-        new LocaleLoader(this);
+        messagesManager.loadMessages();
     }
 
     public Configuration getConfig() {
@@ -110,7 +113,11 @@ public final class UltimateParty extends Plugin {
         return partyManager;
     }
 
-    public DataManager getDataManager() {
+    public MessagesManager getMessagesManager() {
+        return messagesManager;
+    }
+
+    public StorageManager getDataManager() {
         return dataManager;
     }
 

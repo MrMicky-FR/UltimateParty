@@ -13,10 +13,10 @@ public class PlayerBalancerConnector implements PartyConnector {
     }
 
     @Override
-    public void connect(ProxiedPlayer p, ServerInfo server) {
+    public void connect(ProxiedPlayer player, ServerInfo server) {
         // Maybe a better way to do that ?
-        PlayerLocker.lock(p);
-        p.connect(server);
-        PlayerLocker.unlock(p);
+        PlayerLocker.lock(player);
+        player.connect(server);
+        PlayerLocker.unlock(player);
     }
 }

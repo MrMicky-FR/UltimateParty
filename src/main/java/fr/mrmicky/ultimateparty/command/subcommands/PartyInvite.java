@@ -68,7 +68,7 @@ public class PartyInvite extends PartyCommand {
             return;
         }
 
-        if (!getPlugin().getDataManager().getOption(p2, PartyOption.RECEIVE_INVITATIONS)) {
+        if (!getPlugin().getDataManager().isOptionEnabled(p2, PartyOption.RECEIVE_INVITATIONS)) {
             Message.DISABLE_INVITATION.send(player);
             return;
         }
@@ -78,14 +78,14 @@ public class PartyInvite extends PartyCommand {
         Message.INVITATION_SEND.send(player, p2.getName());
     }
 
-    private void sendInvitation(ProxiedPlayer p, Party party) {
+    private void sendInvitation(ProxiedPlayer player, Party party) {
         String name = party.getLeader().getName();
-        party.createInvitation(p);
+        party.createInvitation(player);
         BaseComponent[] components = new MessageBuilder(Message.INVITATION_RECEIVE.getAsString(name, getPartyManager().getInvitationDelay()))
                 .click(Message.INVITATION_ACCEPT_BUTTON, true, getPlugin().getCommand() + " accept " + name, Message.INVITATION_ACCEPT_BUTTON_HOVER)
                 .click(Message.INVITATION_DENY_BUTTON, true, getPlugin().getCommand() + " deny " + name, Message.INVITATION_DENY_BUTTON_HOVER)
                 .build();
-        p.sendMessage(components);
+        player.sendMessage(components);
     }
 
     @Override

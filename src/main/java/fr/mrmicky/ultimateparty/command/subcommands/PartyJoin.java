@@ -33,7 +33,7 @@ public class PartyJoin extends PartyCommand {
             return;
         }
 
-        if (!getPlugin().getDataManager().getOption(party2.getLeader(), PartyOption.PUBLIC_PARTY)) {
+        if (!getPlugin().getDataManager().isOptionEnabled(party2.getLeader(), PartyOption.PUBLIC_PARTY)) {
             Message.PARTY_PRIVATE.send(player);
             return;
         }

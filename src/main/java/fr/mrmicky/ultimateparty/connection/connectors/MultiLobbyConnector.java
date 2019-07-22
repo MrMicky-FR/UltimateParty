@@ -13,7 +13,7 @@ public class MultiLobbyConnector implements PartyConnector {
     }
 
     @Override
-    public void connect(ProxiedPlayer p, ServerInfo server) {
-        MultiLobby.directJoin(p, server.getName());
+    public void connect(ProxiedPlayer player, ServerInfo server) {
+        MultiLobby.directJoin(player, server.getName());
     }
 }

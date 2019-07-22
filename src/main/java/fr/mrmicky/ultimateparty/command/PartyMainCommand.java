@@ -72,7 +72,7 @@ public class PartyMainCommand extends Command implements TabExecutor {
 
         PartyCommand cmd = commands.get(args[0].toLowerCase());
         if (cmd == null) {
-            Message.UNKNOW_SUBCOMMAND.send(player);
+            Message.UNKNOWN_SUBCOMMAND.send(player);
             return;
         }
 
@@ -100,11 +100,11 @@ public class PartyMainCommand extends Command implements TabExecutor {
         PartyCommand command = commands.get(rawCommand);
 
         if (command != null) {
-            ProxiedPlayer p = (ProxiedPlayer) sender;
-            List<String> tab = command.onTabComplete(p, Arrays.copyOfRange(args, 1, args.length), plugin.getPartyManager().getParty(p));
+            ProxiedPlayer player = (ProxiedPlayer) sender;
+            List<String> completions = command.onTabComplete(player, Arrays.copyOfRange(args, 1, args.length), plugin.getPartyManager().getParty(player));
 
-            if (tab != null) {
-                return tab;
+            if (completions != null) {
+                return completions;
             }
         }
 

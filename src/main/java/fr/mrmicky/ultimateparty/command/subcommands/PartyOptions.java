@@ -25,7 +25,7 @@ public class PartyOptions extends PartyCommand {
             Message.SPACER_TOP.send(player);
 
             for (PartyOption option : PartyOption.values()) {
-                boolean b = getPlugin().getDataManager().getOption(player, option);
+                boolean b = getPlugin().getDataManager().isOptionEnabled(player, option);
                 ChatColor color = b ? ChatColor.GREEN : ChatColor.RED;
                 String rawMessage = Message.OPTION_FORMAT.getAsString(color + option.getMessage().getAsString());
                 Message hoverMessage = b ? Message.OPTION_DISABLE_BUTTON_HOVER : Message.OPTION_ENABLE_BUTTON_HOVER;
