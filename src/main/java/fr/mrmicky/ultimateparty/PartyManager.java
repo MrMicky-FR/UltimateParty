@@ -2,13 +2,14 @@ package fr.mrmicky.ultimateparty;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public class PartyManager {
 
-    private final Set<Party> partys = new HashSet<>();
+    private final List<Party> partys = new ArrayList<>();
 
     private final UltimateParty plugin;
 
@@ -16,8 +17,8 @@ public class PartyManager {
         this.plugin = plugin;
     }
 
-    public Set<Party> getPartys() {
-        return Collections.unmodifiableSet(partys);
+    public Collection<Party> getPartys() {
+        return Collections.unmodifiableList(partys);
     }
 
     public Party getParty(ProxiedPlayer player) {

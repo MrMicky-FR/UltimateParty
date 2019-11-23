@@ -38,7 +38,7 @@ public class PartyChat extends PartyCommand {
 
         String rawMessage = Message.CHAT_FORMAT.getAsString(plugin.getDisplayName(player)) + censor.getNewMessage();
 
-        BaseComponent[] components = new MessageBuilder(Message.PREFIX.getMessage() + "{0-}")
+        BaseComponent[] components = new MessageBuilder(Message.PREFIX.getDefaultMessage() + "{0-}")
                 .click(rawMessage, false, plugin.getCommand() + " chat ", Message.CHAT_BUTTON_HOVER.getAsString())
                 .build();
 

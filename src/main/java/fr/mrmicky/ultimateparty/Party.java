@@ -103,7 +103,7 @@ public class Party {
         }
 
         Party party = (Party) o;
-        return Objects.equals(leader, party.leader) && players.equals(party.players);
+        return leader.equals(party.leader) && players.equals(party.players);
     }
 
     @Override
