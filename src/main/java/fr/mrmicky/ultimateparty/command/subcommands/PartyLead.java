@@ -42,7 +42,7 @@ public class PartyLead extends PartyCommand {
 
     @Override
     public List<String> onTabComplete(ProxiedPlayer player, String[] args, Party party) {
-        if (args.length != 1) {
+        if (args.length != 1 || party == null) {
             return null;
         }
 

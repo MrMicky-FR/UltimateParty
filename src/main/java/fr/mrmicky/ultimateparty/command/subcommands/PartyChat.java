@@ -74,6 +74,10 @@ public class PartyChat extends PartyCommand {
 
     @Override
     public List<String> onTabComplete(ProxiedPlayer player, String[] args, Party party) {
+        if (party == null) {
+            return null;
+        }
+
         return party.getPlayers().stream()
                 .filter(p -> StringUtils.startsWithIgnoreCase(p.getName(), args[args.length - 1]))
                 .map(CommandSender::getName)
