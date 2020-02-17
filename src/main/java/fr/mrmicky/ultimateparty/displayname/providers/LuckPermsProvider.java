@@ -1,19 +1,18 @@
 package fr.mrmicky.ultimateparty.displayname.providers;
 
 import fr.mrmicky.ultimateparty.displayname.PartyNameProvider;
-import me.lucko.luckperms.LuckPerms;
-import me.lucko.luckperms.api.Contexts;
-import me.lucko.luckperms.api.LuckPermsApi;
-import me.lucko.luckperms.api.User;
-import me.lucko.luckperms.api.caching.MetaData;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.cacheddata.CachedMetaData;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.query.QueryOptions;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class LuckPermsProvider implements PartyNameProvider {
 
-    private final LuckPermsApi api;
+    private final LuckPerms luckPerms;
 
     public LuckPermsProvider() {
-        api = LuckPerms.getApi();
+        luckPerms = net.luckperms.api.LuckPermsProvider.get();
     }
 
     @Override
@@ -23,18 +22,18 @@ public class LuckPermsProvider implements PartyNameProvider {
 
     @Override
     public String getDisplayName(ProxiedPlayer player) {
-        User user = api.getUser(player.getUniqueId());
+        User user = luckPerms.getUserManager().getUser(player.getUniqueId());
 
-        if (user != null) {
-            Contexts contexts = api.getContextManager().getApplicableContexts(player);
-
-            MetaData metaData = user.getCachedData().getMetaData(contexts);
-            String prefix = metaData.getPrefix();
-            String suffix = metaData.getSuffix();
-
-            return PartyNameProvider.addPrefixSuffix(player, prefix, suffix);
+        if (user == null) {
+            return player.getName();
         }
 
-        return player.getName();
+        QueryOptions queryOptions = luckPerms.getContextManager().getQueryOptions(player);
+        CachedMetaData metaData = user.getCachedData().getMetaData(queryOptions);
+
+        String prefix = metaData.getPrefix();
+        String suffix = metaData.getSuffix();
+
+        return PartyNameProvider.addPrefixSuffix(player, prefix, suffix);
     }
 }

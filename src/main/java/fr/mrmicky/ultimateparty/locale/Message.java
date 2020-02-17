@@ -13,6 +13,8 @@ public enum Message {
      */
     PREFIX("&6Party \u279C &f", false),
 
+    PARTY_CHAT_FORMAT("{0-}", true),
+
     /*
      * Errors
      */
@@ -191,4 +193,13 @@ public enum Message {
 
         players.forEach(p -> p.sendMessage(components));
     }
+
+    /*public static void main(String[] args) {
+        for (Message message : values()) {
+            String path = StringUtils.formatEnum(message.toString());
+            String msg = message.getDefaultMessage().replace(ChatColor.COLOR_CHAR, '&');
+
+            System.out.println(path + ": \"" + msg + "\"");
+        }
+    }*/
 }
