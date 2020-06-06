@@ -1,10 +1,10 @@
 package fr.mrmicky.ultimateparty.utils;
 
+import com.google.common.base.Strings;
 import fr.mrmicky.ultimateparty.UltimateParty;
 import fr.mrmicky.ultimateparty.locale.Message;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.Arrays;
 import java.util.regex.Pattern;
 
 public class ChatCensor {
@@ -43,7 +43,7 @@ public class ChatCensor {
 
     private void checkSwear() {
         for (String word : message.split(" ")) {
-            for (String s : UltimateParty.getInstance().getConfig().getStringList("Chat.WorldsBlacklist")) {
+            for (String s : UltimateParty.getInstance().getConfig().getStringList("Chat.BlockedWords")) {
                 if (!s.isEmpty() && StringUtils.containsIgnoreCase(word, s)) {
                     message = censor(s);
                 }
@@ -52,9 +52,8 @@ public class ChatCensor {
     }
 
     private String censor(String word) {
-        char[] chars = new char[word.length()];
-        Arrays.fill(chars, '*');
+        String replace = Strings.repeat("*", word.length());
 
-        return Pattern.compile(word, Pattern.CASE_INSENSITIVE).matcher(message).replaceAll(new String(chars));
+        return Pattern.compile(word, Pattern.CASE_INSENSITIVE).matcher(message).replaceAll(replace);
     }
 }

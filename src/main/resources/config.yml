@@ -23,7 +23,7 @@ ChatPrefix:
 
 Chat:
   Log: false
-  WorldsBlacklist:
+  BlockedWords:
     - fuck
     - shit
     - bitch
