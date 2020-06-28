@@ -9,7 +9,6 @@ import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -44,7 +43,7 @@ public class MessagesManager {
                 String rawMessage = messagesConfiguration.getString(path);
 
                 if (rawMessage != null && !rawMessage.isEmpty()) {
-                    messages.put(message, ChatUtils.color(rawMessage));
+                    messages.put(message, ChatUtils.colorHex(rawMessage));
                 } else {
                     hasNewMessages = true;
 
@@ -57,7 +56,7 @@ public class MessagesManager {
 
                 plugin.getLogger().warning("Missing messages was added to messages.yml");
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             plugin.getLogger().log(Level.SEVERE, "Unable to load messages", e);
         }
     }
