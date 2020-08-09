@@ -1,13 +1,12 @@
 package fr.mrmicky.ultimateparty;
 
-import com.google.common.io.ByteStreams;
-import fr.mrmicky.ultimateparty.command.PartyMainCommand;
 import fr.mrmicky.ultimateparty.command.PartyCommand;
+import fr.mrmicky.ultimateparty.command.PartyMainCommand;
 import fr.mrmicky.ultimateparty.connection.PartyConnector;
 import fr.mrmicky.ultimateparty.displayname.PartyNameProvider;
 import fr.mrmicky.ultimateparty.listeners.PartyListener;
-import fr.mrmicky.ultimateparty.locale.MessagesManager;
 import fr.mrmicky.ultimateparty.locale.Message;
+import fr.mrmicky.ultimateparty.locale.MessagesManager;
 import fr.mrmicky.ultimateparty.options.StorageManager;
 import fr.mrmicky.ultimateparty.utils.ChatUtils;
 import fr.mrmicky.ultimateparty.utils.Checker;
@@ -20,10 +19,9 @@ import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.logging.Level;
 
 public final class UltimateParty extends Plugin {
@@ -92,9 +90,8 @@ public final class UltimateParty extends Plugin {
 
             File configFile = new File(getDataFolder(), "config.yml");
             if (!configFile.exists()) {
-                try (InputStream in = getResourceAsStream("config.yml");
-                     OutputStream out = new FileOutputStream(configFile)) {
-                    ByteStreams.copy(in, out);
+                try (InputStream in = getResourceAsStream("config.yml")) {
+                    Files.copy(in, configFile.toPath());
                 }
             }
             config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(configFile);

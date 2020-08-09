@@ -38,19 +38,14 @@ public final class ChatUtils {
         }
 
         int index = -1;
-        while ((index = result.indexOf('<', index)) >= 0) {
-            index++;
-
-            if (index > result.length() - 8 || result.charAt(index) != '#') {
-                continue;
-            }
-
-            if (result.charAt(index + 7) != '>') {
+        while ((index = result.indexOf('#', index)) >= 1) {
+            if (index + 7 > result.length() || result.charAt(index - 1) != '&') {
+                index++;
                 continue;
             }
 
             ChatColor color = ChatColor.of(result.substring(index, index + 7));
-            result = result.substring(0, index - 1) + color + result.substring(index + 8);
+            result = result.substring(0, index - 1) + color + result.substring(index + 7);
             index = -1;
         }
 
