@@ -45,7 +45,7 @@ public class PartyChat extends PartyCommand {
         party.getPlayers().stream().filter(plugin::isServerEnable).forEach(ps -> ps.sendMessage(components));
 
         if (plugin.getConfig().getBoolean("Chat.Log")) {
-            log('(' + party.getLeader().getName() + "'s party) " + player.getName() + ": " + msg, plugin);
+            log("(Party of " + party.getLeader().getName() + ") " + player.getName() + ": " + msg, plugin);
         }
     }
 
@@ -74,7 +74,7 @@ public class PartyChat extends PartyCommand {
 
     @Override
     public List<String> onTabComplete(ProxiedPlayer player, String[] args, Party party) {
-        if (party == null) {
+        if (party == null || args.length == 0) {
             return null;
         }
 

@@ -21,11 +21,8 @@ public class PartyList extends PartyCommand {
         Message.PARTY_LIST.send(player);
         Message.PARTY_LIST_FORMAT_LEADER.send(player, party.getLeader().getName(), party.getLeader().getServer().getInfo().getName());
 
-        for (ProxiedPlayer ps : party.getPlayers()) {
-            if (!party.isLeader(ps)) {
-                Message.PARTY_LIST_FORMAT.send(player, ps.getName(), ps.getServer().getInfo().getName());
-            }
-        }
-
+        party.getPlayers().stream()
+                .filter(p -> !party.isLeader(p))
+                .forEach(p -> Message.PARTY_LIST_FORMAT.send(player, p.getName(), p.getServer().getInfo().getName()));
     }
 }

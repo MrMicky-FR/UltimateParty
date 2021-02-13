@@ -34,10 +34,11 @@ public class PartyListener implements Listener {
         if (party.isLeader(player)) {
             Message.PARTY_DISBAND.send(party.getPlayers(), player.getName());
             plugin.getPartyManager().disbandParty(party);
-        } else {
-            party.removePlayer(player);
-            Message.PARTY_LEFT_BROADCAST.send(party.getPlayers(), player.getName());
+            return;
         }
+
+        party.removePlayer(player);
+        Message.PARTY_LEFT_BROADCAST.send(party.getPlayers(), player.getName());
     }
 
     @EventHandler
@@ -50,13 +51,17 @@ public class PartyListener implements Listener {
             return;
         }
 
+        if (!plugin.getConfig().getBoolean("AutoTP")) {
+            return;
+        }
+
         if (StringUtils.containsIgnoreCase(plugin.getConfig().getStringList("DisableAutoJoinServers"), server.getName())) {
             return;
         }
 
-        for (ProxiedPlayer ps : party.getPlayers()) {
-            if (!ps.getServer().equals(player.getServer()) && plugin.isServerEnable(ps)) {
-                plugin.connect(ps, server);
+        for (ProxiedPlayer p : party.getPlayers()) {
+            if (!p.getServer().equals(player.getServer()) && plugin.isServerEnable(p)) {
+                plugin.connect(p, server);
             }
         }
     }
@@ -113,14 +118,14 @@ public class PartyListener implements Listener {
 
             Party party = plugin.getPartyManager().getParty(player);
             if (party == null) {
-                continue;
+                return;
             }
 
             String lastArg = args[args.length - 1];
 
             party.getPlayers().stream()
-                    .filter(ps -> StringUtils.startsWithIgnoreCase(ps.getName(), lastArg))
-                    .forEach(ps -> e.getSuggestions().add(ps.getName()));
+                    .filter(p -> StringUtils.startsWithIgnoreCase(p.getName(), lastArg))
+                    .forEach(p -> e.getSuggestions().add(p.getName()));
             break;
         }
     }

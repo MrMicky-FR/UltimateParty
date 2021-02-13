@@ -27,31 +27,31 @@ public enum Message {
     ALREADY_CONNECT("&cYou are already connected to that server.", true),
 
     PLAYER_NOT_FOUND("&cThis player cannot be found.", true),
-    PLAYER_NO_IN_PARTY("&cThis player is not in the party", true),
+    PLAYER_NO_IN_PARTY("&cThis player is not in the party.", true),
     PARTY_NO_LEAVE("&cThe leader can't leave the party.", true),
 
     ALREADY_IN_PARTY("&cThis player is already in a party.", true),
     ALREADY_IN_PARTY_SELF("&cYou are already in a party.", true),
 
     DISABLE_SERVER("&cThis player is on a disabled server.", true),
-    DISABLE_SERVER_SELF("&cPartys are disabled on this server.", true),
+    DISABLE_SERVER_SELF("&cYou can't use party commands on this server.", true),
 
-    PARTY_FULL("&cThis party is full", true),
-    PARTY_FULL_SELF("&cThe party is full", true),
+    PARTY_FULL("&cThis party is full.", true),
+    PARTY_FULL_SELF("&cThe party is full.", true),
 
     NO_PARTY("&cYou are not in a party.", true),
 
     PARTY_NOT_EXISTS("&cThis party don't exist", true),
     // v 1.1
-    PARTY_PRIVATE("&cThis party is private", true),
-    DISABLE_INVITATION("&cThis player has disabled party invitations", true),
-    //DISABLE_INVITATION_SELF("&cYou have disabled party invitations", true), // Remove in 1.2.2
+    PARTY_PRIVATE("&cThis party is private.", true),
+    DISABLE_INVITATION("&cThis player has disabled party invitations.", true),
+    //DISABLE_INVITATION_SELF("&cYou have disabled party invitations.", true), // Removed in 1.2.2
 
     NO_LEADER("&cYou are not the leader of a party.", true),
-    NO_INVITATION("&cThis invitation doesn't exist", true),
+    NO_INVITATION("&cThis invitation doesn't exist.", true),
     INVITATION_ALREADY_SEND("&cYou already invited this player.", true),
 
-    NO_URL_CHAT("&cYou can't put url in the chat", true),
+    NO_URL_CHAT("&cYou can't put url in the chat.", true),
 
     /*
      *  Success
@@ -75,9 +75,11 @@ public enum Message {
     PARTY_DISBAND("&fThe party has been disbanded by &b{0}&f.", true),
 
     INVITATION_SEND("&fThe invitation has been sent to &b{0}&f.", true),
-    INVITATION_RECEIVE("&b{0} &finvited you to join his party: &9[{0-}&9] [{1-}&9]. &fYou have {1} seconds to accept", true),
+    INVITATION_RECEIVE("&b{0} &finvited you to join his party: &9[{0-}&9] [{1-}&9]. &fYou have {1} seconds to accept.", true),
 
-    INVITATION_DENIED("&fYou denied {0}'s invitation", true),
+    INVITATION_DENIED("&fYou denied {0}'s invitation.", true),
+
+    PLAYERS_TELEPORTED("&fThe players have been teleported to your server.", true),
 
     /*
      * Menu

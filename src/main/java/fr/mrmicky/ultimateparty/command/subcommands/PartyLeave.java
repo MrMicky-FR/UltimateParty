@@ -20,13 +20,13 @@ public class PartyLeave extends PartyCommand {
 
         if (party.isLeader(player)) {
             Message.PARTY_NO_LEAVE.send(party.getPlayers(), player.getName());
-
-        } else {
-            party.removePlayer(player);
-
-            Message.PARTY_LEFT.send(player);
-
-            Message.PARTY_LEFT_BROADCAST.send(party.getPlayers(), player.getName());
+            return;
         }
+
+        party.removePlayer(player);
+
+        Message.PARTY_LEFT.send(player);
+
+        Message.PARTY_LEFT_BROADCAST.send(party.getPlayers(), player.getName());
     }
 }

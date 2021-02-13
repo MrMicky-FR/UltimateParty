@@ -30,7 +30,7 @@ public class PartyLead extends PartyCommand {
 
         ProxiedPlayer p2 = getPlugin().getProxy().getPlayer(args[0]);
 
-        if (p2 == null || !party.getPlayers().contains(p2) || player.equals(p2)) {
+        if (p2 == null || !party.hasPlayer(p2) || player.equals(p2)) {
             Message.PLAYER_NO_IN_PARTY.send(player);
             return;
         }

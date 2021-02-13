@@ -12,6 +12,9 @@ Commands:
 # Automatically create party
 AutoParty: false
 
+# Automatically teleport the party users when the party owner join a server
+AutoTP: true
+
 # Time in seconds to accept a invitation to join a party 
 InvitationDelay: 60
 

@@ -43,6 +43,7 @@ public class PartyMainCommand extends Command implements TabExecutor {
         register(new PartyList());
         register(new PartyOptions());
         register(new PartyTp());
+        register(new PartyWarp());
     }
 
     @Override

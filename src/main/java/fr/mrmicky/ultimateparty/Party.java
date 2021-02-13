@@ -1,6 +1,5 @@
 package fr.mrmicky.ultimateparty;
 
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.config.Configuration;
 
@@ -17,11 +16,15 @@ public class Party {
     private final Set<ProxiedPlayer> players = new HashSet<>();
     private final Set<UUID> invitations = new HashSet<>();
 
+    private final int maxSize;
+
     private ProxiedPlayer leader;
 
     Party(ProxiedPlayer leader, UltimateParty plugin) {
         this.leader = Objects.requireNonNull(leader, "leader");
         this.plugin = plugin;
+
+        maxSize = computeMaxSize();
 
         players.add(leader);
     }
@@ -57,7 +60,7 @@ public class Party {
 
     public void createInvitation(ProxiedPlayer player) {
         if (invitations.add(player.getUniqueId())) {
-            ProxyServer.getInstance().getScheduler().schedule(plugin, () ->
+            plugin.getProxy().getScheduler().schedule(plugin, () ->
                     invitations.remove(player.getUniqueId()), plugin.getPartyManager().getInvitationDelay(), TimeUnit.SECONDS);
         }
     }
@@ -66,15 +69,27 @@ public class Party {
         invitations.remove(player.getUniqueId());
     }
 
+    public boolean hasPlayer(ProxiedPlayer player) {
+        return players.contains(player);
+    }
+
     public boolean isInvited(ProxiedPlayer player) {
         return invitations.contains(player.getUniqueId());
     }
 
     public boolean isFull() {
-        return getMaxSize() < players.size();
+        return size() >= maxSize;
+    }
+
+    public int size() {
+        return players.size();
     }
 
     public int getMaxSize() {
+        return this.maxSize;
+    }
+
+    public int computeMaxSize() {
         Configuration groups = plugin.getConfig().getSection("MaxPartySize.Groups");
 
         for (String s : groups.getKeys()) {
@@ -89,25 +104,7 @@ public class Party {
 
     @Override
     public String toString() {
-        return "Party{leader=" + leader + ", players=" + players.size() + ", invitations=" + invitations.size() + '}';
+        return "Party{leader=" + leader + ", players=" + size() + ", invitations=" + invitations.size() + '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (!(o instanceof Party)) {
-            return false;
-        }
-
-        Party party = (Party) o;
-        return leader.equals(party.leader) && players.equals(party.players);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(leader, players);
-    }
 }

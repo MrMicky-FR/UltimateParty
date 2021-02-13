@@ -8,6 +8,7 @@ import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 public class StorageManager {
 
@@ -36,7 +37,11 @@ public class StorageManager {
     }
 
     public boolean isOptionEnabled(ProxiedPlayer player, PartyOption option) {
-        return saveConfiguration.getBoolean(player.getUniqueId() + "." + option.toString().toLowerCase(), option.getDefaultValue());
+        return this.isOptionEnabled(player.getUniqueId(), option);
+    }
+
+    public boolean isOptionEnabled(UUID player, PartyOption option) {
+        return saveConfiguration.getBoolean(player + "." + option.toString().toLowerCase(), option.getDefaultValue());
     }
 
     public void saveData() {

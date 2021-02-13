@@ -24,7 +24,7 @@ public class PartyManager {
     public Party getParty(ProxiedPlayer player) {
         if (player != null) {
             for (Party party : partys) {
-                if (party.getPlayers().contains(player)) {
+                if (party.hasPlayer(player)) {
                     return party;
                 }
             }
@@ -49,9 +49,7 @@ public class PartyManager {
     }
 
     public void disbandParty(Party party) {
-        if (partys.remove(party)) {
-            party.getPlayers().clear();
-        }
+        partys.remove(party);
     }
 
     public int getInvitationDelay() {

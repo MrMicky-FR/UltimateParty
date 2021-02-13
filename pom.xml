@@ -6,7 +6,7 @@
 
     <groupId>fr.mrmicky</groupId>
     <artifactId>ultimateparty</artifactId>
-    <version>1.2.10</version>
+    <version>1.2.11</version>
 
     <name>UltimateParty</name>
 
@@ -26,6 +26,11 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
             </plugin>
         </plugins>
         <resources>
@@ -52,7 +57,7 @@
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
-            <version>1.16-R0.1</version>
+            <version>1.16-R0.4</version>
             <scope>provided</scope>
         </dependency>
         <!-- Permissions plugins -->
@@ -88,6 +93,19 @@
             <version>2.1</version>
             <scope>system</scope>
             <systemPath>${basedir}/libs/PlayerBalancer.jar</systemPath>
+        </dependency>
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.7.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.7.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

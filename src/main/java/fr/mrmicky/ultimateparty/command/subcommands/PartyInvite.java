@@ -73,18 +73,18 @@ public class PartyInvite extends PartyCommand {
             return;
         }
 
-        sendInvitation(p2, party);
+        sendInvitation(p2, party, player.getName());
 
         Message.INVITATION_SEND.send(player, p2.getName());
     }
 
-    private void sendInvitation(ProxiedPlayer player, Party party) {
-        String name = party.getLeader().getName();
-        party.createInvitation(player);
-        BaseComponent[] components = new MessageBuilder(Message.INVITATION_RECEIVE.getAsString(name, getPartyManager().getInvitationDelay()))
-                .click(Message.INVITATION_ACCEPT_BUTTON, true, getPlugin().getCommand() + " accept " + name, Message.INVITATION_ACCEPT_BUTTON_HOVER)
-                .click(Message.INVITATION_DENY_BUTTON, true, getPlugin().getCommand() + " deny " + name, Message.INVITATION_DENY_BUTTON_HOVER)
+    private void sendInvitation(ProxiedPlayer player, Party party,  String leaderName) {
+        BaseComponent[] components = new MessageBuilder(Message.INVITATION_RECEIVE.getAsString(leaderName, getPartyManager().getInvitationDelay()))
+                .click(Message.INVITATION_ACCEPT_BUTTON, true, getPlugin().getCommand() + " accept " + leaderName, Message.INVITATION_ACCEPT_BUTTON_HOVER)
+                .click(Message.INVITATION_DENY_BUTTON, true, getPlugin().getCommand() + " deny " + leaderName, Message.INVITATION_DENY_BUTTON_HOVER)
                 .build();
+
+        party.createInvitation(player);
         player.sendMessage(components);
     }
 
