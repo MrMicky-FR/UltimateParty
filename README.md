@@ -1,5 +1,7 @@
 # UltimateParty
 
+[![Java CI](https://github.com/MrMicky-FR/UltimateParty/actions/workflows/build.yml/badge.svg)](https://github.com/MrMicky-FR/UltimateParty/actions/workflows/build.yml)
+
 The ultimate party plugin for BungeeCord !
 
 ## Downloads
