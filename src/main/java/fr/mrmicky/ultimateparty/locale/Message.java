@@ -19,7 +19,6 @@ public enum Message {
      * Errors
      */
     NO_PERMISSION("&cYou do not have permission to use this command!", true),
-    //NO_CONSOLE("&cConsole can't use party commands", true),
 
     NO_PLAYER("&cYou must indicate a player", true),
 
@@ -168,9 +167,6 @@ public enum Message {
         return defaultMessage;
     }
 
-    public boolean hasPrefix() {
-        return prefix;
-    }
 
     public String getAsString(Object... args) {
         MessagesManager messagesManager = UltimateParty.getInstance().getMessagesManager();
@@ -191,17 +187,8 @@ public enum Message {
     }
 
     public void send(Iterable<ProxiedPlayer> players, Object... args) {
-        BaseComponent[] components = getAsComponent(args);
+        BaseComponent[] message = getAsComponent(args);
 
-        players.forEach(p -> p.sendMessage(components));
+        players.forEach(p -> p.sendMessage(message));
     }
-
-    /*public static void main(String[] args) {
-        for (Message message : values()) {
-            String path = StringUtils.formatEnum(message.toString());
-            String msg = message.getDefaultMessage().replace(ChatColor.COLOR_CHAR, '&');
-
-            System.out.println(path + ": \"" + msg + "\"");
-        }
-    }*/
 }

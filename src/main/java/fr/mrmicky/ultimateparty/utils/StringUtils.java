@@ -1,6 +1,7 @@
 package fr.mrmicky.ultimateparty.utils;
 
 import java.util.List;
+import java.util.Locale;
 
 public final class StringUtils {
 
@@ -34,6 +35,6 @@ public final class StringUtils {
     }
 
     public static String formatEnum(String text) {
-        return text.toLowerCase().replace('_', '-');
+        return text.toLowerCase(Locale.ROOT).replace('_', '-');
     }
 }

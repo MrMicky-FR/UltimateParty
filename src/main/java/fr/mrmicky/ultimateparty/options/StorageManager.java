@@ -33,7 +33,7 @@ public class StorageManager {
     }
 
     public void setOption(ProxiedPlayer player, PartyOption option, boolean enable) {
-        saveConfiguration.set(player.getUniqueId() + "." + option.toString().toLowerCase(), enable);
+        saveConfiguration.set(player.getUniqueId() + "." + option.getKey(), enable);
     }
 
     public boolean isOptionEnabled(ProxiedPlayer player, PartyOption option) {
@@ -41,7 +41,7 @@ public class StorageManager {
     }
 
     public boolean isOptionEnabled(UUID player, PartyOption option) {
-        return saveConfiguration.getBoolean(player + "." + option.toString().toLowerCase(), option.getDefaultValue());
+        return saveConfiguration.getBoolean(player + "." + option.getKey(), option.getDefaultValue());
     }
 
     public void saveData() {

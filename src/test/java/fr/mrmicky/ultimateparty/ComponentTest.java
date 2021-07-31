@@ -4,15 +4,15 @@ import fr.mrmicky.ultimateparty.utils.ChatUtils;
 import net.md_5.bungee.api.ChatColor;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class ComponentTest {
+class ComponentTest {
 
     private static final ChatColor RED = ChatColor.of("#ff0a0a");
     private static final ChatColor BLUE = ChatColor.of("#1500ff");
 
     @Test
-    public void testHexConversion() {
+    void testHexConversion() {
         assertEquals("Hello World", ChatUtils.colorHex("Hello World"));
         assertEquals("#ff0a0aHello World", ChatUtils.colorHex("#ff0a0aHello World"));
         assertEquals(RED + "Hello World", ChatUtils.colorHex("&#ff0a0aHello World"));

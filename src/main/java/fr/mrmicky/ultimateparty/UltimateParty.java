@@ -9,7 +9,6 @@ import fr.mrmicky.ultimateparty.locale.Message;
 import fr.mrmicky.ultimateparty.locale.MessagesManager;
 import fr.mrmicky.ultimateparty.options.StorageManager;
 import fr.mrmicky.ultimateparty.utils.ChatUtils;
-import fr.mrmicky.ultimateparty.utils.Checker;
 import fr.mrmicky.ultimateparty.utils.StringUtils;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -18,16 +17,16 @@ import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.logging.Level;
 
 public final class UltimateParty extends Plugin {
-
-    public static final String USER_ID = "%%__USER__%%";
-    public static final String NONCE_ID = "%%__NONCE__%%";
 
     private static UltimateParty instance;
 
@@ -46,11 +45,6 @@ public final class UltimateParty extends Plugin {
 
     @Override
     public void onEnable() {
-        Checker checker = new Checker(this);
-        if (!checker.isValid()) {
-            return;
-        }
-
         instance = this;
 
         messagesManager = new MessagesManager(this);
@@ -71,7 +65,7 @@ public final class UltimateParty extends Plugin {
         PartyConnector.loadConnector(this);
 
         if (config.getBoolean("CheckUpdates")) {
-            getProxy().getScheduler().runAsync(this, checker::checkUpdate);
+            getProxy().getScheduler().runAsync(this, this::checkUpdate);
         }
     }
 
@@ -176,5 +170,21 @@ public final class UltimateParty extends Plugin {
 
     public String getCommand() {
         return commandParty.getName();
+    }
+
+    private void checkUpdate() {
+        try {
+            URL url = new URL("https://api.spigotmc.org/legacy/update.php?resource=51548");
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
+                String version = getDescription().getVersion();
+                String lastVersion = reader.readLine();
+                if (!version.equalsIgnoreCase(lastVersion)) {
+                    getLogger().warning("A new version is available ! Last version is " + lastVersion + " and you are on " + version);
+                    getLogger().warning("You can download it on: https://www.spigotmc.org/resources/ultimateparty.51548/");
+                }
+            }
+        } catch (IOException e) {
+            // ignore
+        }
     }
 }

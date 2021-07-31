@@ -11,10 +11,11 @@ import java.util.List;
 public abstract class PartyCommand {
 
     private final String name;
-    private final UltimateParty plugin = UltimateParty.getInstance();
+    private final UltimateParty plugin;
 
-    public PartyCommand(String name) {
+    public PartyCommand(String name, UltimateParty plugin) {
         this.name = name;
+        this.plugin = plugin;
     }
 
     public String getName() {

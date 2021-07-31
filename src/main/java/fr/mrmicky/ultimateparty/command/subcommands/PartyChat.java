@@ -17,6 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -25,12 +26,12 @@ public class PartyChat extends PartyCommand {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
-    public PartyChat() {
-        super("chat");
+    public PartyChat(UltimateParty plugin) {
+        super("chat", plugin);
     }
 
     public static void sendMessage(ProxiedPlayer player, Party party, String msg, UltimateParty plugin) {
-        ChatCensor censor = new ChatCensor(player, msg);
+        ChatCensor censor = new ChatCensor(plugin, player, msg);
 
         if (censor.isCancel()) {
             return;
@@ -75,7 +76,7 @@ public class PartyChat extends PartyCommand {
     @Override
     public List<String> onTabComplete(ProxiedPlayer player, String[] args, Party party) {
         if (party == null || args.length == 0) {
-            return null;
+            return Collections.emptyList();
         }
 
         return party.getPlayers().stream()

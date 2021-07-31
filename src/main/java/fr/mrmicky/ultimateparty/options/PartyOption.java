@@ -1,6 +1,7 @@
 package fr.mrmicky.ultimateparty.options;
 
 import fr.mrmicky.ultimateparty.locale.Message;
+import fr.mrmicky.ultimateparty.utils.StringUtils;
 
 public enum PartyOption {
 
@@ -9,10 +10,12 @@ public enum PartyOption {
 
     private final boolean defaultValue;
     private final Message message;
+    private final String key;
 
     PartyOption(boolean defaultValue, Message message) {
         this.defaultValue = defaultValue;
         this.message = message;
+        this.key = StringUtils.formatEnum(name());
     }
 
     public boolean getDefaultValue() {
@@ -21,5 +24,9 @@ public enum PartyOption {
 
     public Message getMessage() {
         return message;
+    }
+
+    public String getKey() {
+        return key;
     }
 }

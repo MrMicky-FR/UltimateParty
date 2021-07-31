@@ -1,19 +1,21 @@
 package fr.mrmicky.ultimateparty.command.subcommands;
 
 import fr.mrmicky.ultimateparty.Party;
+import fr.mrmicky.ultimateparty.UltimateParty;
 import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.locale.Message;
 import fr.mrmicky.ultimateparty.utils.StringUtils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PartyLead extends PartyCommand {
 
-    public PartyLead() {
-        super("lead");
+    public PartyLead(UltimateParty plugin) {
+        super("lead", plugin);
     }
 
     @Override
@@ -43,7 +45,7 @@ public class PartyLead extends PartyCommand {
     @Override
     public List<String> onTabComplete(ProxiedPlayer player, String[] args, Party party) {
         if (args.length != 1 || party == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         return party.getPlayers().stream()

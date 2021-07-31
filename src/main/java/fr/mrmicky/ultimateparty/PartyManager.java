@@ -9,7 +9,7 @@ import java.util.List;
 
 public class PartyManager {
 
-    private final List<Party> partys = new ArrayList<>();
+    private final List<Party> parties = new ArrayList<>();
 
     private final UltimateParty plugin;
 
@@ -17,16 +17,18 @@ public class PartyManager {
         this.plugin = plugin;
     }
 
-    public Collection<Party> getPartys() {
-        return Collections.unmodifiableList(partys);
+    public Collection<Party> getParties() {
+        return Collections.unmodifiableList(parties);
     }
 
     public Party getParty(ProxiedPlayer player) {
-        if (player != null) {
-            for (Party party : partys) {
-                if (party.hasPlayer(player)) {
-                    return party;
-                }
+        if (player == null) {
+            return null;
+        }
+
+        for (Party party : parties) {
+            if (party.hasPlayer(player)) {
+                return party;
             }
         }
         return null;
@@ -43,13 +45,13 @@ public class PartyManager {
 
         Party party = new Party(leader, plugin);
 
-        partys.add(party);
+        parties.add(party);
 
         return party;
     }
 
     public void disbandParty(Party party) {
-        partys.remove(party);
+        parties.remove(party);
     }
 
     public int getInvitationDelay() {

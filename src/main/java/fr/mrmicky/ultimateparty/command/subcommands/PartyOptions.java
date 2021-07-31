@@ -1,6 +1,7 @@
 package fr.mrmicky.ultimateparty.command.subcommands;
 
 import fr.mrmicky.ultimateparty.Party;
+import fr.mrmicky.ultimateparty.UltimateParty;
 import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.locale.Message;
 import fr.mrmicky.ultimateparty.options.PartyOption;
@@ -10,13 +11,15 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class PartyOptions extends PartyCommand {
 
-    public PartyOptions() {
-        super("options");
+    public PartyOptions(UltimateParty plugin) {
+        super("options", plugin);
     }
 
     @Override
@@ -41,7 +44,7 @@ public class PartyOptions extends PartyCommand {
             PartyOption option;
             boolean b = Boolean.parseBoolean(args[1]);
             try {
-                option = PartyOption.valueOf(args[0].toUpperCase());
+                option = PartyOption.valueOf(args[0].toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
                 option = null;
             }
@@ -58,7 +61,7 @@ public class PartyOptions extends PartyCommand {
     @Override
     public List<String> onTabComplete(ProxiedPlayer player, String[] args, Party party) {
         if (args.length != 1) {
-            return null;
+            return Collections.emptyList();
         }
 
         return player.getServer().getInfo().getPlayers().stream()

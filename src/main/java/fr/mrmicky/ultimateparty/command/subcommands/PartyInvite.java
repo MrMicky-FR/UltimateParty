@@ -1,6 +1,7 @@
 package fr.mrmicky.ultimateparty.command.subcommands;
 
 import fr.mrmicky.ultimateparty.Party;
+import fr.mrmicky.ultimateparty.UltimateParty;
 import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.locale.Message;
 import fr.mrmicky.ultimateparty.options.PartyOption;
@@ -10,13 +11,14 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PartyInvite extends PartyCommand {
 
-    public PartyInvite() {
-        super("invite");
+    public PartyInvite(UltimateParty plugin) {
+        super("invite", plugin);
     }
 
     @Override
@@ -91,7 +93,7 @@ public class PartyInvite extends PartyCommand {
     @Override
     public List<String> onTabComplete(ProxiedPlayer player, String[] args, Party party) {
         if (args.length != 1) {
-            return null;
+            return Collections.emptyList();
         }
 
         return player.getServer().getInfo().getPlayers().stream()

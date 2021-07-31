@@ -11,12 +11,14 @@ public class ChatCensor {
 
     private static final Pattern URL_PATTERN = Pattern.compile("(?i)[a-zA-Z0-9\\-.]+\\s?(\\.|dot|\\(dot\\)|\\(\\.\\)|-|;|:|\\(\\)|,)\\s?(com|org|net|cz|co|uk|sk|biz|mobi|xxx|eu|me|gg)\\b");
 
+    private final UltimateParty plugin;
     private final ProxiedPlayer player;
 
     private String message;
     private boolean cancel = false;
 
-    public ChatCensor(ProxiedPlayer player, String message) {
+    public ChatCensor(UltimateParty plugin, ProxiedPlayer player, String message) {
+        this.plugin = plugin;
         this.player = player;
         this.message = message;
 
@@ -33,17 +35,15 @@ public class ChatCensor {
     }
 
     private void checkUrl() {
-        if (UltimateParty.getInstance().getConfig().getBoolean("Chat.PreventUrl")) {
-            if (URL_PATTERN.matcher(message).find()) {
-                cancel = true;
-                Message.NO_URL_CHAT.send(player);
-            }
+        if (plugin.getConfig().getBoolean("Chat.PreventUrl") && URL_PATTERN.matcher(message).find()) {
+            cancel = true;
+            Message.NO_URL_CHAT.send(player);
         }
     }
 
     private void checkSwear() {
         for (String word : message.split(" ")) {
-            for (String s : UltimateParty.getInstance().getConfig().getStringList("Chat.BlockedWords")) {
+            for (String s : plugin.getConfig().getStringList("Chat.BlockedWords")) {
                 if (!s.isEmpty() && StringUtils.containsIgnoreCase(word, s)) {
                     message = censor(s);
                 }

@@ -15,7 +15,7 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -29,21 +29,21 @@ public class PartyMainCommand extends Command implements TabExecutor {
 
         this.plugin = plugin;
 
-        register(new PartyAccept());
-        register(new PartyChat());
-        register(new PartyCreate());
-        register(new PartyDebug());
-        register(new PartyDeny());
-        register(new PartyDisband());
-        register(new PartyInvite());
-        register(new PartyJoin());
-        register(new PartyKick());
-        register(new PartyLead());
-        register(new PartyLeave());
-        register(new PartyList());
-        register(new PartyOptions());
-        register(new PartyTp());
-        register(new PartyWarp());
+        register(new PartyAccept(plugin));
+        register(new PartyChat(plugin));
+        register(new PartyCreate(plugin));
+        register(new PartyDebug(plugin));
+        register(new PartyDeny(plugin));
+        register(new PartyDisband(plugin));
+        register(new PartyInvite(plugin));
+        register(new PartyJoin(plugin));
+        register(new PartyKick(plugin));
+        register(new PartyLead(plugin));
+        register(new PartyLeave(plugin));
+        register(new PartyList(plugin));
+        register(new PartyOptions(plugin));
+        register(new PartyTp(plugin));
+        register(new PartyWarp(plugin));
     }
 
     @Override
@@ -71,7 +71,7 @@ public class PartyMainCommand extends Command implements TabExecutor {
             return;
         }
 
-        PartyCommand cmd = commands.get(args[0].toLowerCase());
+        PartyCommand cmd = commands.get(args[0].toLowerCase(Locale.ROOT));
         if (cmd == null) {
             Message.UNKNOWN_SUBCOMMAND.send(player);
             return;
@@ -90,7 +90,7 @@ public class PartyMainCommand extends Command implements TabExecutor {
             return Collections.emptyList();
         }
 
-        String rawCommand = args[0].toLowerCase();
+        String rawCommand = args[0].toLowerCase(Locale.ROOT);
 
         if (args.length == 1) {
             return commands.keySet().stream()
@@ -102,11 +102,8 @@ public class PartyMainCommand extends Command implements TabExecutor {
 
         if (command != null) {
             ProxiedPlayer player = (ProxiedPlayer) sender;
-            List<String> completions = command.onTabComplete(player, Arrays.copyOfRange(args, 1, args.length), plugin.getPartyManager().getParty(player));
 
-            if (completions != null) {
-                return completions;
-            }
+            return command.onTabComplete(player, Arrays.copyOfRange(args, 1, args.length), plugin.getPartyManager().getParty(player));
         }
 
         return Collections.emptyList();

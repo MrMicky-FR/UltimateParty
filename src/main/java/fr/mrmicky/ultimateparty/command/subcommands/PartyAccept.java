@@ -1,19 +1,21 @@
 package fr.mrmicky.ultimateparty.command.subcommands;
 
 import fr.mrmicky.ultimateparty.Party;
+import fr.mrmicky.ultimateparty.UltimateParty;
 import fr.mrmicky.ultimateparty.command.PartyCommand;
 import fr.mrmicky.ultimateparty.locale.Message;
 import fr.mrmicky.ultimateparty.utils.StringUtils;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PartyAccept extends PartyCommand {
 
-    public PartyAccept() {
-        super("accept");
+    public PartyAccept(UltimateParty plugin) {
+        super("accept", plugin);
     }
 
     @Override
@@ -48,10 +50,10 @@ public class PartyAccept extends PartyCommand {
     @Override
     public List<String> onTabComplete(ProxiedPlayer player, String[] args, Party party) {
         if (args.length != 1) {
-            return null;
+            return Collections.emptyList();
         }
 
-        return getPlugin().getPartyManager().getPartys().stream()
+        return getPlugin().getPartyManager().getParties().stream()
                 .filter(p -> StringUtils.startsWithIgnoreCase(p.getLeader().getName(), args[0]) && p.isInvited(player))
                 .map(p -> p.getLeader().getName())
                 .collect(Collectors.toList());
